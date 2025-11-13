@@ -149,8 +149,8 @@ How many tiles can the water reach within the range of y values in your scan?
 Class {
 	#name : 'Day17',
 	#superclass : 'Object',
-	#category : 'Advent-Of-Code-2015',
-	#package : 'Advent-Of-Code-2015'
+	#category : 'Advent-Of-Code-2018',
+	#package : 'Advent-Of-Code-2018'
 }
 
 { #category : 'examples' }
