@@ -1,5 +1,21 @@
 "
 ```
+
+d := Day17 new.
+d puzzleInput1. 
+d range: (d puzzleInput1). 
+d minX.  ""404""
+d maxX.  ""628""
+d minY. ""6""
+d maxY.  ""1631""
+
+
+c := OrderedCollection new.
+c add: 2. 
+c. 
+
+nil = nil ifTrue: [ true ]. 
+
 Metacello new
 baseline: 'PetitParser';
 repository: 'github://moosetechnology/PetitParser:v3.x.x/src';
@@ -350,15 +366,21 @@ How many tiles can the water reach within the range of y values in your scan?
 
 "
 Class {
-	#name : #Day17,
-	#superclass : #Object,
+	#name : 'Day17',
+	#superclass : 'Object',
 	#instVars : [
-		'pArray'
+		'pArray',
+		'min_x',
+		'max_x',
+		'min_y',
+		'max_y',
+		'points'
 	],
-	#category : #'Advent-Of-Code-2018'
+	#category : 'Advent-Of-Code-2018',
+	#package : 'Advent-Of-Code-2018'
 }
 
-{ #category : #examples }
+{ #category : 'examples' }
 Day17 >> asInt: anArray [
  | result | 
 result := ByteString new: (anArray size). 
@@ -370,7 +392,7 @@ result := ByteString new: (anArray size).
 
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 Day17 >> asString: anObject [
  "converts an Array to a bytestring "
  | result | 
@@ -388,13 +410,13 @@ anObject className = 'Array' ifTrue: [
 
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 Day17 >> at: anIndex [ 
  ^ pArray at: anIndex . 
 
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 Day17 >> inputExample1 [ 
 "tell itself to parse the data and give it back to me in some reasonable format"
 " format is anOrderedCollection , A B C are integers $x $y are characters "
@@ -405,14 +427,38 @@ Day17 >> inputExample1 [
  "^ self parseLines: (self puzzleExample1)."
 " for portability - we may not be able to load petit parser - so we provide the raw answer instead "
 " works even if user does not have ability to install petit parser "
- ^ (#($x 495 $y 2 7) , #($y 7 $x 495 501) , #($x 501 $y 3 7) ,  #($x 498 $y 2 4) , #($x 506 $y 1 2) , #($x 498 $y 10 13) , #($x 504 $y 10 13) , #($y 13 $x 498 504)).
+ ^ {#($x 495 $y 2 7) , #($y 7 $x 495 501) , #($x 501 $y 3 7) ,  #($x 498 $y 2 4) , #($x 506 $y 1 2) , #($x 498 $y 10 13) , #($x 504 $y 10 13) , #($y 13 $x 498 504)}.
 
 
 
 
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
+Day17 >> maxX [
+ ^ max_x
+
+]
+
+{ #category : 'examples' }
+Day17 >> maxY [
+ ^ max_y
+
+]
+
+{ #category : 'examples' }
+Day17 >> minX [
+ ^ min_x 
+
+]
+
+{ #category : 'examples' }
+Day17 >> minY [
+ ^ min_y
+
+]
+
+{ #category : 'examples' }
 Day17 >> parse: aInput [
  | lines firstLine xP intP yP result tmp | 
 "parse only collects last line parsed in pArray "
@@ -448,7 +494,7 @@ pArray :=  { (tmp at: 1) . (self asInt:(tmp at: 3)) . (tmp at: 6) . (self asInt:
 
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 Day17 >> parseLines: aInput [
  | res lines | 
 "for given lines , split on newline , ignore empty lines , parse each one by one , return a collection"
@@ -462,7 +508,13 @@ lines do: [ :line |
 
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
+Day17 >> points [
+ ^ points
+
+]
+
+{ #category : 'examples' }
 Day17 >> puzzleExample1 [
 "with some extra empty lines"
 ^ 
@@ -479,7 +531,7 @@ y=13, x=498..504'.
 
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 Day17 >> puzzleInput1 [
 "the big input"
 | data |  
@@ -3423,4 +3475,56 @@ x=513, y=1076..1081'.
  #($x 491 $y 893 907) .
  #($x 436 $y 1274 1301) .
  #($x 513 $y 1076 1081) }.
+]
+
+{ #category : 'examples' }
+Day17 >> range: aCollection [
+"find min_x min_y max_x max_y"
+ | x x1 x2 y y1 y2 |
+"are they nil by default ?"
+points := OrderedCollection new.
+min_x := nil .
+max_x := nil .
+min_y := nil .
+max_y := nil . 
+aCollection do: [ :quad | 
+	"we can declare temp variables just after start of closure "
+	(quad at: 1) = $x "x=123, y=456..789  {1}=$x {2}=123 {3}=456 {4}=789"
+	ifTrue: [ x := (quad at: 2).
+		       y1 := (quad at: 4).
+				y2 := (quad at: 5).
+	  y1 to: y2 do: [ :y | points add: (x@y).
+			min_x = nil ifTrue:[ min_x := x ].
+	    	max_x = nil ifTrue:[ max_x := x ].
+			min_y = nil ifTrue:[ min_y := y ].
+			max_y = nil ifTrue:[ max_y := y ].
+			
+			x < min_x ifTrue:[ min_x := x ].
+			x > max_x ifTrue:[ max_x := x ].
+			y < min_y ifTrue:[ min_y := y ].
+			y > max_y ifTrue:[ max_y := y ].
+				
+				"y = 6 ifTrue: [ thisContext halt ]."
+				
+		 ] ]
+    ifFalse: [ y := (quad at: 2).
+		       x1 := (quad at: 4).
+				x2 := (quad at: 5).
+	  x1 to: x2 do: [ :x | points add: (x@y) . 
+			min_x = nil ifTrue:[ min_x := x ].
+	    	max_x = nil ifTrue:[ max_x := x ].
+			min_y = nil ifTrue:[ min_y := y ].
+			max_y = nil ifTrue:[ max_y := y ].
+	
+			x < min_x ifTrue:[ min_x := x ].
+			x > max_x ifTrue:[ max_x := x ].
+			y < min_y ifTrue:[ min_y := y ].
+			y > max_y ifTrue:[ max_y := y ].			
+
+	     " y = 6 ifTrue: [ thisContext halt ]."
+	
+	 ] ]].
+^ points.
+
+
 ]

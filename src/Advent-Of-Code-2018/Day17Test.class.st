@@ -1,10 +1,11 @@
 Class {
-	#name : #Day17Test,
-	#superclass : #TestCase,
-	#category : #'Advent-Of-Code-2018'
+	#name : 'Day17Test',
+	#superclass : 'TestCase',
+	#category : 'Advent-Of-Code-2018',
+	#package : 'Advent-Of-Code-2018'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 Day17Test >> testParse1 [
 "all these test cases are useless unless we can install PetitParser"
 	| tmp |
@@ -20,7 +21,7 @@ Day17Test >> testParse1 [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 Day17Test >> testParse2 [
 	| tmp |
 	tmp := Day17 new.
@@ -35,7 +36,7 @@ Day17Test >> testParse2 [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 Day17Test >> testParseLines [
 	| day pLines |
 	day := Day17 new.	
