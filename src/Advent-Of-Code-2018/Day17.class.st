@@ -1,4 +1,7 @@
 "
+careful importing full roassal as can make system unstable. 
+save all work and push to github repo.
+
 Pharo13 stable as of 13/11/2025 .
 Dependency for running tests . 
 This is for the parsing phase only , we have captured the output of the parse so strictly speaking
