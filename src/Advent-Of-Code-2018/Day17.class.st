@@ -1,16 +1,21 @@
 "
-discovered there is a new version of PetitParser - PetitParser 2.0
-
-the only difference from PetitParser v1.0 is asParser becomes asPParser , note the extra *P* in PParser.
-thats how we know we are using v2 .
-perhaps version 3 will be PPPetitParser ...
-
+Pharo13 stable as of 13/11/2025 .
+Dependency for running tests . 
+This is for the parsing phase only , we have captured the output of the parse so strictly speaking
+PetitParser2 is not required.
 ```
 Metacello new
     baseline: 'PetitParser2';
     repository: 'github://kursjan/petitparser2';
     load.
 ```
+
+discovered there is a new version of PetitParser - PetitParser 2.0
+
+the only difference from PetitParser v1.0 is asParser becomes asPParser , note the extra *P* in PParser.
+thats how we know we are using v2 .
+perhaps version 3 will be PPPetitParser ...
+
 
 ```
 identifier := #letter asPParser , #word asPParser star.
@@ -297,6 +302,20 @@ b .
 
 ======= The Puzzle Itself ==============
 
+d := Day17 new.
+""d puzzleInput1. ""
+""d range: (d eExample1). ""
+""d inputExample1. ""
+
+""compute range from input""
+d range: (d puzzleInput1). 
+{ d minX. d maxX . d minY. d maxY } .  ""#(404 628 6 1631)""
+
+""compute range from different input""
+d range: (d puzzleExample1). 
+{ d minX. d maxX . d minY. d maxY } .   ""#(495 506 1 13)""
+
+checked results using pharo13 PetitParser2 and clojure antlr - both verified same ranges.
 
 --- Day 17: Reservoir Research ---
 You arrive in the year 18. If it weren't for the coat you got in 1018, you would be very cold: the North Pole base hasn't even been constructed.
@@ -498,7 +517,7 @@ Day17 >> at: anIndex [
 
 { #category : 'examples' }
 Day17 >> dataExample1 [
-"with some extra empty lines"
+"example given webpage - unparsed"
 | data | 
 data := 'x=495, y=2..7
 y=7, x=495..501
@@ -513,7 +532,7 @@ y=13, x=498..504'.
 
 { #category : 'examples' }
 Day17 >> dataInput1 [
-"the big input"
+"the big input - unparsed"
 | data |  
 data := 'x=581, y=396..399
 y=1491, x=566..573

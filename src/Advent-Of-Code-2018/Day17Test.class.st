@@ -40,7 +40,7 @@ Day17Test >> testParse2 [
 Day17Test >> testParseLines [
 	| day pLines |
 	day := Day17 new.	
-	pLines := day parseLines: (day puzzleExample1).
+	pLines := day parseLines: (day dataExample1).
 	self assert: ((pLines at: 1) = {$x . 495 . $y . 2 . 7 }).
 	self assert: ((pLines at: 2) = {$y . 7 . $x . 495 . 501 }).
 	self assert: ((pLines at: 3) = {$x . 501 . $y . 3 . 7 }).
