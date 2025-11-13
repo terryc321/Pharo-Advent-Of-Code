@@ -1,4 +1,15 @@
 "
+--- Yack Shaving ---
+
+Fail - Pharo 13 stable does not like PetitParser 3.0.0
+Metacello new
+   baseline: 'PetitParser';
+   repository: 'github://moosetechnology/PetitParser:v3.x.x/src';
+   load.
+
+Does pharo have an inbuilt / reliable way to parse this data 
+
+
 --- Day 17: Reservoir Research ---
 You arrive in the year 18. If it weren't for the coat you got in 1018, you would be very cold: the North Pole base hasn't even been constructed.
 
