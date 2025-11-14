@@ -119,8 +119,8 @@ root removeChildren.
 model = nil ifFalse: [ | wid hgt max_wid max_hgt |
 	"reset viewing origin "
 	 origin := (0@0). 
-		max_wid := 20 . 
-		max_hgt := 20 . 
+		max_wid := 40 . 
+		max_hgt := 40 . 
 	wid := (model maxX) - (model minX) .
 	hgt := (model maxY) - (model minY) . 	
 	wid := wid min: max_wid . 
@@ -277,6 +277,7 @@ Day17View >> listAnimations [
 { #category : 'initialization' }
 Day17View >> setModel: aModel [
   model := aModel.
+  bricks := Dictionary new.
   self initGame.
 
 
@@ -388,8 +389,8 @@ Day17View >> updateGame [
 
 "we recreate every game loop ? u sure ? "
 model = nil ifFalse: [ | wid hgt max_wid max_hgt |
-		max_wid := 20 . 
-		max_hgt := 20 . 
+		max_wid := 40 . 
+		max_hgt := 40 . 
 	wid := (model maxX) - (model minX) .
 	hgt := (model maxY) - (model minY) . 	
 	wid := wid min: max_wid . 
