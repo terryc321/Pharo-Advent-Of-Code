@@ -5083,9 +5083,10 @@ x=513, y=1076..1081'.
 { #category : 'examples' }
 Day17 >> range: aCollection [
 "find min_x min_y max_x max_y"
+"make points a Set , whenever we add point it will check if that point has already been added"
  | x x1 x2 y y1 y2 |
 "are they nil by default ?"
-points := OrderedCollection new.
+points := Set new. 
 min_x := nil .
 max_x := nil .
 min_y := nil .
