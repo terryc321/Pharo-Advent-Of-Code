@@ -7,6 +7,7 @@ Class {
 
 { #category : 'initialization' }
 Day17Morph >> click: anEvent [
+Transcript show: 'mouse click ' ; show: anEvent ; cr . 
  ^ True
 
 
@@ -28,6 +29,7 @@ Day17Morph >> containsPoint: aPoint [
 
 { #category : 'initialization' }
 Day17Morph >> doubleClick: anEvent [
+Transcript show: 'mouse double click ' ; show: anEvent ; cr . 
  ^ True
 
 
@@ -88,7 +90,7 @@ Day17Morph >> initialize [
 
 { #category : 'initialization' }
 Day17Morph >> keyStroke: anEvent [
- ^ True
+ ^ true
 
 
 
@@ -98,7 +100,8 @@ Day17Morph >> keyStroke: anEvent [
 Day17Morph >> mouseDown: anEvent [
 "also handleMouseDown: anEvent "
 "which is about system framework level code "
- ^ True
+Transcript show: 'mouse down ' ; show: anEvent ; cr . 
+ ^ true
 
 
 
@@ -107,13 +110,16 @@ Day17Morph >> mouseDown: anEvent [
 { #category : 'initialization' }
 Day17Morph >> mouseEnter: anEvent [
  anEvent hand newKeyboardFocus: self .
+Transcript show: 'mouse entered ' ; show: anEvent ; cr . 
+
 
 
 ]
 
 { #category : 'initialization' }
 Day17Morph >> mouseEnterDragging: anEvent [
- ^ True
+Transcript show: 'mouse entered dragging ' ; show: anEvent ; cr . 
+ ^ true
 
 
 
@@ -122,13 +128,15 @@ Day17Morph >> mouseEnterDragging: anEvent [
 { #category : 'initialization' }
 Day17Morph >> mouseLeave: anEvent [
  anEvent hand newKeyboardFocus: nil .
+Transcript show: 'mouse leave ' ; show: anEvent ; cr . 
 
 
 ]
 
 { #category : 'initialization' }
 Day17Morph >> mouseLeaveDragging: anEvent [
- ^ True
+Transcript show: 'mouse leave dragging ' ; show: anEvent ; cr . 
+ ^ true
 
 
 
@@ -136,7 +144,8 @@ Day17Morph >> mouseLeaveDragging: anEvent [
 
 { #category : 'initialization' }
 Day17Morph >> mouseMove: anEvent [
- ^ True
+Transcript show: 'mouse move ' ; show: anEvent ; cr . 
+ ^ true
 
 
 
@@ -144,14 +153,16 @@ Day17Morph >> mouseMove: anEvent [
 
 { #category : 'initialization' }
 Day17Morph >> mouseOver: anEvent [
- ^ True .
+Transcript show: 'mouse over ' ; show: anEvent ; cr . 
+ ^ true .
 
 
 ]
 
 { #category : 'initialization' }
 Day17Morph >> mouseStillDown: anEvent [
- ^ True
+Transcript show: 'mouse still down ' ; show: anEvent ; cr . 
+ ^ true
 
 
 
@@ -159,7 +170,8 @@ Day17Morph >> mouseStillDown: anEvent [
 
 { #category : 'initialization' }
 Day17Morph >> mouseUp: anEvent [
- ^ True
+Transcript show: 'mouse up ' ; show: anEvent ; cr . 
+ ^ true
 
 
 
@@ -167,7 +179,8 @@ Day17Morph >> mouseUp: anEvent [
 
 { #category : 'initialization' }
 Day17Morph >> startDrag: anEvent [
- ^ True
+Transcript show: 'mouse start drag ' ; show: anEvent ; cr . 
+ ^ true
 
 
 
@@ -185,6 +198,21 @@ Day17Morph >> step [
 Day17Morph >> stepTime [
 "in milliseconds" 
  ^ 1000 
+
+
+]
+
+{ #category : 'initialization' }
+Day17Morph >> wantsSteps [ 
+ ^ false
+
+
+]
+
+{ #category : 'initialization' }
+Day17Morph >> wantsStepsWhenCollapsed [ 
+ ^ false
+
 
 
 ]
