@@ -113,46 +113,8 @@ Day17View >> gameLoop [
 { #category : 'initialization' }
 Day17View >> initGame [ 
  
-"called after a new model is assigned setModel: aModel "
-"remove any BlElement that already exist from root "	
-"add our own blocks "
-"can we assign them a number so when mouse is over them - we get a balloon telling us where it is ?"
-"model has minX maxX minY maxY "
-"points get access to points as a Set "
-"ask if a point is in a Set "
-bricks := OrderedCollection new.    
-[ | wid hgt max_wid max_hgt |
-	max_wid := 20 . 
-	max_hgt := 20 . 
-	wid := (model maxX) - (model minX) .
-	hgt := (model maxY) - (model minY) . 	
-	wid := wid min: max_wid . 
-	hgt := hgt min: max_hgt . 
-	
-	1 to: wid do: [ :x |
-			1 to: hgt do: [ :y |
-					| rectangle color ox oy top_offset side_offset box_size |
-					box_size := 20.
-					top_offset := 20.
-					side_offset := 20.
-					
-					" a default color in case color red/ blue below breaks"
-					color := Color blue. 
-					" if we just use x y we would not see anything"
-					" because puzzle has x y values far off screen so we need to compensate"
-					" and add min values found so we can see what is going on "
-					ox := x + (model minX) .
-					oy := y + (model minY) . 
-					
-					color := (((model points) includes: (ox@oy)) ifTrue: [ Color red ] ifFalse: [Color blue]) .
-					rectangle := BlElement new
-						             background: color ; 
-						             position: ((20 * x) + side_offset) @ ((20 * y) + top_offset);
-						             extent: 20 @ 20;
-						             yourself.
-					root addChild: rectangle .
- 		bricks add: rectangle. ] ]
-] value. 
+root removeChildren.
+
 
 ]
 
@@ -242,7 +204,8 @@ Day17View >> keyUpEvent: anEvent [
 	({ 7 . 79 } includes: scanCode)  "Right arrow"
 		ifTrue: [ Transcript show: 'right arrow up' ; show: bat position ; cr . 
 			    isMovingRight := false.   
-									origin := origin + (1@0).
+					origin := origin + (1@0).
+					Transcript show: 'right arrow up origin => ' ; show: origin ; cr .
 			 ].
 		
 	({ 81 } includes: scanCode)  "down arrow"
@@ -385,6 +348,41 @@ Day17View >> updateGame [
 	isMovingLeft not and: [ isMovingRight not ifTrue:[ self animateStop ]].
   
    self updateBall.
+
+"we recreate every game loop ? u sure ? "
+model = nil ifFalse: [ | wid hgt max_wid max_hgt |
+		max_wid := 20 . 
+		max_hgt := 20 . 
+	wid := (model maxX) - (model minX) .
+	hgt := (model maxY) - (model minY) . 	
+	wid := wid min: max_wid . 
+	hgt := hgt min: max_hgt . 
+	
+	1 to: wid do: [ :x |
+			1 to: hgt do: [ :y |
+					| rectangle color ox oy top_offset side_offset box_size |
+					box_size := 20.
+					top_offset := 20.
+					side_offset := 20.
+					
+					" a default color in case color red/ blue below breaks"
+					color := Color blue. 
+					" if we just use x y we would not see anything"
+					" because puzzle has x y values far off screen so we need to compensate"
+					" and add min values found so we can see what is going on "
+					ox := x + (model minX) + (origin x) .
+					oy := y + (model minY) + (origin y) . 
+					
+					color := (((model points) includes: (ox@oy)) ifTrue: [ Color red ] ifFalse: [Color blue]) .
+					rectangle := BlElement new
+						             background: color ; 
+						             position: ((20 * x) + side_offset) @ ((20 * y) + top_offset);
+						             extent: 20 @ 20;
+						             yourself.
+					root addChild: rectangle .
+ 		             ] ]
+] .
+
 
 
 ]
