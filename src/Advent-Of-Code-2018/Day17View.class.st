@@ -134,8 +134,8 @@ root removeChildren.
 model = nil ifFalse: [ | wid hgt max_wid max_hgt |
 	"reset viewing origin "
 	 origin := (0@0). 
-		max_wid := 20 . 
-		max_hgt := 20 . 
+		max_wid := (1024 / (self boxSize)) floor . 
+		max_hgt := (768 / (self boxSize)) floor . 
 	wid := (model maxX) - (model minX) .
 	hgt := (model maxY) - (model minY) . 	
 	wid := wid min: max_wid . 
@@ -266,11 +266,20 @@ Day17View >> keyDownEvent: anEvent [
 	
 	({ 45 } includes: scanCode)  "minus key"
 		ifTrue: [ 
-			 box_size := box_size - 5 . 
+	     "box size must be 1 or greater "
+			 box_size := (box_size - 5) max: 20 . 			
 			self initGame.
       	 self reconfigureGame .
 			 ].
-			
+		
+  ({ 46 } includes: scanCode)  "plus key"
+		ifTrue: [ 
+			"box size must be 1 or greater"
+			 box_size := (box_size + 5 ) max: 20 . 
+			self initGame.
+      	 self reconfigureGame .
+			 ].			
+		
 		
 	"show the key that was pressed"
 	"track how far left or right"	
@@ -324,8 +333,8 @@ Transcript show: 'reconfiguring the game with origin => ' ; show: origin ; cr .
 
 "we recreate every game loop ? u sure ? "
 model = nil ifFalse: [ | wid hgt max_wid max_hgt |
-		max_wid := ((aSpace width) / (self boxSize)) floor .
-		max_hgt := ((aSpace height) / (self boxSize)) floor .
+		max_wid := ((aSpace width)-(3 * (self boxSize)) / (self boxSize)) floor .
+		max_hgt := ((aSpace height) - (3 * (self boxSize)) / (self boxSize)) floor .
 	wid := (model maxX) - (model minX) .
 	hgt := (model maxY) - (model minY) . 	
 	wid := wid min: max_wid . 
@@ -347,7 +356,7 @@ Transcript show: 'reconfigured ' ; show: { max_wid .  max_hgt } ; cr .
 			
 			" is bricks defined ? "		
 			bricks = nil ifFalse:[		
-		 rectangle := bricks at: (x@y) . 			
+		 rectangle := bricks at: (x@y) ifAbsent: [ nil ]. 			
 					].
 		  rectangle = nil ifFalse:[			
 		 rectangle background: (((model points) includes: (ox@oy)) ifTrue: [ Color red ] ifFalse: [Color blue]).
