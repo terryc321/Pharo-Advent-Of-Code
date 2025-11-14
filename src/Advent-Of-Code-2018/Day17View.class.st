@@ -1,10 +1,19 @@
 "
 use arrow keys left / right 
-use keys a / d to move bat left and right
 
-motion of bat seems jerky - solutions ? 
+we present screen a collection of rectangles which are kept in a dictionary called bricks
 
-tried animation BlAnimation but using an event loop in background seems to jam it up
+so we can retrieve x by y rectangle 
+```
+is bricks even defined ?
+bricks at: (x@y) . 
+
+
+""perhasps to change the backgroun d colour""
+""is there even a brick at x y ""
+""why use inefficient dictionary and not a 2d grid ?""
+(bricks at: (x@y)) background: Color green . 
+```
 
 
 "
@@ -26,7 +35,12 @@ Class {
 		'isAnimating',
 		'balls',
 		'model',
-		'origin'
+		'origin',
+		'leftKeyDown',
+		'leftKeyDownCounter',
+		'box_size',
+		'rightKeyDown',
+		'rightKeyDownCounter'
 	],
 	#category : 'Advent-Of-Code-2018',
 	#package : 'Advent-Of-Code-2018'
@@ -73,6 +87,24 @@ Day17View >> ballCount [
 ]
 
 { #category : 'initialization' }
+Day17View >> boxSize [ 
+ "pixels a box will consume N x N pixels where return N "
+ ^ box_size . 
+
+
+
+]
+
+{ #category : 'initialization' }
+Day17View >> boxSize: n [ 
+ "pixels a box will consume N x N pixels where return N "
+ box_size := n . 
+
+
+
+]
+
+{ #category : 'initialization' }
 Day17View >> gameHalt [
  isRunning := false . 
  [ Processor terminateActiveProcessNamed: 'GameLoop' ]
@@ -99,7 +131,7 @@ Day17View >> gameLoop [
  	       "wait one second "
           "(Delay forMilliseconds: 1000) wait."          
  	       "wait 16 milliseconds second "
-          (Delay forMilliseconds: 16) wait.
+          "(Delay forMilliseconds: 16) wait."
 
           isRunning.  ] whileTrue. 
        "keep looping while last thing evald is true "
@@ -163,6 +195,16 @@ Day17View >> initialize [
    "origin for top left square in the domain model  "
    " origin 100@100 means in presentation using model minX , model minY will be (model minX + origin x , model minY + origin Y)"
 	origin := (0@0).
+   bricks := Dictionary new. 
+	box_size := 50 . 
+	
+	leftKeyDown := False. 
+	leftKeyDownCounter := 0 .
+	
+	rightKeyDown := False.
+	rightKeyDownCounter := 0 .
+	
+	
 	
 	aSpace := BlSpace new. "make a window "
 	root := aSpace root. "access root element"
@@ -213,6 +255,8 @@ Day17View >> keyDownEvent: anEvent [
 		ifTrue: [ Transcript show: 'left arrow down ' ; show: bat position ; cr . 
 			       isMovingLeft := true. 
 			       isMovingRight := false.
+			leftKeyDown := true.
+			
 			 ].
 	({ 7 . 79 } includes: scanCode)  
 	"Right arrow"
@@ -235,16 +279,14 @@ Day17View >> keyUpEvent: anEvent [
 	({ 4 . 80 } includes: scanCode)  "Left arrow"
 		ifTrue: [ Transcript show: 'left arrow up' ; show: bat position ; cr . 
 			     isMovingLeft := false.			     
-						origin := origin - (1@0).
-	            (origin x ) <= 0 ifTrue:[ origin := (0@ (origin y)) ].
-	            self reconfigureGame.
+	          leftKeyDown := false. 
+
 			       ].
 	({ 7 . 79 } includes: scanCode)  "Right arrow"
 		ifTrue: [ Transcript show: 'right arrow up' ; show: bat position ; cr . 
 			    isMovingRight := false.   
-					origin := origin + (1@0).
-					Transcript show: 'right arrow up origin => ' ; show: origin ; cr .
-             self reconfigureGame.
+				 rightKeyDown := false.
+            
 			 ].
 		
 	({ 81 } includes: scanCode)  "down arrow"
@@ -285,8 +327,8 @@ Transcript show: 'reconfiguring the game with origin => ' ; show: origin ; cr .
 
 "we recreate every game loop ? u sure ? "
 model = nil ifFalse: [ | wid hgt max_wid max_hgt |
-		max_wid := 200 . 
-		max_hgt := 200 . 
+		max_wid := ((aSpace width) / self boxSize ) floor . 
+		max_hgt := ((aSpace height) / self boxSize ) floor . 
 	wid := (model maxX) - (model minX) .
 	hgt := (model maxY) - (model minY) . 	
 	wid := wid min: max_wid . 
@@ -297,9 +339,6 @@ model = nil ifFalse: [ | wid hgt max_wid max_hgt |
 					| rectangle color ox oy top_offset side_offset box_size |
 					" a default color in case color red/ blue below breaks"
 					color := Color blue. 
-	
-		
-		
    	
 					" if we just use x y we would not see anything"
 					" because puzzle has x y values far off screen so we need to compensate"
@@ -434,5 +473,29 @@ Day17View >> updateGame [
   
    self updateBall.
   
+   leftKeyDown ifTrue: [ 
+	 leftKeyDownCounter := leftKeyDownCounter + 1 . 
+	leftKeyDownCounter > 100 ifTrue: [ Transcript show: 'move Left again' ; cr . 
+		leftKeyDownCounter := 0 .  
+		"move the domain model origin to the left"
+		origin := origin - (1@0).
+		"check domain model cannot go too far to the left "
+		(origin x) < 0 ifTrue: [ origin := (0@(origin y)) ] . 
+		"reset the left key down counter - so use the screen update as a kind of clock"
+          self reconfigureGame.
+		]	
+	 ].
+
+   rightKeyDown ifTrue: [ 
+	 rightKeyDownCounter := rightKeyDownCounter + 1 . 
+	rightKeyDownCounter > 100 ifTrue: [ Transcript show: 'move Left again' ; cr . 
+		rightKeyDownCounter := 0 .  
+		"move the domain model origin to the left"
+		origin := origin + (1@0).
+		"reset the left key down counter - so use the screen update as a kind of clock"
+          self reconfigureGame.
+		]	
+	 ].
+
 
 ]
