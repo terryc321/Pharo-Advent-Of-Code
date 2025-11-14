@@ -6,6 +6,14 @@ Class {
 }
 
 { #category : 'initialization' }
+Day17Morph >> click: anEvent [
+ ^ True
+
+
+
+]
+
+{ #category : 'initialization' }
 Day17Morph >> containsPoint: aPoint [ 
  | position rect0 midpoint extent farCorner|
   "if morph contains point - ask its rectangle if it knows "
@@ -15,6 +23,14 @@ Day17Morph >> containsPoint: aPoint [
  farCorner := position + extent . 
  rect0 := (position corner: farCorner).
  ^ rect0 containsPoint: aPoint . 
+
+]
+
+{ #category : 'initialization' }
+Day17Morph >> doubleClick: anEvent [
+ ^ True
+
+
 
 ]
 
@@ -71,15 +87,57 @@ Day17Morph >> initialize [
 ]
 
 { #category : 'initialization' }
+Day17Morph >> keyStroke: anEvent [
+ ^ True
+
+
+
+]
+
+{ #category : 'initialization' }
+Day17Morph >> mouseDown: anEvent [
+"also handleMouseDown: anEvent "
+"which is about system framework level code "
+ ^ True
+
+
+
+]
+
+{ #category : 'initialization' }
 Day17Morph >> mouseEnter: anEvent [
- ^ True .
+ anEvent hand newKeyboardFocus: self .
+
+
+]
+
+{ #category : 'initialization' }
+Day17Morph >> mouseEnterDragging: anEvent [
+ ^ True
+
 
 
 ]
 
 { #category : 'initialization' }
 Day17Morph >> mouseLeave: anEvent [
- ^ True .
+ anEvent hand newKeyboardFocus: nil .
+
+
+]
+
+{ #category : 'initialization' }
+Day17Morph >> mouseLeaveDragging: anEvent [
+ ^ True
+
+
+
+]
+
+{ #category : 'initialization' }
+Day17Morph >> mouseMove: anEvent [
+ ^ True
+
 
 
 ]
@@ -87,6 +145,46 @@ Day17Morph >> mouseLeave: anEvent [
 { #category : 'initialization' }
 Day17Morph >> mouseOver: anEvent [
  ^ True .
+
+
+]
+
+{ #category : 'initialization' }
+Day17Morph >> mouseStillDown: anEvent [
+ ^ True
+
+
+
+]
+
+{ #category : 'initialization' }
+Day17Morph >> mouseUp: anEvent [
+ ^ True
+
+
+
+]
+
+{ #category : 'initialization' }
+Day17Morph >> startDrag: anEvent [
+ ^ True
+
+
+
+]
+
+{ #category : 'initialization' }
+Day17Morph >> step [
+"do something if we are asked to startStepping / stopStepping" 
+
+
+
+]
+
+{ #category : 'initialization' }
+Day17Morph >> stepTime [
+"in milliseconds" 
+ ^ 1000 
 
 
 ]
