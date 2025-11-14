@@ -134,8 +134,8 @@ root removeChildren.
 model = nil ifFalse: [ | wid hgt max_wid max_hgt |
 	"reset viewing origin "
 	 origin := (0@0). 
-		max_wid := 200 . 
-		max_hgt := 200 . 
+		max_wid := 20 . 
+		max_hgt := 20 . 
 	wid := (model maxX) - (model minX) .
 	hgt := (model maxY) - (model minY) . 	
 	wid := wid min: max_wid . 
@@ -144,7 +144,7 @@ model = nil ifFalse: [ | wid hgt max_wid max_hgt |
 	1 to: wid do: [ :x |
 			1 to: hgt do: [ :y |
 					| rectangle color ox oy top_offset side_offset box_size |
-					box_size := 5.
+					box_size := self boxSize.
 					top_offset := 20.
 					side_offset := 20.
 					
@@ -237,20 +237,41 @@ Day17View >> keyDownEvent: anEvent [
 	scanCode := anEvent scanCode . 
 	({ 4 . 80 } includes: scanCode)  
 	"Left arrow"
-		ifTrue: [ Transcript show: 'left arrow down ' ; show: bat position ; cr . 
-			       isMovingLeft := true. 
-			       isMovingRight := false.
-		          origin := origin - (1@0).
-			      self reconfigureGame. 
+		ifTrue: [ 
+			    origin := origin - (1@0).
+			  Transcript show: 'left arrow pressed ' ; show: origin ; cr . 
+			   self reconfigureGame .
 			 ].
 	({ 7 . 79 } includes: scanCode)  
 	"Right arrow"
-		ifTrue: [ Transcript show: 'right arrow down' ; show: bat position ; cr . 
-			       isMovingRight := true.
-			       isMovingLeft := false.
- 	          origin := origin - (1@0).
-	            self reconfigureGame. 
+		ifTrue: [ 
+			 origin := origin + (1@0).
+			Transcript show: 'right arrow pressed' ; show: origin ; cr . 			    
+			   self reconfigureGame .						
 			].
+		
+	({ 81 } includes: scanCode)  "down arrow"
+		ifTrue:[
+			 origin := origin + (0@1).
+				Transcript show: 'down arrow pressed' ; show: origin ; cr . 	
+					 self reconfigureGame .
+			 ].
+
+	({ 82 } includes: scanCode)  "up arrow"
+		ifTrue: [ 
+			 origin := origin - (0@1).
+	      Transcript show: 'up arrow pressed' ; show: origin ; cr . 
+	 self reconfigureGame .
+			 ].
+	
+	({ 45 } includes: scanCode)  "minus key"
+		ifTrue: [ 
+			 box_size := box_size - 5 . 
+			self initGame.
+      	 self reconfigureGame .
+			 ].
+			
+		
 	"show the key that was pressed"
 	"track how far left or right"	
 	Transcript show: 'key scancode = ' ; show: anEvent scanCode ; cr.
@@ -264,32 +285,22 @@ Day17View >> keyUpEvent: anEvent [
 	| scanCode |	
 	scanCode := anEvent scanCode . 
 	({ 4 . 80 } includes: scanCode)  "Left arrow"
-		ifTrue: [ Transcript show: 'left arrow up' ; show: bat position ; cr . 
-			     isMovingLeft := false.			     
-	          leftKeyDown := false. 
-	           leftKeyDownCounter := 0 . 
+		ifTrue: [ Transcript show: 'left arrow up' ; show: origin ; cr . 
 
 			       ].
 	({ 7 . 79 } includes: scanCode)  "Right arrow"
-		ifTrue: [ Transcript show: 'right arrow up' ; show: bat position ; cr . 
-			    isMovingRight := false.   
-				 rightKeyDown := false.
-				 rightKeyDownCounter := 0 .
-            
+		ifTrue: [ Transcript show: 'right arrow up' ; show: origin ; cr . 
+		      
 			 ].
 		
 	({ 81 } includes: scanCode)  "down arrow"
 		ifTrue: [  
-				
-			    delta := (delta - 1) max: 1 . 
-			Transcript show: 'down arrow up => delta = ' ; show: delta ; cr . 			
-	      
+				Transcript show: 'down arrow up' ; show: origin ; cr . 	
 			 ].
 
 	({ 82 } includes: scanCode)  "up arrow"
 		ifTrue: [ 
-			    delta := delta + 1 . 
-
+	      Transcript show: 'up arrow up' ; show: origin ; cr . 
 			 ].
 
 		
@@ -313,13 +324,15 @@ Transcript show: 'reconfiguring the game with origin => ' ; show: origin ; cr .
 
 "we recreate every game loop ? u sure ? "
 model = nil ifFalse: [ | wid hgt max_wid max_hgt |
-		max_wid := ((aSpace width) / self boxSize ) floor . 
-		max_hgt := ((aSpace height) / self boxSize ) floor . 
+		max_wid := ((aSpace width) / (self boxSize)) floor .
+		max_hgt := ((aSpace height) / (self boxSize)) floor .
 	wid := (model maxX) - (model minX) .
 	hgt := (model maxY) - (model minY) . 	
 	wid := wid min: max_wid . 
 	hgt := hgt min: max_hgt . 
 	
+	
+Transcript show: 'reconfigured ' ; show: { max_wid .  max_hgt } ; cr . 
 	1 to: wid do: [ :x |
 			1 to: hgt do: [ :y |
 					| rectangle color ox oy top_offset side_offset box_size |
@@ -353,6 +366,7 @@ model = nil ifFalse: [ | wid hgt max_wid max_hgt |
 Day17View >> setModel: aModel [
   model := aModel.
   bricks := Dictionary new.
+  origin := (0@0).
   self initGame.
 
 
@@ -463,29 +477,6 @@ Day17View >> updateGame [
   
    self updateBall.
   
-   leftKeyDown ifTrue: [ 
-	 leftKeyDownCounter := leftKeyDownCounter + 1 . 
-	leftKeyDownCounter > 10 ifTrue: [ Transcript show: 'move Left again' ; cr . 
-		leftKeyDownCounter := 0 .  
-		"move the domain model origin to the left"
-		origin := origin - (1@0).
-		"check domain model cannot go too far to the left "
-		(origin x) < 0 ifTrue: [ origin := (0@(origin y)) ] . 
-		"reset the left key down counter - so use the screen update as a kind of clock"
-          self reconfigureGame.
-		]	
-	 ].
-
-   rightKeyDown ifTrue: [ 
-	 rightKeyDownCounter := rightKeyDownCounter + 1 . 
-	rightKeyDownCounter > 10 ifTrue: [ Transcript show: 'move Right again' ; cr . 
-		rightKeyDownCounter := 0 .  
-		"move the domain model origin to the left"
-		origin := origin + (1@0).
-		"reset the left key down counter - so use the screen update as a kind of clock"
-          self reconfigureGame.
-		]	
-	 ].
-
+  
 
 ]
