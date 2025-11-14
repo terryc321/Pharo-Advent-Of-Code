@@ -111,6 +111,7 @@ Day17View >> gameLoop [
 
 { #category : 'initialization' }
 Day17View >> initGame [ 
+ 
 "called after a new model is assigned setModel: aModel "
 "remove any BlElement that already exist from root "	
 "add our own blocks "
@@ -119,9 +120,14 @@ Day17View >> initGame [
 "points get access to points as a Set "
 "ask if a point is in a Set "
 bricks := OrderedCollection new.    
-[ | wid hgt |
+[ | wid hgt max_wid max_hgt |
+	max_wid := 20 . 
+	max_hgt := 20 . 
 	wid := (model maxX) - (model minX) .
 	hgt := (model maxY) - (model minY) . 	
+	wid := wid min: max_wid . 
+	hgt := hgt min: max_hgt . 
+	
 	1 to: wid do: [ :x |
 			1 to: hgt do: [ :y |
 					| rectangle color ox oy top_offset side_offset box_size |
@@ -146,7 +152,6 @@ bricks := OrderedCollection new.
 					root addChild: rectangle .
  		bricks add: rectangle. ] ]
 ] value. 
-
 
 ]
 
