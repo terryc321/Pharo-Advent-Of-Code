@@ -237,7 +237,7 @@ Day17View >> keyUpEvent: anEvent [
 		ifTrue: [ Transcript show: 'left arrow up' ; show: bat position ; cr . 
 			     isMovingLeft := false.			     
 						origin := origin - (1@0).
-	            (origin x ) <= 0 ifTrue:[ origin x: 0 ].
+	            (origin x ) <= 0 ifTrue:[ origin := (0@ (origin y)) ].
 			       ].
 	({ 7 . 79 } includes: scanCode)  "Right arrow"
 		ifTrue: [ Transcript show: 'right arrow up' ; show: bat position ; cr . 
@@ -256,7 +256,7 @@ Day17View >> keyUpEvent: anEvent [
 		ifTrue: [ 
 			    delta := delta + 1 . 
 				origin := origin - (0@1).			
-            (origin y ) <= 0 ifTrue:[ origin y: 0 ].
+            (origin y ) <= 0 ifTrue:[ origin := ((origin x)@ 0) ].
 			Transcript show: 'up arrow up => delta = ' ; show: delta ; cr . 
 			 ].
 
