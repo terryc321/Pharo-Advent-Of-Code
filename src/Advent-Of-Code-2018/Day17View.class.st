@@ -25,7 +25,8 @@ Class {
 		'duration',
 		'isAnimating',
 		'balls',
-		'model'
+		'model',
+		'origin'
 	],
 	#category : 'Advent-Of-Code-2018',
 	#package : 'Advent-Of-Code-2018'
@@ -160,6 +161,10 @@ Day17View >> initialize [
 
 	super initialize. "make some bricks all random colours "
   
+   "origin for top left square in the domain model  "
+   " origin 100@100 means in presentation using model minX , model minY will be (model minX + origin x , model minY + origin Y)"
+	origin := (0@0).
+	
 	aSpace := BlSpace new. "make a window "
 	root := aSpace root. "access root element"
 	aSpace extent: 1024 @ 768. "Set window size to 1024x768 pixels"
@@ -231,21 +236,27 @@ Day17View >> keyUpEvent: anEvent [
 	({ 4 . 80 } includes: scanCode)  "Left arrow"
 		ifTrue: [ Transcript show: 'left arrow up' ; show: bat position ; cr . 
 			     isMovingLeft := false.			     
+						origin := origin - (1@0).
+	            (origin x ) <= 0 ifTrue:[ origin x: 0 ].
 			       ].
 	({ 7 . 79 } includes: scanCode)  "Right arrow"
 		ifTrue: [ Transcript show: 'right arrow up' ; show: bat position ; cr . 
 			    isMovingRight := false.   
+									origin := origin + (1@0).
 			 ].
 		
 	({ 81 } includes: scanCode)  "down arrow"
 		ifTrue: [  
+				origin := origin + (0@1).
 			    delta := (delta - 1) max: 1 . 
-			Transcript show: 'down arrow up => delta = ' ; show: delta ; cr . 
+			Transcript show: 'down arrow up => delta = ' ; show: delta ; cr . 			
 			 ].
 
 	({ 82 } includes: scanCode)  "up arrow"
 		ifTrue: [ 
 			    delta := delta + 1 . 
+				origin := origin - (0@1).			
+            (origin y ) <= 0 ifTrue:[ origin y: 0 ].
 			Transcript show: 'up arrow up => delta = ' ; show: delta ; cr . 
 			 ].
 
