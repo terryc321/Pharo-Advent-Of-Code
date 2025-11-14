@@ -1,6 +1,9 @@
 Class {
 	#name : 'Day17Morph',
 	#superclass : 'Morph',
+	#instVars : [
+		'dat'
+	],
 	#category : 'Advent-Of-Code-2018',
 	#package : 'Advent-Of-Code-2018'
 }
@@ -49,6 +52,38 @@ Day17Morph >> drawOn: aCanvas [
  aCanvas fillRectangle: rect0 color: (Color black). 
  aCanvas fillRectangle: rect1 color: (Color green).
  aCanvas fillRectangle: rect2 color: (Color red).
+
+" for all points in diagram starting from top left (dat minX , dat minY) to (dat maxX , dat maxY)"
+dat ifNotNil: [ 
+
+dat points do: [ :pt | 
+		| xy local_xy local_xy2 okX okY |
+		xy := ((pt - ((dat minX)@(dat minY))) * 10) .
+		okX := (xy x) < 400 and: [ (xy x) >= 0 ].
+		okY := (xy y) < 400 and: [ (xy y) >= 0 ].
+		(okX and:[ okY ifTrue: [
+				local_xy := xy + position. 
+				local_xy2 := local_xy + (10@10).
+             aCanvas fillRectangle: (local_xy @ local_xy2) color: (Color brown ).				
+				]])      
+		 ] 
+	]
+	 
+
+
+]
+
+{ #category : 'initialization' }
+Day17Morph >> handlesMouseClick: anEvent [
+ ^ true .
+
+
+]
+
+{ #category : 'initialization' }
+Day17Morph >> handlesMouseDoubleClick: anEvent [
+ ^ true .
+
 
 ]
 
@@ -172,6 +207,14 @@ Transcript show: 'mouse still down ' ; show: anEvent ; cr .
 Day17Morph >> mouseUp: anEvent [
 Transcript show: 'mouse up ' ; show: anEvent ; cr . 
  ^ true
+
+
+
+]
+
+{ #category : 'initialization' }
+Day17Morph >> plot: anObject [
+  dat := anObject. 
 
 
 
