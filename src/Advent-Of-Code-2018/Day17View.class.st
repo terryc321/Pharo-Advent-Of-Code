@@ -119,8 +119,8 @@ root removeChildren.
 model = nil ifFalse: [ | wid hgt max_wid max_hgt |
 	"reset viewing origin "
 	 origin := (0@0). 
-		max_wid := 40 . 
-		max_hgt := 40 . 
+		max_wid := 80 . 
+		max_hgt := 80 . 
 	wid := (model maxX) - (model minX) .
 	hgt := (model maxY) - (model minY) . 	
 	wid := wid min: max_wid . 
@@ -129,7 +129,7 @@ model = nil ifFalse: [ | wid hgt max_wid max_hgt |
 	1 to: wid do: [ :x |
 			1 to: hgt do: [ :y |
 					| rectangle color ox oy top_offset side_offset box_size |
-					box_size := 20.
+					box_size := 5.
 					top_offset := 20.
 					side_offset := 20.
 					
@@ -144,15 +144,15 @@ model = nil ifFalse: [ | wid hgt max_wid max_hgt |
 					color := (((model points) includes: (ox@oy)) ifTrue: [ Color red ] ifFalse: [Color blue]) .
 					rectangle := BlElement new
 						             background: color ; 
-						             position: ((20 * x) + side_offset) @ ((20 * y) + top_offset);
-						             extent: 20 @ 20;
+						             position: ((box_size * x) + side_offset) @ ((box_size * y) + top_offset);
+						             extent: box_size @ box_size;
 						             yourself.
 				   bricks at: (x@y) put: rectangle. 
 					root addChild: rectangle .
  		             ] ]
 ] .
 
-
+4
 ]
 
 { #category : 'initialization' }
@@ -389,8 +389,8 @@ Day17View >> updateGame [
 
 "we recreate every game loop ? u sure ? "
 model = nil ifFalse: [ | wid hgt max_wid max_hgt |
-		max_wid := 40 . 
-		max_hgt := 40 . 
+		max_wid := 80 . 
+		max_hgt := 80 . 
 	wid := (model maxX) - (model minX) .
 	hgt := (model maxY) - (model minY) . 	
 	wid := wid min: max_wid . 
@@ -417,6 +417,7 @@ model = nil ifFalse: [ | wid hgt max_wid max_hgt |
 					].
 		  rectangle = nil ifFalse:[			
 		 rectangle background: (((model points) includes: (ox@oy)) ifTrue: [ Color red ] ifFalse: [Color blue]).
+		  root addChild: rectangle. 
 		  ] .
 		 ] ]
 ] . "if we have a model"
