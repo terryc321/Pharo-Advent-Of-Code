@@ -280,7 +280,8 @@ Day17View >> listAnimations [
 
 { #category : 'initialization' }
 Day17View >> reconfigureGame [
-	
+
+Transcript show: 'reconfiguring the game with origin => ' ; show: origin ; cr . 	
 
 "we recreate every game loop ? u sure ? "
 model = nil ifFalse: [ | wid hgt max_wid max_hgt |
@@ -312,7 +313,7 @@ model = nil ifFalse: [ | wid hgt max_wid max_hgt |
 					].
 		  rectangle = nil ifFalse:[			
 		 rectangle background: (((model points) includes: (ox@oy)) ifTrue: [ Color red ] ifFalse: [Color blue]).
-		  root addChild: rectangle. 
+		 " root addChild: rectangle. "
 		  ] .
 		 ] ]
 ] . "if we have a model"
