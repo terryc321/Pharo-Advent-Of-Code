@@ -119,16 +119,27 @@ Day17View >> initGame [
 "points get access to points as a Set "
 "ask if a point is in a Set "
 bricks := OrderedCollection new.    
-	1 to: 20 do: [ :x |
-			1 to: 20 do: [ :y |
-					| rectangle |
+[ | wid hgt |
+	wid := (model maxX) - (model minX) .
+	hgt := (model maxY) - (model minY) . 	
+	1 to: wid do: [ :x |
+			1 to: hgt do: [ :y |
+					| rectangle color ox oy |
+					" if we just use x y we would not see anything"
+					" because puzzle has x y values far off screen so we need to compensate"
+					" and add min values found so we can see what is going on "
+					ox := x + (model minX) .
+					oy := y + (model minY) . 
+					
+					color := (((model points) includes: (ox@oy)) ifTrue: [ Color red ] ifFalse: [Color blue]) .
 					rectangle := BlElement new
-						             background: Color random;
+						             background: color ; 
 						             position: 40 * x @ (20 * y);
 						             extent: 40 @ 20;
 						             yourself.
 					root addChild: rectangle .
- 		bricks add: rectangle. ] ].
+ 		bricks add: rectangle. ] ]
+] value. 
 
 
 ]
@@ -153,8 +164,17 @@ Day17View >> initialize [
 	root focused: true . 
 	
 	"give the game a ball to keep it happy for now"
-	ball := BallElement new.
-	root addChild: ball. 
+	bat := BlElement new
+		       background: Color red;
+		       position: 400 @ 600;
+		       extent: 120 @ 20;
+		       yourself.
+	root addChild: bat.
+
+ "think delta is a delay for ball movement"
+   delta := 100. 
+   ball := BallElement new velocity: 10@10 . 
+   
 	
 "aSpace root addEventHandler: (BlEventHandler on: BlKeyDownEvent do: [ :anEvent | bat keyDownEvent: anEvent ])."
 aSpace root addEventHandler: (BlEventHandler on: BlKeyDownEvent do: [ :anEvent | self keyDownEvent: anEvent ]).
