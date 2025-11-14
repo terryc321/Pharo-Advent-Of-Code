@@ -411,7 +411,9 @@ model = nil ifFalse: [ | wid hgt max_wid max_hgt |
 					oy := y + (model minY) + (origin y) . 
 			
 			" is bricks defined ? "		
+			bricks = nil ifFalse:[		
 		 rectangle := bricks at: (x@y) . 			
+					].
 		  rectangle = nil ifFalse:[			
 		 rectangle background: (((model points) includes: (ox@oy)) ifTrue: [ Color red ] ifFalse: [Color blue]).
 		  ] .
