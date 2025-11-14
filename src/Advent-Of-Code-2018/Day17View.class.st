@@ -40,7 +40,8 @@ Class {
 		'leftKeyDownCounter',
 		'box_size',
 		'rightKeyDown',
-		'rightKeyDownCounter'
+		'rightKeyDownCounter',
+		'tick'
 	],
 	#category : 'Advent-Of-Code-2018',
 	#package : 'Advent-Of-Code-2018'
@@ -120,26 +121,8 @@ Day17View >> gameHalt [
 
 { #category : 'initialization' }
 Day17View >> gameLoop [ 
-  [ 
-    [ 
-        [  self updateGame . 
-	        "request next pulse"
-			 aSpace requestNextPulse.
-	
-          "(Delay forMilliseconds: 16) wait."
-           #(Transcript show: 'tick' ; cr . ).
- 	       "wait one second "
-          "(Delay forMilliseconds: 1000) wait."          
- 	       "wait 16 milliseconds second "
-          "(Delay forMilliseconds: 16) wait."
 
-          isRunning.  ] whileTrue. 
-       "keep looping while last thing evald is true "
-    ] on: Error do: [ :ex | Transcript cr; show: ex description ] 
-] value . "forkNamed: 'GameLoop'."
-
-
-
+^ true
 ]
 
 { #category : 'initialization' }
@@ -191,6 +174,8 @@ model = nil ifFalse: [ | wid hgt max_wid max_hgt |
 Day17View >> initialize [
 
 	super initialize. "make some bricks all random colours "
+	tick := 0 .
+	isRunning := true . 
   
    "origin for top left square in the domain model  "
    " origin 100@100 means in presentation using model minX , model minY will be (model minX + origin x , model minY + origin Y)"
@@ -211,7 +196,7 @@ Day17View >> initialize [
 	aSpace extent: 1024 @ 768. "Set window size to 1024x768 pixels"
 	aSpace resizable: false. "thats just mean no?"
 	aSpace resizable: true. "surely a more dynamic be better"
-	aSpace root background: Color blue.
+	aSpace root background: Color black.
 	aSpace title: 'Advent of Code Day17 Puzzle'. " extent: 500@500 . "
 
 	root addEventHandler: (BlEventHandler on: BlKeyDownEvent do: [ :anEvent | self keyDownEvent: anEvent ]).
@@ -255,14 +240,16 @@ Day17View >> keyDownEvent: anEvent [
 		ifTrue: [ Transcript show: 'left arrow down ' ; show: bat position ; cr . 
 			       isMovingLeft := true. 
 			       isMovingRight := false.
-			leftKeyDown := true.
-			
+		          origin := origin - (1@0).
+			      self reconfigureGame. 
 			 ].
 	({ 7 . 79 } includes: scanCode)  
 	"Right arrow"
 		ifTrue: [ Transcript show: 'right arrow down' ; show: bat position ; cr . 
 			       isMovingRight := true.
 			       isMovingLeft := false.
+ 	          origin := origin - (1@0).
+	            self reconfigureGame. 
 			].
 	"show the key that was pressed"
 	"track how far left or right"	
@@ -280,30 +267,29 @@ Day17View >> keyUpEvent: anEvent [
 		ifTrue: [ Transcript show: 'left arrow up' ; show: bat position ; cr . 
 			     isMovingLeft := false.			     
 	          leftKeyDown := false. 
+	           leftKeyDownCounter := 0 . 
 
 			       ].
 	({ 7 . 79 } includes: scanCode)  "Right arrow"
 		ifTrue: [ Transcript show: 'right arrow up' ; show: bat position ; cr . 
 			    isMovingRight := false.   
 				 rightKeyDown := false.
+				 rightKeyDownCounter := 0 .
             
 			 ].
 		
 	({ 81 } includes: scanCode)  "down arrow"
 		ifTrue: [  
-				origin := origin + (0@1).
+				
 			    delta := (delta - 1) max: 1 . 
 			Transcript show: 'down arrow up => delta = ' ; show: delta ; cr . 			
-	            self reconfigureGame.						
+	      
 			 ].
 
 	({ 82 } includes: scanCode)  "up arrow"
 		ifTrue: [ 
 			    delta := delta + 1 . 
-				origin := origin - (0@1).			
-            (origin y ) <= 0 ifTrue:[ origin := ((origin x)@ 0) ].
-			Transcript show: 'up arrow up => delta = ' ; show: delta ; cr . 
-            self reconfigureGame.
+
 			 ].
 
 		
@@ -357,6 +343,9 @@ model = nil ifFalse: [ | wid hgt max_wid max_hgt |
 		 ] ]
 ] . "if we have a model"
 
+  "request next pulse"
+ aSpace requestNextPulse.
+			
 
 ]
 
@@ -467,6 +456,7 @@ Day17View >> updateBall [
 { #category : 'initialization' }
 Day17View >> updateGame [
 	
+
 	isMovingLeft ifTrue: [ self animateLeft ].
 	isMovingRight ifTrue: [ self animateRight ]. 
 	isMovingLeft not and: [ isMovingRight not ifTrue:[ self animateStop ]].
@@ -475,7 +465,7 @@ Day17View >> updateGame [
   
    leftKeyDown ifTrue: [ 
 	 leftKeyDownCounter := leftKeyDownCounter + 1 . 
-	leftKeyDownCounter > 100 ifTrue: [ Transcript show: 'move Left again' ; cr . 
+	leftKeyDownCounter > 10 ifTrue: [ Transcript show: 'move Left again' ; cr . 
 		leftKeyDownCounter := 0 .  
 		"move the domain model origin to the left"
 		origin := origin - (1@0).
@@ -488,7 +478,7 @@ Day17View >> updateGame [
 
    rightKeyDown ifTrue: [ 
 	 rightKeyDownCounter := rightKeyDownCounter + 1 . 
-	rightKeyDownCounter > 100 ifTrue: [ Transcript show: 'move Left again' ; cr . 
+	rightKeyDownCounter > 10 ifTrue: [ Transcript show: 'move Right again' ; cr . 
 		rightKeyDownCounter := 0 .  
 		"move the domain model origin to the left"
 		origin := origin + (1@0).
