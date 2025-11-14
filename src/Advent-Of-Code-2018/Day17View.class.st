@@ -115,6 +115,43 @@ Day17View >> initGame [
  
 root removeChildren.
 
+"we recreate every game loop ? u sure ? "
+model = nil ifFalse: [ | wid hgt max_wid max_hgt |
+	"reset viewing origin "
+	 origin := (0@0). 
+		max_wid := 20 . 
+		max_hgt := 20 . 
+	wid := (model maxX) - (model minX) .
+	hgt := (model maxY) - (model minY) . 	
+	wid := wid min: max_wid . 
+	hgt := hgt min: max_hgt . 
+	
+	1 to: wid do: [ :x |
+			1 to: hgt do: [ :y |
+					| rectangle color ox oy top_offset side_offset box_size |
+					box_size := 20.
+					top_offset := 20.
+					side_offset := 20.
+					
+					" a default color in case color red/ blue below breaks"
+					color := Color blue. 
+					" if we just use x y we would not see anything"
+					" because puzzle has x y values far off screen so we need to compensate"
+					" and add min values found so we can see what is going on "
+					ox := x + (model minX) + (origin x) .
+					oy := y + (model minY) + (origin y) . 
+					
+					color := (((model points) includes: (ox@oy)) ifTrue: [ Color red ] ifFalse: [Color blue]) .
+					rectangle := BlElement new
+						             background: color ; 
+						             position: ((20 * x) + side_offset) @ ((20 * y) + top_offset);
+						             extent: 20 @ 20;
+						             yourself.
+				   bricks at: (x@y) put: rectangle. 
+					root addChild: rectangle .
+ 		             ] ]
+] .
+
 
 ]
 
@@ -361,27 +398,25 @@ model = nil ifFalse: [ | wid hgt max_wid max_hgt |
 	1 to: wid do: [ :x |
 			1 to: hgt do: [ :y |
 					| rectangle color ox oy top_offset side_offset box_size |
-					box_size := 20.
-					top_offset := 20.
-					side_offset := 20.
-					
 					" a default color in case color red/ blue below breaks"
 					color := Color blue. 
+	
+		
+		
+   	
 					" if we just use x y we would not see anything"
 					" because puzzle has x y values far off screen so we need to compensate"
 					" and add min values found so we can see what is going on "
 					ox := x + (model minX) + (origin x) .
 					oy := y + (model minY) + (origin y) . 
-					
-					color := (((model points) includes: (ox@oy)) ifTrue: [ Color red ] ifFalse: [Color blue]) .
-					rectangle := BlElement new
-						             background: color ; 
-						             position: ((20 * x) + side_offset) @ ((20 * y) + top_offset);
-						             extent: 20 @ 20;
-						             yourself.
-					root addChild: rectangle .
- 		             ] ]
-] .
+			
+			" is bricks defined ? "		
+		 rectangle := bricks at: (x@y) . 			
+		  rectangle = nil ifFalse:[			
+		 rectangle background: (((model points) includes: (ox@oy)) ifTrue: [ Color red ] ifFalse: [Color blue]).
+		  ] .
+		 ] ]
+] . "if we have a model"
 
 
 
