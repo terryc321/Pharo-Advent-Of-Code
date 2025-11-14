@@ -8,7 +8,7 @@ Class {
 { #category : 'initialization' }
 Day17Morph >> click: anEvent [
 Transcript show: 'mouse click ' ; show: anEvent ; cr . 
- ^ True
+ ^ true
 
 
 
@@ -30,7 +30,7 @@ Day17Morph >> containsPoint: aPoint [
 { #category : 'initialization' }
 Day17Morph >> doubleClick: anEvent [
 Transcript show: 'mouse double click ' ; show: anEvent ; cr . 
- ^ True
+ ^ true
 
 
 
@@ -54,28 +54,28 @@ Day17Morph >> drawOn: aCanvas [
 
 { #category : 'initialization' }
 Day17Morph >> handlesMouseDown: anEvent [
- ^ True .
+ ^ true .
 
 
 ]
 
 { #category : 'initialization' }
 Day17Morph >> handlesMouseEnter: anEvent [
- ^ True .
+ ^ true .
 
 
 ]
 
 { #category : 'initialization' }
 Day17Morph >> handlesMouseLeave: anEvent [
- ^ True .
+ ^ true .
 
 
 ]
 
 { #category : 'initialization' }
 Day17Morph >> handlesMouseOver: anEvent [
- ^ True .
+ ^ true .
 
 
 ]
