@@ -124,7 +124,13 @@ bricks := OrderedCollection new.
 	hgt := (model maxY) - (model minY) . 	
 	1 to: wid do: [ :x |
 			1 to: hgt do: [ :y |
-					| rectangle color ox oy |
+					| rectangle color ox oy top_offset side_offset box_size |
+					box_size := 20.
+					top_offset := 20.
+					side_offset := 20.
+					
+					" a default color in case color red/ blue below breaks"
+					color := Color blue. 
 					" if we just use x y we would not see anything"
 					" because puzzle has x y values far off screen so we need to compensate"
 					" and add min values found so we can see what is going on "
@@ -134,8 +140,8 @@ bricks := OrderedCollection new.
 					color := (((model points) includes: (ox@oy)) ifTrue: [ Color red ] ifFalse: [Color blue]) .
 					rectangle := BlElement new
 						             background: color ; 
-						             position: 40 * x @ (20 * y);
-						             extent: 40 @ 20;
+						             position: ((20 * x) + side_offset) @ ((20 * y) + top_offset);
+						             extent: 20 @ 20;
 						             yourself.
 					root addChild: rectangle .
  		bricks add: rectangle. ] ]
