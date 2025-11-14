@@ -35,9 +35,58 @@ Day17Morph >> drawOn: aCanvas [
 ]
 
 { #category : 'initialization' }
+Day17Morph >> handlesMouseDown: anEvent [
+ ^ True .
+
+
+]
+
+{ #category : 'initialization' }
+Day17Morph >> handlesMouseEnter: anEvent [
+ ^ True .
+
+
+]
+
+{ #category : 'initialization' }
+Day17Morph >> handlesMouseLeave: anEvent [
+ ^ True .
+
+
+]
+
+{ #category : 'initialization' }
+Day17Morph >> handlesMouseOver: anEvent [
+ ^ True .
+
+
+]
+
+{ #category : 'initialization' }
 Day17Morph >> initialize [ 
  super initialize.
  self extent: (200@200).
+
+
+]
+
+{ #category : 'initialization' }
+Day17Morph >> mouseEnter: anEvent [
+ ^ True .
+
+
+]
+
+{ #category : 'initialization' }
+Day17Morph >> mouseLeave: anEvent [
+ ^ True .
+
+
+]
+
+{ #category : 'initialization' }
+Day17Morph >> mouseOver: anEvent [
+ ^ True .
 
 
 ]
