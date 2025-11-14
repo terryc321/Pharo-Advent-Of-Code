@@ -1,13 +1,41 @@
 
-# this is a test document
+# Pharo stability
 
-Depending on what version pharo running - it has the following location , so remember if edit , save and git push 
+Depending on what version pharo running - when pull the repository from github 
+if make any changes - remember to commit and push 
+be careful importing libraries such as roassal because stability can become an issue
+or if we do , do not save the image , 
+have all work done and uploaded.
+download roassal and see if system keeps going
 ```
 '/home/terry/Pharo/images/Pharo 13.0 - 64bit (stable)/pharo-local/iceberg/terryc321/Pharo-Advent-Of-Code/docs/test.md'
 '~/Pharo/images/Pharo 14.0 - 64bit (development version, latest)/pharo-local/iceberg/terryc321/Pharo-Advent-Of-Code/docs/test.md'
 ```
 
-# Advent of Code 2018 Day 17 
+when the system detects the files have changed , changes are propagated through the system in a timely manner.
+case in point , emacs dired - directory editor , shows outdated information , does not get updated
+
+# motivation
+
+programming in lisp scheme guile specifically and error occurs , there is a backtrace but does not mean 
+anything to me as i am concerned with solving a real problem , that has nothing to do 
+with guile scheme itself 
+
+the domain interested in may be an advent of code puzzle 
+
+i do not care what solution is coded in as long as i can program it easily and make changes and interact 
+with those changes fluidly without interruption 
+
+interested in traceability of artifacts , where did this formula come from ? 
+can we be sure we have the correct data ?
+did we parse it correctly ?
+is the data sensible ?
+has the data been manipulated ? 
+is there consistency across implementations different languages / libraries ?
+are other people computers getting different answers ? 
+is there a hardware issue / memory fault ? have we spilt coffee on the machine lately? 
+
+
 
 
 # graphical
@@ -148,6 +176,5 @@ can we do this dynamically inside smalltalk ?
 so we can actually see the image 
 
 really org mode for smalltalk 
-
 
 
