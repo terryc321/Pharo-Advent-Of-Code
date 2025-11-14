@@ -104,7 +104,7 @@ Day17View >> gameLoop [
           isRunning.  ] whileTrue. 
        "keep looping while last thing evald is true "
     ] on: Error do: [ :ex | Transcript cr; show: ex description ] 
-] forkNamed: 'GameLoop'.
+] value . "forkNamed: 'GameLoop'."
 
 
 
@@ -237,12 +237,14 @@ Day17View >> keyUpEvent: anEvent [
 			     isMovingLeft := false.			     
 						origin := origin - (1@0).
 	            (origin x ) <= 0 ifTrue:[ origin := (0@ (origin y)) ].
+	            self reconfigureGame.
 			       ].
 	({ 7 . 79 } includes: scanCode)  "Right arrow"
 		ifTrue: [ Transcript show: 'right arrow up' ; show: bat position ; cr . 
 			    isMovingRight := false.   
 					origin := origin + (1@0).
 					Transcript show: 'right arrow up origin => ' ; show: origin ; cr .
+             self reconfigureGame.
 			 ].
 		
 	({ 81 } includes: scanCode)  "down arrow"
@@ -250,6 +252,7 @@ Day17View >> keyUpEvent: anEvent [
 				origin := origin + (0@1).
 			    delta := (delta - 1) max: 1 . 
 			Transcript show: 'down arrow up => delta = ' ; show: delta ; cr . 			
+	            self reconfigureGame.						
 			 ].
 
 	({ 82 } includes: scanCode)  "up arrow"
@@ -258,6 +261,7 @@ Day17View >> keyUpEvent: anEvent [
 				origin := origin - (0@1).			
             (origin y ) <= 0 ifTrue:[ origin := ((origin x)@ 0) ].
 			Transcript show: 'up arrow up => delta = ' ; show: delta ; cr . 
+            self reconfigureGame.
 			 ].
 
 		
@@ -272,6 +276,48 @@ Day17View >> keyUpEvent: anEvent [
 { #category : 'initialization' }
 Day17View >> listAnimations [
  self error: 'shouldNotImplement'.
+]
+
+{ #category : 'initialization' }
+Day17View >> reconfigureGame [
+	
+
+"we recreate every game loop ? u sure ? "
+model = nil ifFalse: [ | wid hgt max_wid max_hgt |
+		max_wid := 200 . 
+		max_hgt := 200 . 
+	wid := (model maxX) - (model minX) .
+	hgt := (model maxY) - (model minY) . 	
+	wid := wid min: max_wid . 
+	hgt := hgt min: max_hgt . 
+	
+	1 to: wid do: [ :x |
+			1 to: hgt do: [ :y |
+					| rectangle color ox oy top_offset side_offset box_size |
+					" a default color in case color red/ blue below breaks"
+					color := Color blue. 
+	
+		
+		
+   	
+					" if we just use x y we would not see anything"
+					" because puzzle has x y values far off screen so we need to compensate"
+					" and add min values found so we can see what is going on "
+					ox := x + (model minX) + (origin x) .
+					oy := y + (model minY) + (origin y) . 
+			
+			" is bricks defined ? "		
+			bricks = nil ifFalse:[		
+		 rectangle := bricks at: (x@y) . 			
+					].
+		  rectangle = nil ifFalse:[			
+		 rectangle background: (((model points) includes: (ox@oy)) ifTrue: [ Color red ] ifFalse: [Color blue]).
+		  root addChild: rectangle. 
+		  ] .
+		 ] ]
+] . "if we have a model"
+
+
 ]
 
 { #category : 'initialization' }
@@ -386,42 +432,6 @@ Day17View >> updateGame [
 	isMovingLeft not and: [ isMovingRight not ifTrue:[ self animateStop ]].
   
    self updateBall.
-
-"we recreate every game loop ? u sure ? "
-model = nil ifFalse: [ | wid hgt max_wid max_hgt |
-		max_wid := 200 . 
-		max_hgt := 200 . 
-	wid := (model maxX) - (model minX) .
-	hgt := (model maxY) - (model minY) . 	
-	wid := wid min: max_wid . 
-	hgt := hgt min: max_hgt . 
-	
-	1 to: wid do: [ :x |
-			1 to: hgt do: [ :y |
-					| rectangle color ox oy top_offset side_offset box_size |
-					" a default color in case color red/ blue below breaks"
-					color := Color blue. 
-	
-		
-		
-   	
-					" if we just use x y we would not see anything"
-					" because puzzle has x y values far off screen so we need to compensate"
-					" and add min values found so we can see what is going on "
-					ox := x + (model minX) + (origin x) .
-					oy := y + (model minY) + (origin y) . 
-			
-			" is bricks defined ? "		
-			bricks = nil ifFalse:[		
-		 rectangle := bricks at: (x@y) . 			
-					].
-		  rectangle = nil ifFalse:[			
-		 rectangle background: (((model points) includes: (ox@oy)) ifTrue: [ Color red ] ifFalse: [Color blue]).
-		  root addChild: rectangle. 
-		  ] .
-		 ] ]
-] . "if we have a model"
-
-
+  
 
 ]
