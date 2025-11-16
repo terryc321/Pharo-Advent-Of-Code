@@ -37,6 +37,14 @@ Class {
 }
 
 { #category : 'accessing' }
+Day19 >> asLines: aString [
+^ aString splitOn: Character cr.
+
+ "an OrderedCollection('This is line 1' 'This is line 2' 'This is line 3')"
+
+]
+
+{ #category : 'accessing' }
 Day19 >> input [ 
 ^ '#ip 2
 addi 2 16 2
@@ -99,15 +107,15 @@ Day19 >> parse [
 
 { #category : 'accessing' }
 Day19 >> parse: aString [ 
-| theParser ip addr addi seti mulr eqrr gtrr int ws  result |
+| r1 theParser ip addr addi seti mulr eqrr gtrr int ws  result tmp |
 
 ip := ($# asPParser ,$i asPParser , $p asPParser) flatten .
-addr := ($a asPParser , $d asPParser , $d asPParser , $r asPParser) .
-addi := ($a asPParser , $d asPParser , $d asPParser , $i asPParser) .
-seti := ($s asPParser , $e asPParser , $t asPParser , $i asPParser) .
+addr := ($a asPParser , $d asPParser , $d asPParser , $r asPParser) flatten.
+addi := ($a asPParser , $d asPParser , $d asPParser , $i asPParser) flatten.
+seti := ($s asPParser , $e asPParser , $t asPParser , $i asPParser) flatten.
 mulr := ($m asPParser , $u asPParser , $l asPParser , $r asPParser) flatten.
 eqrr := ($e asPParser , $q asPParser , $r asPParser , $r asPParser) flatten.
-gtrr := ($g asPParser , $t asPParser , $t asPParser , $r asPParser) flatten.
+gtrr := ($g asPParser , $t asPParser , $r asPParser , $r asPParser) flatten.
 int := (#digit asPParser star) flatten. 
 ws := (#space asPParser star) flatten. 
 
@@ -119,9 +127,30 @@ theParser := (ip , ws , int) /
 ( eqrr , ws ,int ,ws ,int ,ws ,int) /
 ( gtrr , ws ,int ,ws ,int ,ws ,int) .
 
-result := theParser parse: aString .
+tmp := theParser parse: aString .
 
-^ result.
+tmp ifNotNil:[ 
+	
+r1 := tmp at: 1 .	
+	
+(#('addr' . 'addi' . 'seti' . 'mulr' . 'eqrr' . 'gtrr') includes: r1 ) ifTrue:[ 
+	| r3 r5 r7 | 
+	r3 := (tmp at: 3) asInteger .
+	r5 := (tmp at: 5) asInteger .
+	r7 := (tmp at: 7) asInteger .
+  ^ { r1 . r3 . r5 . r7 }	
+	 ] 
+ifFalse:[
+	(#('#ip') includes: r1 ) ifTrue:[	| r3 |
+										 	r3 := (tmp at: 3) asInteger .
+											^ { r1 . r3 } ]
+	ifFalse:[ 
+		self halt: 'bad parse for {' , aString , '}'.
+		^ nil.
+		]. 	
+]].
+
+
 
 "
  huh - given input parse it how ? 
