@@ -45,6 +45,21 @@ Day19 >> asLines: aString [
 ]
 
 { #category : 'accessing' }
+Day19 >> data [ 
+| dat lines | 
+dat := OrderedCollection new.
+lines := (self asLines: (self input)).
+1 to: (lines size) do: [ :i |
+	| line |
+	line := lines at: i .
+	dat add: (self parse: line).
+	 ].
+
+^ dat .
+
+]
+
+{ #category : 'accessing' }
 Day19 >> input [ 
 ^ '#ip 2
 addi 2 16 2
