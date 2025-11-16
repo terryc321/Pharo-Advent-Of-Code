@@ -46,6 +46,7 @@ Day19 >> asLines: aString [
 
 { #category : 'accessing' }
 Day19 >> data [ 
+" returns parsed data from input string"
 | dat lines | 
 dat := OrderedCollection new.
 lines := (self asLines: (self input)).
@@ -122,13 +123,15 @@ Day19 >> parse [
 
 { #category : 'accessing' }
 Day19 >> parse: aString [ 
-| r1 theParser ip addr addi seti mulr eqrr gtrr int ws  result tmp |
+| r1 theParser ip addr addi seti mulr eqrr gtrr int ws muli result tmp setr |
 
 ip := ($# asPParser ,$i asPParser , $p asPParser) flatten .
 addr := ($a asPParser , $d asPParser , $d asPParser , $r asPParser) flatten.
 addi := ($a asPParser , $d asPParser , $d asPParser , $i asPParser) flatten.
 seti := ($s asPParser , $e asPParser , $t asPParser , $i asPParser) flatten.
+setr := ($s asPParser , $e asPParser , $t asPParser , $r asPParser) flatten.
 mulr := ($m asPParser , $u asPParser , $l asPParser , $r asPParser) flatten.
+muli := ($m asPParser , $u asPParser , $l asPParser , $i asPParser) flatten.
 eqrr := ($e asPParser , $q asPParser , $r asPParser , $r asPParser) flatten.
 gtrr := ($g asPParser , $t asPParser , $r asPParser , $r asPParser) flatten.
 int := (#digit asPParser star) flatten. 
@@ -138,7 +141,9 @@ theParser := (ip , ws , int) /
 ( addr , ws ,int ,ws ,int ,ws ,int) /
 ( addi , ws ,int ,ws ,int ,ws ,int) /
 ( seti , ws ,int ,ws ,int ,ws ,int) /
+( setr , ws ,int ,ws ,int ,ws ,int) /
 ( mulr , ws ,int ,ws ,int ,ws ,int) /
+( muli , ws ,int ,ws ,int ,ws ,int) /
 ( eqrr , ws ,int ,ws ,int ,ws ,int) /
 ( gtrr , ws ,int ,ws ,int ,ws ,int) .
 
@@ -148,7 +153,7 @@ tmp ifNotNil:[
 	
 r1 := tmp at: 1 .	
 	
-(#('addr' . 'addi' . 'seti' . 'mulr' . 'eqrr' . 'gtrr') includes: r1 ) ifTrue:[ 
+(#('addr' . 'addi' . 'seti' . 'setr' . 'mulr' . 'muli' . 'eqrr' . 'gtrr') includes: r1 ) ifTrue:[ 
 	| r3 r5 r7 | 
 	r3 := (tmp at: 3) asInteger .
 	r5 := (tmp at: 5) asInteger .
