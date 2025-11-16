@@ -10,7 +10,7 @@ TestDay19 >> testAddr [
 | p r |
 p :=  Day19 new.
 r := p parse: 'addr 123 456 789'.
-self assert: r equals: #( #addr . 123 . 456 . 789 ) .
+self assert: r equals: #( 'addr' . 123 . 456 . 789 ) .
 
 
 
