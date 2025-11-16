@@ -8,6 +8,8 @@ https://badetitou.fr/blog/2023-05-02-pharo-baselines-in-5mins
 this is the tutorial below
 https://kursjan.github.io/petitparser2/petitparser2.html
 
+https://eng.libretexts.org/Bookshelves/Computer_Science/Programming_Languages/Book%3A_Deep_into_Pharo_(Bergel_Cassou_Ducasse_and_Laval)/17%3A_PetitParser__Building_Modular_Parsers/17.01%3A_Writing_Parsers_with_PetitParser
+
 
 
 ```
@@ -92,5 +94,61 @@ Day19 >> parse [
 "gtrr n n n"
 
 
+
+]
+
+{ #category : 'accessing' }
+Day19 >> parse: aString [ 
+| theParser ip addr addi seti mulr eqrr gtrr int ws  result |
+
+ip := ($# asPParser ,$i asPParser , $p asPParser) flatten .
+addr := ($a asPParser , $d asPParser , $d asPParser , $r asPParser) .
+addi := ($a asPParser , $d asPParser , $d asPParser , $i asPParser) .
+seti := ($s asPParser , $e asPParser , $t asPParser , $i asPParser) .
+mulr := ($m asPParser , $u asPParser , $l asPParser , $r asPParser) flatten.
+eqrr := ($e asPParser , $q asPParser , $r asPParser , $r asPParser) flatten.
+gtrr := ($g asPParser , $t asPParser , $t asPParser , $r asPParser) flatten.
+int := (#digit asPParser star) flatten. 
+ws := (#space asPParser star) flatten. 
+
+theParser := (ip , ws , int) /
+( addr , ws ,int ,ws ,int ,ws ,int) /
+( addi , ws ,int ,ws ,int ,ws ,int) /
+( seti , ws ,int ,ws ,int ,ws ,int) /
+( mulr , ws ,int ,ws ,int ,ws ,int) /
+( eqrr , ws ,int ,ws ,int ,ws ,int) /
+( gtrr , ws ,int ,ws ,int ,ws ,int) .
+
+result := theParser parse: aString .
+
+^ result.
+
+"
+ huh - given input parse it how ? 
+can we parse an integer 
+can we parse three integers 
+can we parse the command name
+#ip n
+addr n n n
+addi n n n
+seti n n n
+mulr n n n
+eqrr n n n
+gtrr n n n
+"
+
+
+
+
+
+]
+
+{ #category : 'accessing' }
+Day19 >> workspace001 [
+" 1=cmd 3 5 7 are index values as strings"
+| d | 
+d := Day19 new.
+d parse: 'addr 1 2 3'. 
+d parse: 'addr 123 456 7890'. 
 
 ]
