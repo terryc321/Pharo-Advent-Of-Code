@@ -23,7 +23,42 @@ Day20GridBoardElement >> colorCellAt: gridPoint color: aColor [
 ]
 
 { #category : 'as yet unclassified' }
+Day20GridBoardElement >> drawExpanderTriangleOn: aCanvas [
+"https://www.mail-archive.com/pharo-users@lists.pharo.org/msg27227.html"
+<demo>
+
+        |path expanded |
+        expanded ifTrue: [ 
+                path := aCanvas path
+                        moveTo: 5@10;
+                        lineTo: 25@10;
+                        lineTo: 15@25;
+                        close;
+                        finish]
+        ifFalse: [  
+                path := aCanvas path
+                        moveTo: 10@5;
+                        lineTo: 25@15;
+                        lineTo: 10@25;
+                        close;
+                        finish].
+        aCanvas fill
+                paint: Color paleBlue;
+                path: path;
+                draw.
+        aCanvas stroke
+                paint: Color lightGray;
+                path: path;
+                width: 0.5;
+                draw
+]
+
+{ #category : 'as yet unclassified' }
 Day20GridBoardElement >> drawOnSpartaCanvas: aCanvas [
+        super drawOnSpartaCanvas: aCanvas.
+        self drawExpanderTriangleOn: aCanvas.
+
+
     aCanvas fill
         paint: Color black;
         path: self boundsInLocal;
@@ -47,6 +82,14 @@ Day20GridBoardElement >> drawOnSpartaCanvas: aCanvas [
                 b absolute; moveTo: 0@(i*cellSize); lineTo: self width@(i*cellSize) ]
         ];
         draw
+]
+
+{ #category : 'as yet unclassified' }
+Day20GridBoardElement >> example [ 
+"https://www.mail-archive.com/pharo-users@lists.pharo.org/msg27227.html"
+<demo>
+	^ BlElement new background: Color blue
+	
 ]
 
 { #category : 'as yet unclassified' }
