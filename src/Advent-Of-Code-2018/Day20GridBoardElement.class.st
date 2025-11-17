@@ -55,6 +55,8 @@ Day20GridBoardElement >> drawExpanderTriangleOn: aCanvas [
 
 { #category : 'as yet unclassified' }
 Day20GridBoardElement >> drawOnSpartaCanvas: aCanvas [
+self halt. 
+ "according to Alexandrie docs - sparta has long been deprecated"
         super drawOnSpartaCanvas: aCanvas.
         self drawExpanderTriangleOn: aCanvas.
 
