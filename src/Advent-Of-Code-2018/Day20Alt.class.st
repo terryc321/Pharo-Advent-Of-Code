@@ -2,7 +2,8 @@ Class {
 	#name : 'Day20Alt',
 	#superclass : 'Object',
 	#instVars : [
-		'elems'
+		'elems',
+		'id'
 	],
 	#category : 'Advent-Of-Code-2018',
 	#package : 'Advent-Of-Code-2018'
@@ -12,7 +13,9 @@ Class {
 Day20Alt >> compute: pts [
  | union |
  union := Set new. 
- elems do: [ :e | 
+Transcript show: 'ALT at node ' ; show: (self id asString) ; cr . 
+ elems do: [ :e | 	 
+	 Processor yield.
 	 (e compute: pts) collect: [ :pt | union add: pt ].
 	 ].
  ^ union .
@@ -25,4 +28,15 @@ Day20Alt >> from: aCollection [
  elems := OrderedCollection new: (aCollection size) .
  aCollection do: [ :e | elems add: e ].
 
+]
+
+{ #category : 'accessing' }
+Day20Alt >> id [ 
+ ^ id 
+]
+
+{ #category : 'accessing' }
+Day20Alt >> id: n [ 
+ id := n .
+ 
 ]
