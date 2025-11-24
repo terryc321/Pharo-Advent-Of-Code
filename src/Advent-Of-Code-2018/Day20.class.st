@@ -5,6 +5,32 @@ Class {
 	#package : 'Advent-Of-Code-2018'
 }
 
+{ #category : 'converting' }
+Day20 >> convert: aTree [ 
+	"convert s expression array into classes"
+  ((aTree className) = 'ByteString') ifTrue: [ 
+	  ^ (Day20String new from: aTree)
+	 ].
+  (((aTree className) = 'Array') & ((aTree at: 1) asString = 'SEQ')) 
+ifTrue:[ 
+	| t |
+	t := OrderedCollection new.
+	2 to: (aTree size) do: [ :i | t add: (self convert: (aTree at: i)) ].
+	^ Day20Seq new from: t .
+	].
+  (((aTree className) = 'Array') & ((aTree at: 1) asString = 'ALT')) 
+ifTrue:[ 
+	| t |
+	t := OrderedCollection new.
+	2 to: (aTree size) do: [ :i | t add: (self convert: (aTree at: i)) ].
+	^ Day20Alt new from: t
+	].
+  self halt: 'cannot reach here'.
+
+
+
+]
+
 { #category : 'examples' }
 Day20 >> example1 [ 
 ^ '^ENWWW(NEEE|SSE(EE|N))$'
