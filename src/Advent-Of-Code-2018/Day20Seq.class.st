@@ -13,6 +13,7 @@ Day20Seq >> compute: aSet [
  | pts |
  pts := aSet copy. 
  elems do: [ :e | 
+		Processor yield.
 	pts := e compute: pts .
 	 ].
  ^pts .
