@@ -3,7 +3,8 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'elems',
-		'id'
+		'id',
+		'computed'
 	],
 	#category : 'Advent-Of-Code-2018',
 	#package : 'Advent-Of-Code-2018'

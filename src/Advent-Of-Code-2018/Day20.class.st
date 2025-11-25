@@ -1,3 +1,20 @@
+"
+Tree is made from 3 components
+
+Day20Alt
+Day20Seq
+Day20String
+
+idea was once string has been computed - perhaps computed multiple times - 
+NSEW equivalent to returning to same position , but opens 2 doors 
+
+given a set of points -> return a set of points 
+if computed then apply the transformations to each point in set
+- at moment we not constructing grid so we just return what would be the final 
+point positions if they carried on that course
+
+
+"
 Class {
 	#name : 'Day20',
 	#superclass : 'Object',
