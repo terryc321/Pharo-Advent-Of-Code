@@ -20,8 +20,8 @@ Day20Seq >> compute: aSet [
  computed ifNil:[
 	| pts2 |
 	pts2 := { 0@0 } asSet. 
-	Processor yield.
 	elems do: [ :e | 
+   	Processor yield.
 		pts2 := e compute: pts2.
 	 ].
   computed := pts2.

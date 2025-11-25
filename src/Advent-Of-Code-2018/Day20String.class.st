@@ -32,14 +32,10 @@ Day20String >> compute: aSet [
 	"record path taken if wish - for now just record where point ended up"
 	 ]. computed := pt . ].
 
- "computed now defined"
+ "computed now defined - here it is just a single point "
+ " in seq or alt - its a set of points "
  "for each point add where it ends up given transformation we have seen"  
-   ^ pts collect: [ :aPoint | 
-	      | x y | 
-	      x := (aPoint x) + (computed x).
-		    y := (aPoint y) + (computed y).
-		    x @ y .
-	].
+   ^ pts collect: [ :aPoint | aPoint + computed ].
 
   
 ]

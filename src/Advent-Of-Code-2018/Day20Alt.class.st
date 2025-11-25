@@ -12,15 +12,30 @@ Class {
 
 { #category : 'initialize' }
 Day20Alt >> compute: pts [
- | union |
+ | union result |
  union := Set new. 
 Transcript show: 'ALT at node ' ; show: (self id asString) ; cr . 
+
+computed ifNil:[ 
+	| pts2 |
+	pts2 := { 0@0 } asSet.
  elems do: [ :e | 	 
 	 Processor yield.
 	 (e compute: pts) collect: [ :pt | union add: pt ].
 	 ].
- ^ union .
+  computed := union .
+ ].
 
+"computed known"
+result := Set new . 
+	pts do: [ :aPoint | 
+		| xy |
+		computed do: [ :aPoint2 | 
+			xy := aPoint + aPoint2 .
+			result add: xy . 
+			 ].
+		 ].
+ ^ result .
  
 ]
 
