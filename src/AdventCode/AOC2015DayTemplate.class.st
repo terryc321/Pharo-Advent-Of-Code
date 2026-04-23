@@ -39,6 +39,22 @@ AOC2015DayTemplate >> puzzleInput [
 ]
 
 { #category : 'as yet unclassified' }
+AOC2015DayTemplate >> puzzleInputParsed [
+	"typical input parse -- 1) split into lines. 2) split by character $x 3) convert strings to integer values "
+
+	| lines col |
+	lines := self puzzleInput splitOn: String cr.
+	col := OrderedCollection new.
+	lines do: [ :line |
+			| triple |
+			triple := line splitOn: $x.
+			triple := triple collect: [ :each | each asInteger ].
+			col add: triple ].
+	^ col
+	
+]
+
+{ #category : 'as yet unclassified' }
 AOC2015DayTemplate >> puzzlePart1 [	
 ^ ' 
 '
