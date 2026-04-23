@@ -1,0 +1,22 @@
+Class {
+	#name : 'AOC2015Day2Test',
+	#superclass : 'TestCase',
+	#category : 'AdventCode',
+	#package : 'AdventCode'
+}
+
+{ #category : 'tests' }
+AOC2015Day2Test >> testSolution1Part1 [
+	self assert: (AOC2015Day1 new solution1Part1 = 280)  description: 'expect 280 answer'
+]
+
+{ #category : 'tests' }
+AOC2015Day2Test >> testSolution1Part2 [
+	self assert: (AOC2015Day1 new solution1Part2 = 1797)  description: 'expect 1797 answer'
+]
+
+{ #category : 'tests' }
+AOC2015Day2Test >> testcalcTriple [
+	self assert: (AOC2015Day2 new calcTriple: #(2 . 3 . 4) = 58)  description: 'expect 2x3x4 answers 58'
+	
+]
