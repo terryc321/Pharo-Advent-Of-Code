@@ -24,21 +24,66 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-AOC2015Day2 >> calcTriple: aTriple [
+AOC2015Day2 >> calcBow: aTriple [
+	"multiply length width height together"
 
-	| tot length width height area1 area2 area3 min |
+	| l w h |
+	l := aTriple at: 1.
+	w := aTriple at: 2.
+	h := aTriple at: 3.
+
+	^ l * w * h
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day2 >> calcRibbon: aTriple [
+	"smallest perimeter of length x width x height . lw . lh . wh"
+
+	| l w h lw lh wh |
+	l := aTriple at: 1.
+	w := aTriple at: 2.
+	h := aTriple at: 3.
+	lw := l + w.
+	lh := l + h.
+	wh := w + h.
+	^ {
+		  2 * lw.
+		  2 * lh.
+		  2 * wh } min
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day2 >> calcTriple2: aTriple [
+	"cannot debug this ---	^ (self calcBow: aTriple) + (self calcRibbon: aTriple)"
+
+	| bow ribbon tot |
+	bow := self calcBow: aTriple.
+	ribbon := self calcRibbon: aTriple.
+	tot := bow + ribbon.
+	^ tot
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day2 >> calcTriple: aTriple [
+	"lots temporary variables makes debugging easier"
+
+	| tot length width height area1 area2 area3 min subtotal lw wh hl |
 	tot := 0.
 	length := aTriple at: 1.
 	width := aTriple at: 2.
 	height := aTriple at: 3.
-	area1 := 2 * length * width.
-	area2 := 2 * width * height.
-	area3 := 2 * height * length.
+	lw := length * width.
+	wh := width * height.
+	hl := height * length.
+	area1 := 2 * lw.
+	area2 := 2 * wh.
+	area3 := 2 * hl.
+	subtotal := area1 + area2 + area3.
 	min := {
-		       area1.
-		       area2.
-		       area3 } min.
-	tot := area1 + area2 + area3 + min.
+		       lw.
+		       wh.
+		       hl } min.
+	tot := subtotal + min.
 	^ tot
 ]
 
@@ -1100,40 +1145,17 @@ AOC2015Day2 >> solution1Part1 [
 	| sum |
 	sum := 0.
 	self puzzleInputParsed do: [ :e |
-			| l w h area1 area2 area3 min tot |
-			"destructuring (L W H)"
-			tot := 0.
-			l := e at: 1.
-			w := e at: 2.
-			h := e at: 3.
-			area1 := 2 * l * w.
-			area2 := 2 * w * h.
-			area3 := 2 * h * l.
-			min := {
-				       area1.
-				       area2.
-				       area3 } min.
-			tot := area1 + area2 + area3 + min.
-			sum := sum + tot ].
+			sum := sum + (self calcTriple: e) ].
 	^ sum
+	
+
 ]
 
 { #category : 'as yet unclassified' }
 AOC2015Day2 >> solution1Part2 [
-| puz sz h |
-puz := self puzzleInput. "the string itself"
-sz := puz size . "size of input"
-h := 0. "initial height zero"
-1 to: sz do: [ :i | 
-		| e | "element e - a character in string"
-	e := puz at: i . "get a character"
-	e = $( ifTrue: [ h := h + 1 ] ifFalse: [ e = $) ifTrue: [ h := h - 1 ]]. 
-	h < 0 ifTrue: [ ^ i ]
-		 ].
-"never entered basement"
-Error signal: 'Santa never entered basement'.
 
-
-
-
+	| sum |
+	sum := 0.
+	self puzzleInputParsed do: [ :e | sum := sum + (self calcTriple2: e) ].
+	^ sum
 ]

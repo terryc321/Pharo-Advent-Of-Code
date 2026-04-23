@@ -7,16 +7,46 @@ Class {
 
 { #category : 'tests' }
 AOC2015Day2Test >> testSolution1Part1 [
-	self assert: (AOC2015Day1 new solution1Part1 = 280)  description: 'expect 280 answer'
+
+	| aoc |
+	aoc := AOC2015Day2 new.
+	self
+		assert: aoc solution1Part1 = 1606483
+		description: 'expect 1606483 answer'
 ]
 
 { #category : 'tests' }
 AOC2015Day2Test >> testSolution1Part2 [
-	self assert: (AOC2015Day1 new solution1Part2 = 1797)  description: 'expect 1797 answer'
+
+	self
+		assert: AOC2015Day2 new solution1Part2 = 3842356
+		description: 'expect 3842356 answer'
+		
+	
 ]
 
 { #category : 'tests' }
 AOC2015Day2Test >> testcalcTriple [
-	self assert: (AOC2015Day2 new calcTriple: #(2 . 3 . 4) = 58)  description: 'expect 2x3x4 answers 58'
-	
+
+	| aoc |
+	aoc := AOC2015Day2 new.
+	self
+		assert: (aoc calcTriple: { 2. 3. 4 }) = 58
+		description: 'expect 2x3x4 answers 58'.
+	self
+		assert: (aoc calcTriple: { 1. 1. 10 }) = 43
+		description: 'expect 1x1x10 answers 43'
+]
+
+{ #category : 'tests' }
+AOC2015Day2Test >> testcalcTriple2 [
+
+	| aoc |
+	aoc := AOC2015Day2 new.
+	self
+		assert: (aoc calcTriple2: { 2. 3. 4 }) = 34
+		description: 'expect 2x3x4 answers 34'.
+	self
+		assert: (aoc calcTriple2: { 1. 1. 10 }) = 14
+		description: 'expect 1x1x10 answers 14'
 ]
