@@ -27,3 +27,24 @@ AOC2015Day3Test >> testSolution1Part2 [
 		assert: AOC2015Day3 new solution1Part2 = 2639
 		description: 'expect 2639 answer'
 ]
+
+{ #category : 'tests' }
+AOC2015Day3Test >> testSolution2Part1 [
+	self
+		assert: AOC2015Day3 new solution2Part1 = 2565
+		description: 'expect 2565 answer'
+		
+	
+]
+
+{ #category : 'tests' }
+AOC2015Day3Test >> testSolution2Part2 [
+	self
+		assert: AOC2015Day3 new solution2Part2 = 2639
+		description: 'expect 2639 answer'
+		
+		
+		
+		
+	
+]

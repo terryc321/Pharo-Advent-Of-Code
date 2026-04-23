@@ -1,17 +1,7 @@
 "
-```language=Pharo
-AOC2015Day1 puzzleInput inspect.
-AOC2015Day1 puzzlePart1 inspect.
-AOC2015Day1 puzzlePart2 inspect.
-AOC2015Day1 solution1Part1 . ""280""
-AOC2015Day1 solution1Part2 . ""1797""
-```
-
-AOC2015Day1 is class name since all classes live in the global scope
+AOC2015Day3 is class name since all classes live in the global scope
 AdventCode is the package name 
 
-AOC2015Day1 input 
-a class side method to return pattern of '()()()()()'
 
 
 
@@ -120,10 +110,98 @@ AOC2015Day3 >> solution1Part1 [
 { #category : 'as yet unclassified' }
 AOC2015Day3 >> solution1Part2 [
 
-| stream |
-stream := self puzzleInput readStream.
-[ stream atEnd ] whileFalse: [ 
-    Transcript show: stream next; cr 
-].
+	| stream route route2 index point point2 |
+	index := 0.
+	point := 0 asPoint.
+	point2 := 0 asPoint.
+	"remember addresses santa been using route"
+	route := AOC2015Day3Route new.
+	route2 := AOC2015Day3Route new.
+	route deliverPresentTo: point.
+	route2 deliverPresentTo: point2.
+	"use puzzle input as a stream "
+	stream := self puzzleInput readStream.
+	[ stream atEnd ] whileFalse: [
+			| char valid char2 |
+			char := stream next.
+			index := index + 1.
+			valid := false.
+			char = $^ ifTrue: [
+					point := point + (0 @ 1).
+					valid := true ].
+			char = $< ifTrue: [
+					point := point + (-1 @ 0).
+					valid := true ].
+			char = $> ifTrue: [
+					point := point + (1 @ 0).
+					valid := true ].
+			char = $v ifTrue: [
+					point := point + (0 @ -1).
+					valid := true ].
+			"if not valid then encountered bad character in string -- error out with index"
+			valid ifFalse: [
+				Error signal: 'bad input character at index ' , index asString ].
+			route deliverPresentTo: point.
+			stream atEnd ifFalse: [ 
+			"duplicate for point2 and route2"
+			char := stream next.
+			index := index + 1.
+			valid := false.
+			char = $^ ifTrue: [
+					point2 := point2 + (0 @ 1).
+					valid := true ].
+			char = $< ifTrue: [
+					point2 := point2 + (-1 @ 0).
+					valid := true ].
+			char = $> ifTrue: [
+					point2 := point2 + (1 @ 0).
+					valid := true ].
+			char = $v ifTrue: [
+					point2 := point2 + (0 @ -1).
+					valid := true ].
+			"if not valid then encountered bad character in string -- error out with index"
+			valid ifFalse: [
+				Error signal: 'bad input character at index ' , index asString ].
+			route2 deliverPresentTo: point2.
+			 ]].
+	^ (route combineRoute: route2) tabulateAtleastOnePresent 
+	
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day3 >> solution2Part1 [
+
+	| stream santa |
+	santa := AOC2015Day3Santa new.
+	stream := self puzzleInput readStream.
+	[ stream atEnd ] whileFalse: [
+			| char |
+			char := stream next.
+			santa tell: char].
+	^ santa ask 
+	
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day3 >> solution2Part2 [
+
+	| stream santa roboSanta route |
+	santa := AOC2015Day3Santa new.
+	roboSanta := AOC2015Day3Santa new.
+	"both santas record 0@0 as delivered to already"
+	stream := self puzzleInput readStream.
+	[ stream atEnd ] whileFalse: [
+			| char |
+			char := stream next.
+			santa tell: char.
+			stream atEnd ifFalse: [
+					char := stream next.
+					roboSanta tell: char ] ].
+	"ask both santas how many locations got atleast one present"
+	route := santa combineSantas: roboSanta .
+	^ route tabulateAtleastOnePresent. 
+	
 
 ]
