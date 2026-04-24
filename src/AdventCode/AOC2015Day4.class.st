@@ -33,13 +33,16 @@ AOC2015Day4 >> md5driver: aSecret [
 
 	| n ret |
 	n := 1.
+	n := 60000.
 	[ true ] whileTrue: [
 			ret := self md5secret: aSecret n: n.
 			ret = false
 				ifTrue: [
 						n := n + 1.
 						Processor yield ]
-				ifFalse: [ ^ ret ] ]
+				ifFalse: [
+						Transcript showCr: 'solution at ' , n asString.
+						^ ret ] ]
 ]
 
 { #category : 'as yet unclassified' }
@@ -99,13 +102,10 @@ AOC2015Day4 >> puzzlePart2 [
 { #category : 'as yet unclassified' }
 AOC2015Day4 >> solution1Part1 [
 
-	myProcess := [self md5driver: 'abcdef'] forkAt: Processor userBackgroundPriority.
-	
-	
-	
-	
-	
-	
+	| result |
+	myProcess := [ result := self md5driver: 'abcdef' ] forkAt:
+		             Processor userBackgroundPriority.
+	^ result
 ]
 
 { #category : 'as yet unclassified' }
