@@ -51,31 +51,12 @@ AOC2015DayTemplate >> puzzlePart2 [
 
 { #category : 'as yet unclassified' }
 AOC2015DayTemplate >> solution1Part1 [
-| h |
-h := 0 . "initial height is zero"
-"is a string already an orderedcollection ?"
-self puzzleInput do: [ :e |
-	e = $( ifTrue: [ h := h + 1 ] ifFalse: [ e = $) ifTrue: [ h := h - 1 ] ]].
-^ h .
 
+	^ self notYetImplemented
 ]
 
 { #category : 'as yet unclassified' }
 AOC2015DayTemplate >> solution1Part2 [
-| puz sz h |
-puz := self puzzleInput. "the string itself"
-sz := puz size . "size of input"
-h := 0. "initial height zero"
-1 to: sz do: [ :i | 
-		| e | "element e - a character in string"
-	e := puz at: i . "get a character"
-	e = $( ifTrue: [ h := h + 1 ] ifFalse: [ e = $) ifTrue: [ h := h - 1 ]]. 
-	h < 0 ifTrue: [ ^ i ]
-		 ].
-"never entered basement"
-Error signal: 'Santa never entered basement'.
 
-
-
-
+	^ self notYetImplemented
 ]
