@@ -13,9 +13,19 @@ MD5 ?
 Class {
 	#name : 'AOC2015Day4',
 	#superclass : 'Object',
+	#instVars : [
+		'myProcess'
+	],
 	#category : 'AdventCode',
 	#package : 'AdventCode'
 }
+
+{ #category : 'as yet unclassified' }
+AOC2015Day4 >> halt [ 
+ myProcess ifNotNil: [ myProcess terminate. myProcess := nil . ^ 'halted' ].
+ ^ 'already halted'
+
+]
 
 { #category : 'as yet unclassified' }
 AOC2015Day4 >> md5driver: aSecret [
@@ -41,7 +51,10 @@ AOC2015Day4 >> md5secret: aSecret n: n [
 	hash := (MD5 hashMessage: aSecret , n asString) hex.
 	(hash copyFrom: 1 to: 5) = '00000'
 		ifTrue: [ ^ n ]
-		ifFalse: [ ^ false ].
+		ifFalse: [ "Processor yield." 
+			(n % 10000) = 0 ifTrue:[ Transcript showCr: 'trying ' , n asString ; cr ].
+			^ false ].
+	^ n
 ]
 
 { #category : 'accessing' }
@@ -87,7 +100,8 @@ AOC2015Day4 >> puzzlePart2 [
 { #category : 'as yet unclassified' }
 AOC2015Day4 >> solution1Part1 [
 
-	^ [self md5driver: 'abcdef'] forkAt: Processor userBackgroundPriority.
+	myProcess := [self md5driver: 'abcdef'] forkAt: Processor userBackgroundPriority.
+	
 	
 	
 	
