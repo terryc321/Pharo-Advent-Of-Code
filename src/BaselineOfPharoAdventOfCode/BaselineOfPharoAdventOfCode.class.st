@@ -1,6 +1,16 @@
+"
+```language=Pharo
+Metacello new
+    repository: 'github://terryc321/Pharo-Advent-Of-Code/src';
+    baseline: 'PharoAdventOfCode';
+    load.
+```
+
+
+"
 Class {
 	#name : 'BaselineOfPharoAdventOfCode',
-	#superclass : 'Object',
+	#superclass : 'BaselineOf',
 	#category : 'BaselineOfPharoAdventOfCode',
 	#package : 'BaselineOfPharoAdventOfCode'
 }
