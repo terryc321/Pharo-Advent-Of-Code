@@ -7,7 +7,8 @@ Class {
 
 { #category : 'tests' }
 AOC2015Day6Test >> testSolution1Part1 [
-	self assert: (AOC2015Day5 new solution1Part1 = 280)  description: 'expect 280 answer'
+	self assert: (AOC2015Day6 new solution1Part1 = #('grid lights on=>' 543903 ' : grid lights off => ' 456097)).
+	
 	
 
 ]
@@ -21,6 +22,7 @@ AOC2015Day6Test >> testSolution1Part2 [
 
 { #category : 'tests' }
 AOC2015Day6Test >> testSplitLines [
+"quick visual check we get all input"
 	self assert: ((AOC2015Day6 new puzzleInput splitOn: String cr) size) = 300. 
 	
 	

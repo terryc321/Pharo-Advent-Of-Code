@@ -16,9 +16,20 @@ a class side method to return pattern of '()()()()()'
 Class {
 	#name : 'AOC2015Day6',
 	#superclass : 'Object',
+	#instVars : [
+		'grid'
+	],
 	#category : 'AdventCode',
 	#package : 'AdventCode'
 }
+
+{ #category : 'initialization' }
+AOC2015Day6 >> initialize [ 
+	grid := AOC2015Day6Grid new.
+	
+	
+
+]
 
 { #category : 'accessing' }
 AOC2015Day6 >> puzzleInput [ 
@@ -436,10 +447,27 @@ toggle 0,0 through 999,999 would increase the total brightness by 2000000.
 
 ]
 
+{ #category : 'initialization' }
+AOC2015Day6 >> reset [
+ grid reset.
+
+]
+
 { #category : 'as yet unclassified' }
 AOC2015Day6 >> solution1Part1 [
+ | cmds | 
+ grid reset.
+ cmds := self puzzleInputParsed .
+ cmds do: [ :cmd | 
+	| ok |
+	ok := false.
+	((cmd at: 1) = #toggle) ifTrue:[ grid toggleCmd: cmd . ok := true ].
+	((cmd at: 1) = #turnOff) ifTrue:[ grid offCmd: cmd . ok := true ].
+	((cmd at: 1) = #turnOn) ifTrue:[ grid onCmd: cmd . ok := true ].
+	ok ifFalse:[ Error signal: 'cmd not recognised' ]
+	].
+ ^ grid status.
 
-	^ self notYetImplemented
 ]
 
 { #category : 'as yet unclassified' }
