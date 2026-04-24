@@ -327,27 +327,101 @@ turn on 222,12 through 856,241'.
 
 { #category : 'as yet unclassified' }
 AOC2015Day6 >> puzzleInputParsed [
-	"parsed input goes here"
-	"we might have to resort to PetitParser for this"
-	^ self puzzleInput splitOn: String cr.
-	
-	
-	
-	
-	
+	"turn off 461,550 through 564,900"
+	"turn on 461,550 through 564,900"
+	"toggle 461,550 through 564,900"
+	"split by spaces , split by commas"
+	"added dependency for PetitParser2 ??"
+	"stages of parse p1 ... p6 "
+	| p1 p2 p3 |
+	"break input by newlines"
+	p1 := self puzzleInput splitOn: String cr.
+	"break each line by blank space"
+	p2 := OrderedCollection new.
+	p3 := OrderedCollection new.
+	p1 do: [ :line | p2 add: (line splitOn: ' ') ].
+	p2 do: [ :tog |
+		"turn on"
+		(tog at: 2) = 'on' ifTrue:[
+ 		| col pair1 pair2 |
+			col := OrderedCollection new.
+			col add: 'toggle'.
+			pair1 := (tog at: 3) splitOn: ','.
+			pair2 := (tog at: 5) splitOn: ','.
+			col add: (pair1 at: 1) ; add: (pair1 at: 2) ; add: (pair2 at: 1) ; add: (pair2 at: 2).			
+         col := (col collect: [ :e | e asInteger ]).						
+			col at: 1 put: #turnOn.
+			p3 add: col 
+			].		
+		"turn off"
+		(tog at: 2) = 'off' ifTrue:[
+			| col pair1 pair2 |
+			col := OrderedCollection new.
+			col add: 'toggle'.
+			pair1 := (tog at: 3) splitOn: ','.
+			pair2 := (tog at: 5) splitOn: ','.
+			col add: (pair1 at: 1) ; add: (pair1 at: 2) ; add: (pair2 at: 1) ; add: (pair2 at: 2).			
+         col := (col collect: [ :e | e asInteger ]).						
+			col at: 1 put: #turnOff.
+			p3 add: col 
+			].
+		
+		"toggle"
+		(tog at: 1) = 'toggle' ifTrue:[
+			| col pair1 pair2 |
+			col := OrderedCollection new.
+			col add: 'toggle'.
+			pair1 := (tog at: 2) splitOn: ','.
+			pair2 := (tog at: 4) splitOn: ','.
+			col add: (pair1 at: 1) ; add: (pair1 at: 2) ; add: (pair2 at: 1) ; add: (pair2 at: 2).			
+         col := (col collect: [ :e | e asInteger ]).						
+			col at: 1 put: #toggle.
+			p3 add: col ]
+		].
+	^ p3
 	
 ]
 
 { #category : 'as yet unclassified' }
 AOC2015Day6 >> puzzlePart1 [	
-^ ' 
+^ ' --- Day 6: Probably a Fire Hazard ---
+Because your neighbors keep defeating you in the holiday house decorating contest year after year, you''ve decided to deploy one million lights in a 1000x1000 grid.
+
+Furthermore, because you''ve been especially nice this year, Santa has mailed you instructions on how to display the ideal lighting configuration.
+
+Lights in your grid are numbered from 0 to 999 in each direction; the lights at each corner are at 0,0, 0,999, 999,999, and 999,0. The instructions include whether to turn on, turn off, or toggle various inclusive ranges given as coordinate pairs. Each coordinate pair represents opposite corners of a rectangle, inclusive; a coordinate pair like 0,0 through 2,2 therefore refers to 9 lights in a 3x3 square. The lights all start turned off.
+
+To defeat your neighbors this year, all you have to do is set up your lights by doing the instructions Santa sent you in order.
+
+For example:
+
+turn on 0,0 through 999,999 would turn on (or leave on) every light.
+toggle 0,0 through 999,0 would toggle the first line of 1000 lights, turning off the ones that were on, and turning on the ones that were off.
+turn off 499,499 through 500,500 would turn off (or leave off) the middle four lights.
+After following the instructions, how many lights are lit?
 '
 
 ]
 
 { #category : 'as yet unclassified' }
 AOC2015Day6 >> puzzlePart2 [	
-^ ' 
+^ ' You just finish implementing your winning light pattern when you realize you mistranslated Santa''s message from Ancient Nordic Elvish.
+
+The light grid you bought actually has individual brightness controls; each light can have a brightness of zero or more. The lights all start at zero.
+
+The phrase turn on actually means that you should increase the brightness of those lights by 1.
+
+The phrase turn off actually means that you should decrease the brightness of those lights by 1, to a minimum of zero.
+
+The phrase toggle actually means that you should increase the brightness of those lights by 2.
+
+What is the total brightness of all lights combined after following Santa''s instructions?
+
+For example:
+
+turn on 0,0 through 0,0 would increase the total brightness by 1.
+toggle 0,0 through 999,999 would increase the total brightness by 2000000.
+
 
 '
 

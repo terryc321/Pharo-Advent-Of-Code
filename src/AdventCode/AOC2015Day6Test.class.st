@@ -18,3 +18,12 @@ AOC2015Day6Test >> testSolution1Part2 [
 	
 
 ]
+
+{ #category : 'tests' }
+AOC2015Day6Test >> testSplitLines [
+	self assert: ((AOC2015Day6 new puzzleInput splitOn: String cr) size) = 300. 
+	
+	
+	
+
+]
