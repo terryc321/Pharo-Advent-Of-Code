@@ -18,18 +18,32 @@ AOC2015Day5Test >> testContainsThreeVowels [
 ]
 
 { #category : 'tests' }
+AOC2015Day5Test >> testDoesNotContainStrings [
+
+	| aoc |
+	aoc := AOC2015Day5 new.
+	self assert: (aoc doesNotContainStrings: 'ugknbfddgicrmopn').
+	
+
+]
+
+{ #category : 'tests' }
 AOC2015Day5Test >> testOneLetterTwiceInARow [
 
 	| aoc |
 	aoc := AOC2015Day5 new.
-	self assert: (aoc oneLetterTwiceInARow: 'aei')
+	self assert: (aoc oneLetterTwiceInARow: 'aaei').
+	self assert: (aoc oneLetterTwiceInARow: 'aeei').
+	self assert: (aoc oneLetterTwiceInARow: 'aeii')
 ]
 
 { #category : 'tests' }
 AOC2015Day5Test >> testSolution1Part1 [
-	self assert: false.
-	
 
+	| aoc |
+	aoc := AOC2015Day5 new.
+	self assert: aoc solution1Part1 = #( 'naughty=>' 762 'nice=>'
+	   238 )
 ]
 
 { #category : 'tests' }

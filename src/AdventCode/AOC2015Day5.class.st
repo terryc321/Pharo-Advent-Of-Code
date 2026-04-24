@@ -1,7 +1,12 @@
 "
 ```language=Pharo
-""your comment goes here""
+day5 := AOC2015Day5 new.
+day5 solution1Part1 .
+day5 solution1Part2 .
 ```
+
+answers a little brittle tied to actual puzzle input , no option for input from files , where is the filesystem anyway ?
+
 
 AOC2015Day1 is class name since all classes live in the global scope
 AdventCode is the package name 
@@ -34,21 +39,57 @@ AOC2015Day5 >> containsThreeVowels: str [
 ]
 
 { #category : 'as yet unclassified' }
-AOC2015Day5 >> oneLetterTwiceInARow: str [
-	"could compute all pairs"
+AOC2015Day5 >> doesContainStrings: str strings: stringsCollection [
+	"It does not contain the strings ab, cd, pq, or xy, even if they are part of one of the other requirements"
 
-	| i j sub len |
+	| i j len |
 	len := str size.
 	i := 1.
 	j := i + 1.
 	"while loop"
-	[ j <= len ] doWhileTrue: [
-			(str at: i) = (str at: j)
-				ifTrue: [ ^ true ]
-				ifFalse: [
-						i := i + 1.
-						j := j + 1 ] ].
+	[ "iterate over each pair of characters in stringsCollection"
+		stringsCollection do: [ :sc |
+				| a b c d chk chk2 |
+				a := str at: i.
+				b := str at: j.
+				c := sc at: 1.
+				d := sc at: 2.
+				chk := {
+					       a.
+					       b }.
+				chk2 := {
+					        c.
+					        d }.
+				(a = c and: [ b = d ]) ifTrue: [ ^ true ] ].
+		i := i + 1.
+		j := j + 1 ] doWhileTrue: [ j <= len ].
+	^ false
+]
 
+{ #category : 'as yet unclassified' }
+AOC2015Day5 >> doesNotContainStrings: str [
+	"It does not contain the strings ab, cd, pq, or xy, even if they are part of one of the other requirements"
+
+	| strings |
+	strings := { 'ab'. 'cd'. 'pq'. 'xy' }.
+	^ (self doesContainStrings: str strings: strings) not
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day5 >> oneLetterTwiceInARow: str [
+	"could compute all pairs"
+
+	| i j len |
+	len := str size.
+	i := 1.
+	j := i + 1.
+	"while loop"
+	[
+		(str at: i) = (str at: j)
+			ifTrue: [ ^ true ]
+			ifFalse: [
+					i := i + 1.
+					j := j + 1 ] ] doWhileTrue: [ j <= len ].
 	" 'asdf' copyFrom:1 to: 2 . 'asdf' copyFrom:3 to: 4 ."
 	^ false
 ]
@@ -1112,10 +1153,27 @@ How many strings are nice under these new rules?
 
 { #category : 'as yet unclassified' }
 AOC2015Day5 >> solution1Part1 [
-^ self notYetImplemented 
 
-
-
+	| nice naughty words |
+	nice := 0.
+	naughty := 0.
+	words := self puzzleInputParsed.
+	words do: [ :w |
+			| a b c |
+			a := self containsThreeVowels: w.
+			b := self doesNotContainStrings: w.
+			c := self oneLetterTwiceInARow: w.
+			({
+				 a.
+				 b.
+				 c } includes: false)
+				ifTrue: [ naughty := naughty + 1 ]
+				ifFalse: [ nice := nice + 1 ] ].
+	^ {
+		  'naughty=>'.
+		  naughty.
+		  'nice=>'.
+		  nice }
 ]
 
 { #category : 'as yet unclassified' }
