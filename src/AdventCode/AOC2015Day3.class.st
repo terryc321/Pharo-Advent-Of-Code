@@ -2,6 +2,11 @@
 AOC2015Day3 is class name since all classes live in the global scope
 AdventCode is the package name 
 
+part2 has two santas - santa and robosanta , both need to record where they go . then where they went are combined. 
+perhaps Route could be given to both santas , each time santa moves Route object is updated , 
+Route is just a dictionary of points 
+made more complex to hold a count of number times gone there
+
 
 
 

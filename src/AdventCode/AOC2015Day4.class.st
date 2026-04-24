@@ -1,6 +1,10 @@
 "
 ```language=Pharo
-""your comment goes here""
+AOC2015Day1 puzzleInput inspect.
+AOC2015Day1 puzzlePart1 inspect.
+AOC2015Day1 puzzlePart2 inspect.
+AOC2015Day1 solution1Part1 . ""280""
+AOC2015Day1 solution1Part2 . ""1797""
 ```
 
 AOC2015Day1 is class name since all classes live in the global scope
@@ -14,20 +18,20 @@ a class side method to return pattern of '()()()()()'
 
 "
 Class {
-	#name : 'AOC2015DayTemplate',
+	#name : 'AOC2015Day4',
 	#superclass : 'Object',
 	#category : 'AdventCode',
 	#package : 'AdventCode'
 }
 
 { #category : 'accessing' }
-AOC2015DayTemplate >> puzzleInput [ 
+AOC2015Day4 >> puzzleInput [ 
 ^ ''.
 
 ]
 
 { #category : 'as yet unclassified' }
-AOC2015DayTemplate >> puzzleInputParsed [
+AOC2015Day4 >> puzzleInputParsed [
 	"parsed input goes here"
 	^ self notYetImplemented 
 	
@@ -35,14 +39,14 @@ AOC2015DayTemplate >> puzzleInputParsed [
 ]
 
 { #category : 'as yet unclassified' }
-AOC2015DayTemplate >> puzzlePart1 [	
+AOC2015Day4 >> puzzlePart1 [	
 ^ ' 
 '
 
 ]
 
 { #category : 'as yet unclassified' }
-AOC2015DayTemplate >> puzzlePart2 [	
+AOC2015Day4 >> puzzlePart2 [	
 ^ ' 
 
 '
@@ -50,7 +54,7 @@ AOC2015DayTemplate >> puzzlePart2 [
 ]
 
 { #category : 'as yet unclassified' }
-AOC2015DayTemplate >> solution1Part1 [
+AOC2015Day4 >> solution1Part1 [
 | h |
 h := 0 . "initial height is zero"
 "is a string already an orderedcollection ?"
@@ -61,7 +65,7 @@ self puzzleInput do: [ :e |
 ]
 
 { #category : 'as yet unclassified' }
-AOC2015DayTemplate >> solution1Part2 [
+AOC2015Day4 >> solution1Part2 [
 | puz sz h |
 puz := self puzzleInput. "the string itself"
 sz := puz size . "size of input"
