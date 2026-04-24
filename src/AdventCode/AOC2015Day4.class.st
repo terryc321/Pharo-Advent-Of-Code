@@ -1,9 +1,17 @@
 "
-how get md5 ? 
+question - what if running solution takes too long - how does TDD test driven development copium with that chestnut, cant run test as it wont end any time soon
+
+how get md5 ? -- solved
 
 ```language=Pharo
-MD5 ?
+""get reference to day4""
+day4 := AOC2015Day4 new solution1Part1.
+""stop it if takes too long""
+day4 halt. 
 ```
+
+
+
 
 
 
@@ -14,7 +22,8 @@ Class {
 	#name : 'AOC2015Day4',
 	#superclass : 'Object',
 	#instVars : [
-		'myProcess'
+		'myProcess',
+		'solution'
 	],
 	#category : 'AdventCode',
 	#package : 'AdventCode'
@@ -32,8 +41,7 @@ AOC2015Day4 >> md5driver: aSecret [
 	"iteratively call itself"
 
 	| n ret |
-	n := 1.
-	n := 60000.
+	n := 1.	
 	[ true ] whileTrue: [
 			ret := self md5secret: aSecret n: n.
 			ret = false
@@ -41,7 +49,26 @@ AOC2015Day4 >> md5driver: aSecret [
 						n := n + 1.
 						Processor yield ]
 				ifFalse: [
-						Transcript showCr: 'solution at ' , n asString.
+						self solution: n . 
+						Transcript show: 'found solution ' , n asString ; cr . 
+						^ ret ] ]
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day4 >> md5driverSixZeros: aSecret [
+	"iteratively call itself"
+
+	| n ret |
+	n := 1.	
+	[ true ] whileTrue: [
+			ret := self md5secretSixZeros: aSecret n: n.
+			ret = false
+				ifTrue: [
+						n := n + 1.
+						Processor yield ]
+				ifFalse: [
+						self solution: n . 
+						Transcript show: 'found solution ' , n asString ; cr . 
 						^ ret ] ]
 ]
 
@@ -54,7 +81,21 @@ AOC2015Day4 >> md5secret: aSecret n: n [
 	(hash copyFrom: 1 to: 5) = '00000'
 		ifTrue: [ ^ n ]
 		ifFalse: [ "Processor yield." 
-			(n % 10000) = 0 ifTrue:[ Transcript showCr: 'trying ' , n asString ; cr ].
+			(n % 10000) = 0 ifTrue:[ Transcript showCr: 'trying ' , n asString ].
+			^ false ].
+	^ n
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day4 >> md5secretSixZeros: aSecret n: n [
+	"recursively call itself until we find 5 zeros in the md5 hash"
+
+	| hash |
+	hash := (MD5 hashMessage: aSecret , n asString) hex.
+	(hash copyFrom: 1 to: 6) = '000000'
+		ifTrue: [ ^ n ]
+		ifFalse: [ "Processor yield." 
+			(n % 10000) = 0 ifTrue:[ Transcript showCr: 'trying ' , n asString ].
 			^ false ].
 	^ n
 ]
@@ -99,31 +140,41 @@ AOC2015Day4 >> puzzlePart2 [
 
 ]
 
+{ #category : 'accessing' }
+AOC2015Day4 >> solution [
+^ solution 
+
+
+]
+
 { #category : 'as yet unclassified' }
 AOC2015Day4 >> solution1Part1 [
-
+"abcdef -> 609043
+pqrstuv -> 1048970
+bgvyzdsv -> 254575
+"
 	| result |
-	myProcess := [ result := self md5driver: 'abcdef' ] forkAt:
+	myProcess := [ result := self md5driver: 'bgvyzdsv' ] forkAt:
 		             Processor userBackgroundPriority.
 	^ result
+	
 ]
 
 { #category : 'as yet unclassified' }
 AOC2015Day4 >> solution1Part2 [
-| puz sz h |
-puz := self puzzleInput. "the string itself"
-sz := puz size . "size of input"
-h := 0. "initial height zero"
-1 to: sz do: [ :i | 
-		| e | "element e - a character in string"
-	e := puz at: i . "get a character"
-	e = $( ifTrue: [ h := h + 1 ] ifFalse: [ e = $) ifTrue: [ h := h - 1 ]]. 
-	h < 0 ifTrue: [ ^ i ]
-		 ].
-"never entered basement"
-Error signal: 'Santa never entered basement'.
+"six zeros
+bgvyzdsv -> 
+"
+	| result |
+	myProcess := [ result := self md5driverSixZeros: 'bgvyzdsv' ] forkAt:
+		             Processor userBackgroundPriority.
+	^ result
+	
+]
 
-
+{ #category : 'accessing' }
+AOC2015Day4 >> solution: sol [
+ solution := sol 
 
 
 ]
