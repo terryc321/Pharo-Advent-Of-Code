@@ -384,7 +384,7 @@ AOC2015Day6 >> puzzleInputParsed [
 
 { #category : 'as yet unclassified' }
 AOC2015Day6 >> puzzlePart1 [	
-^ ' --- Day 6: Probably a Fire Hazard ---
+' --- Day 6: Probably a Fire Hazard ---
 Because your neighbors keep defeating you in the holiday house decorating contest year after year, you''ve decided to deploy one million lights in a 1000x1000 grid.
 
 Furthermore, because you''ve been especially nice this year, Santa has mailed you instructions on how to display the ideal lighting configuration.
@@ -399,8 +399,17 @@ turn on 0,0 through 999,999 would turn on (or leave on) every light.
 toggle 0,0 through 999,0 would toggle the first line of 1000 lights, turning off the ones that were on, and turning on the ones that were off.
 turn off 499,499 through 500,500 would turn off (or leave off) the middle four lights.
 After following the instructions, how many lights are lit?
-'
-
+'.
+"grid accepts coordinates 0,0 to 999,999 inclusive.
+each command line #toggle x y x2 y2 will change the grid.
+x to: x2 do: [ :x | 
+	y to: y2 do: [ :y | 
+		grid toggle: (x@y).
+		grid turnOff: (x@y).
+		grid turnOn: (x@y).
+		 ] ].
+grid status. => the grid has N lights on and M lights off.
+"
 ]
 
 { #category : 'as yet unclassified' }
