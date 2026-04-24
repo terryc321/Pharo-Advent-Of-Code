@@ -26,24 +26,47 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-AOC2015Day5 >> containsPairLettersNoOverlap: str [
-	"
-	 abcd
-	 ab.cd...
-	 ab....cd
-	continuously shorten the string until left with 4 letters then cannot reduce any more.
-	"
-	| j |
-	j:= 3.
-		[ | a b c d|
-			a := str at: 1 .	b := str at: 2 . 	c := str at: j.	 d := str at: (j + 1).
-							(a = c and: [ b = d ]) ifTrue: [ ^ true ].
-							j := j + 1 ] doWhileTrue: [ j <= ((str size)-1)  ].
-						^ false.
-						
-						
-						
+AOC2015Day5 >> containsOneLetterBetween: str [
 
+	| a b c d i j len |
+	len := str size.
+	"if str size < 4 then return false"
+	len < 3 ifTrue: [ ^ false ].
+	i := 1.
+	j := 3.
+	"end loop condition - for ease mental correctness 3rd letter will end on last letter of string"
+	[
+		a := str at: i.
+		"b := str at: (i + 1). " "never access middle letter of three letters"
+		c := str at: i + 2.
+		a = c ifTrue: [ ^ true ].
+		i := i + 1.
+		j := j + 1 ] doWhileTrue: [ j <= len ].
+	^ false
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day5 >> containsPairLettersNoOverlap: str [
+
+	| a b c d i j len |
+	len := str size.
+	"if str size < 4 then return false"
+	len < 4 ifTrue: [ ^ false ].
+	a := str at: 1.
+	b := str at: 2.
+	i := 3.
+	j := 4.
+	[
+		c := str at: i.
+		d := str at: j.
+		(a = c and: [ b = d ]) ifTrue: [ ^ true ].
+		"next pair letters from "
+		i := i + 1.
+		j := j + 1 ] doWhileTrue: [ j <= len ].
+	"if we reached here no matching pair found in this string. 
+chop string and call itself again "
+	^ self containsPairLettersNoOverlap: (str allButFirst).
+	
 ]
 
 { #category : 'as yet unclassified' }
@@ -1199,7 +1222,24 @@ AOC2015Day5 >> solution1Part1 [
 
 { #category : 'as yet unclassified' }
 AOC2015Day5 >> solution1Part2 [
-^ self notYetImplemented 
+	| nice naughty words |
+	nice := 0.
+	naughty := 0.
+	words := self puzzleInputParsed.
+	words do: [ :w |
+			| a b |
+			a := self containsPairLettersNoOverlap: w.
+			b := self containsOneLetterBetween: w.
+			({
+				 a.
+				 b} includes: false)
+				ifTrue: [ naughty := naughty + 1 ]
+				ifFalse: [ nice := nice + 1 ] ].
+	^ {
+		  'naughty=>'.
+		  naughty.
+		  'nice=>'.
+		  nice }
 
 
 ]

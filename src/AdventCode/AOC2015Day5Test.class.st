@@ -6,6 +6,16 @@ Class {
 }
 
 { #category : 'tests' }
+AOC2015Day5Test >> testContainsPairLettersNoOverlap [
+
+	| aoc |
+	aoc := AOC2015Day5 new.
+	self assert: (aoc containsPairLettersNoOverlap: 'aabcdefgaa').
+	self assert: (aoc containsPairLettersNoOverlap: 'xyxy').
+	
+]
+
+{ #category : 'tests' }
 AOC2015Day5Test >> testContainsThreeVowels [
 
 	self assert: (AOC2015Day5 new containsThreeVowels: 'aei').
@@ -42,13 +52,22 @@ AOC2015Day5Test >> testSolution1Part1 [
 
 	| aoc |
 	aoc := AOC2015Day5 new.
-	self assert: aoc solution1Part1 = #( 'naughty=>' 762 'nice=>'
-	   238 )
+	self assert: (aoc solution1Part1) = #( 'naughty=>' 762 'nice=>' 238 )
+	
+	
+	
+
 ]
 
 { #category : 'tests' }
 AOC2015Day5Test >> testSolution1Part2 [
-	self assert: false.
+
+	| aoc |
+	aoc := AOC2015Day5 new.
+	self assert: (aoc solution1Part2) = #( 'naughty=>' 931 'nice=>' 69 )
+	
+	
+	
 	
 
 ]
