@@ -18,6 +18,22 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
+AOC2015Day4 >> md5driver: aSecret [
+	"iteratively call itself"
+
+	| n ret |
+	n := 1.
+	[ true ] whileTrue: [
+			ret := self md5secret: aSecret n: n.
+			ret = false
+				ifTrue: [
+						n := n + 1.
+						Processor yield.
+						Transcript show: 'trying ' , n asString; cr ]
+				ifFalse: [ ^ ret ] ]
+]
+
+{ #category : 'as yet unclassified' }
 AOC2015Day4 >> md5secret: aSecret n: n [
 	"recursively call itself until we find 5 zeros in the md5 hash"
 
@@ -25,9 +41,7 @@ AOC2015Day4 >> md5secret: aSecret n: n [
 	hash := (MD5 hashMessage: aSecret , n asString) hex.
 	(hash copyFrom: 1 to: 5) = '00000'
 		ifTrue: [ ^ n ]
-		ifFalse: [
-				Processor yield.
-				self md5secret: aSecret n: n + 1 ]
+		ifFalse: [ ^ false ].
 ]
 
 { #category : 'accessing' }
@@ -73,7 +87,9 @@ AOC2015Day4 >> puzzlePart2 [
 { #category : 'as yet unclassified' }
 AOC2015Day4 >> solution1Part1 [
 
-	^ [self md5secret: 'abcdef' n: 1] fork 
+	^ [self md5driver: 'abcdef'] fork.
+	
+	
 	
 ]
 
