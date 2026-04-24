@@ -6,6 +6,8 @@ Metacello new
     load.
 ```
 
+ok so we got the baseline to work. except it will not load PetitParser , perhaps wrong location.
+
 
 "
 Class {
@@ -20,11 +22,11 @@ BaselineOfPharoAdventOfCode >> baseline: spec [
 
 	<baseline>
 	spec for: #common do: [
-			spec
-				baseline: 'PetitParser'
-				with: [
-					spec repository:
-							'github://moosetechnology/PetitParser:v3.x.x/src' ];
-				package: 'Pharo-Advent-Of-Code'
-				with: [ spec requires: #( 'PetitParser' ) ] ]
+			spec baseline: 'PetitParser2' 
+			with: [ spec repository: 'github://kursjan/petitparser2' ];
+			package: 'AdventOfCode' with: [ spec requires: #( 'PetitParser2' ) ]]
+		
+		
+			
+		
 ]
