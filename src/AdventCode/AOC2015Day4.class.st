@@ -38,8 +38,7 @@ AOC2015Day4 >> md5driver: aSecret [
 			ret = false
 				ifTrue: [
 						n := n + 1.
-						Processor yield.
-						Transcript show: 'trying ' , n asString; cr ]
+						Processor yield ]
 				ifFalse: [ ^ ret ] ]
 ]
 
