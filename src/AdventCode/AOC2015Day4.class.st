@@ -87,7 +87,9 @@ AOC2015Day4 >> puzzlePart2 [
 { #category : 'as yet unclassified' }
 AOC2015Day4 >> solution1Part1 [
 
-	^ [self md5driver: 'abcdef'] fork.
+	^ [self md5driver: 'abcdef'] forkAt: Processor userBackgroundPriority.
+	
+	
 	
 	
 	
