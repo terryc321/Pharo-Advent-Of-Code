@@ -26,6 +26,27 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
+AOC2015Day5 >> containsPairLettersNoOverlap: str [
+	"
+	 abcd
+	 ab.cd...
+	 ab....cd
+	continuously shorten the string until left with 4 letters then cannot reduce any more.
+	"
+	| j |
+	j:= 3.
+		[ | a b c d|
+			a := str at: 1 .	b := str at: 2 . 	c := str at: j.	 d := str at: (j + 1).
+							(a = c and: [ b = d ]) ifTrue: [ ^ true ].
+							j := j + 1 ] doWhileTrue: [ j <= ((str size)-1)  ].
+						^ false.
+						
+						
+						
+
+]
+
+{ #category : 'as yet unclassified' }
 AOC2015Day5 >> containsThreeVowels: str [
 	"filter vowels a e i o u - if length of this >= 3 then true else false"
 
