@@ -8,7 +8,7 @@ day6 puzzleInputParsed. ""split into long lines , split into numbers or symbols 
 AdventCode2025 is the package name 
 AOC2025Day6 is class name since all classes live in the global scope
 
-
+This is a comment added from emacs.
 
 
 

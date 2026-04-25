@@ -1,28 +1,5 @@
 
 
-```
-d := Day17 new.
-d range: (d puzzleInput1 ).
-" after ranging input we have a set of points to plot "
-d points. 
-
-ds := Day17Solver new.
-ds solve: (d points) .
-
-dm := Day17Morph new.
-dm openInWorld.
-dm plot: ds .
-
-viewer (day 17 morph) will plot the solution - 
-combination of wall points from {d} 
-water sand from solver {ds}
-
-
-
-
-```
-
-
 
 ```
 d := Day17 new.
@@ -33,14 +10,6 @@ d points.
 dm := Day17Morph new.
 dm openInWorld.
 dm plot: d .
-
-
-morphic 
-self changed
-self world doOneCycleNow
-
-
-
 ```
 
 
