@@ -90,6 +90,14 @@ AOC2025Day6 >> puzzleInputParsed [
 ]
 
 { #category : 'as yet unclassified' }
+AOC2025Day6 >> puzzleInputParsed2 [
+	"1) split into lines. 
+	how define end of line \n \r\n \r "
+
+	^ self puzzleInput splitOn: String cr
+]
+
+{ #category : 'as yet unclassified' }
 AOC2025Day6 >> puzzlePart1 [	
 ^ ' --- Day 6: Trash Compactor ---
 After helping the Elves in the kitchen, you were taking a break and helping them re-enact a movie scene when you over-enthusiastically jumped into the garbage chute!
@@ -297,4 +305,15 @@ AOC2025Day6 >> solution2Part1 [
 
 	"if were to move methodDict out to another class - lose lexical scope to tot , also to found , so need extra leg work to workaround this . 
 as at moment the "
+]
+
+{ #category : 'as yet unclassified' }
+AOC2025Day6 >> takeRow: aCollection row: n [
+	"return row for every nth element of each item in collection"
+
+	| sz col2 |
+	sz := aCollection size.
+	col2 := OrderedCollection new.
+	1 to: sz do: [ :i | col2 add: (aCollection at: i) ].
+	^ col2
 ]
