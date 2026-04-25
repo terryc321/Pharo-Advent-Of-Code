@@ -20,6 +20,38 @@ Class {
 	#package : 'AdventCode2025'
 }
 
+{ #category : 'as yet unclassified' }
+AOC2025Day6 >> numberFromDict: aDict at: anIndex [
+	"return item at given anIndex or return zero"
+
+	^ aDict at: anIndex ifPresent: [ aDict at: anIndex ] ifAbsent: [ 0 ]
+]
+
+{ #category : 'as yet unclassified' }
+AOC2025Day6 >> numberFromOrdered: aCollection at: anIndex [
+	"return item at given anIndex or return zero"
+
+	| aDict |
+	aDict := aCollection asDictionary.
+	^ aDict at: anIndex ifPresent: [ self at: anIndex ] ifAbsent: [ 0 ]
+]
+
+{ #category : 'as yet unclassified' }
+AOC2025Day6 >> numberToOrdered: anInteger [
+	"given a number like 7446 return as orderedcollection of digits from least significant to most significant"
+
+	| n col |
+	n := anInteger.
+	col := OrderedCollection new.
+	[
+		| v |
+		v := n % 10.
+		n := n - (n % 10).
+		n := n / 10.
+		col add: v ] doWhileTrue: [ n > 0 ].
+	^ col
+]
+
 { #category : 'accessing' }
 AOC2025Day6 >> puzzleInput [ 
 ^ '7446   1 59  65 323 34 124 428   2  622 118  1 7  18 84 91  6 645 379 86 646  86 55  7 83 334 229  33 216   43 865 53 925 33 194  894 91 62 27 3  53 469 32 17 92 7   5  8   1 53 9976 211 696 171 7    2663 672 567    2  3 812 76 877 85  688 25  744 19 25 92 9  5    626 669 35  54   9  1  31 1  8597  87 163 4274 593 95 62 21  58  8 911 2685 5897 6   66  345 17 7791 6  467   1 692 77 2639 85 137 2    296 51   76  4 85 162 45  4 428 2243 448 6342 97  62 933 33 58 749 62   6 38 86 785 1978 7   747    3 59 784 27 735 93 57 5  378 81  12  781 963 45 488  26 92 3  53 394 98 877 96 87   8 99 67 19 925 4  86 635   1 91 25 54  7 8229 84  739 7232   5 1396 585 13 457 387  9 48 371 336 118 1    2542 3  756  6 35 41 245  252 33 99 26 736  7763 79 6  73   7  4 4  654 93 653 4771  83 811   93 3141 74 22 4   3 6828 5   46 7    928   5 7  8  868 73  17  32 284 89 1  25 64  2 68 63 4  61   3 625 31 3115 58 96 859 3    57 96 99 972 3278 42 188  73  49 1668 65 34 73 78  11  9 7  7  4     2  4  43 212  34 15   48  29   1 39 5276 399 92 6   946  29 437 294 36     6 5868 8   9 795  6 771 957 95 38 16 225 14  16 39   9 295  464 75 74 5726 65 37 5  29  715 14 74  419 319  8   7 2  3137 7   16 65 725 478 259 5329 99 358 19  47 37 9  71 87 96  91 65  2893 7    9887 78 176 77 25  3   117 18 48 7  887 2488 29 33 645 3213 7  6639 916 259 713 711   73 914  21 21 2  41   5 579 81 655  1 37  31 411 9  176 65  964 76 21 39   477 34  797 2  67 827 415 151  12 5198 85  34 84 41   55 73  61 574  116 96 879  5 6  773  7419 51 3  757 486 67   2 938 235  2 1444 757 3394 75  29 92 74 71 746 12  67 4394 336   86 331 3    646 282 61 3277 398   3 476 2  5  11 646  1 17 74 64 4224 11   8 8  5  55 8789 8   8676 75 79 32  965 3698  12 7  45 56   8 86 319 968  26 62  7529 682 566  71  8  5 94 861 58 29  9 936 22  28 21  19  291 2  7836 4653  588 46 1  631 76  112 937  4 326 35 8  517 91 629 44  792 88  42  8    5 241 443 829 86 348 588 39 463 117 472 157 37  541 27 238 6418 18 4  81 232 59 46 56  81 621 69  3 69 15 3649 8  63  37  15 664 4   1 83 7   962 1458 727 6    779  64 34 155  24 651 46 221 45  73 18 643 919 723 89 386 35 441  72  13   9 57 1    253 96 586  9 324 3555  543 525  86  91 9153   58   8 658 16 59 257   3 84   6  949   8 722 69 563 573 47  895 16 771  21 5626 58  43 79   44 148 21 68 8783 112 53  64 6  7579 83   1 728 895 65 71 681 8  57 9    38 9835 84 217  125 51   89 97  7 448 1886 43 38  31  34 52 33 9287 24   12 83 5423 41 25  78 5   5  41 6455 84 2  81 33  78 5683 23   34 492 136 2396 23 27     4  64 66 63   89   8 95 966 1513 412  8 358  8 194 782 35 6  37 1  653 24  11 33  254 79 785 55  15 434 69 2  7576  3 629 456   55 49 55 35 36 365 5963 3  2    385 32  1564 75 17 58   358 38   673 7  7   581 8   53 87 89   65 7678  26 14 397 41 5  273 25  1716 41 1   9818 9  49 85 47 49 42 432  2  9 54 36  6 97 77   82 199   9  5 35  28 14 296 37 568 9556 945 24 316 22  34 175  957 197 5155 6   19 84   79 87 759 921   8 366 91 25   7 212 49 1  99 33 664 992 52 253 699 26   69 512 842 8231 838 513  1 53 87 42 68 918 6495 87 78 9395 17 7227 38 7666 2   63 21 2   99  87 1816 98 64  69 48     7 55 3975 78 32 56 6    1 39 717  744 76  7 3  326 83 11 181 73 281   14 984 346   6 66    65 176  61  23 13 216 822 62 17 568   6 6341 76  83 4574  99 951  43 25 232 95  92   9 779 1733 26   1 79    56 7712 42 85  539 12 126 32 85  691 57 287 74 324   77 19    7 686 73 526 978 13  962  799 7  639 2  59 5712  6 69 495   46 99 885  96 1762 13 527  14 75 753 2   2715 25 7  8  53  4659 8378 12  5 72 55 247 77  94 682 517 37 44 776 535 21 274 8587 291  74 8  799 39 6   4 32  217 75 18 13  55 43 57 372 68 349 984 921   56 188  335 6    7    4 927 8  29 56 53  968 94 45 2665   7 23  79 69 29 25 667 69  151  2 7 
@@ -121,6 +153,25 @@ Solve the problems on the math worksheet again. What is the grand total found by
 ]
 
 { #category : 'as yet unclassified' }
+AOC2025Day6 >> reverseNumberToDict: anInteger [
+	"given a number like 7446 return as orderedcollection of digits from least significant to most significant"
+
+	| n col i |
+	n := anInteger.
+	col := Dictionary new.
+	i := 1.
+	[
+		| v |
+		v := n % 10.
+		n := n - (n % 10).
+		n := n / 10.
+		col at: i put: v.
+		col at: #size put: i.
+		i := i + 1 ] doWhileTrue: [ n > 0 ].
+	^ col
+]
+
+{ #category : 'as yet unclassified' }
 AOC2025Day6 >> solution1Part1 [
 "for "
  | wid hgt in tot found | 
@@ -155,8 +206,36 @@ AOC2025Day6 >> solution1Part1 [
 
 { #category : 'as yet unclassified' }
 AOC2025Day6 >> solution1Part2 [
+"now the numbers are composed from individual digits "
+ | wid hgt in tot found | 
+ in := self puzzleInputParsed.
+ wid := (in at: 1) size.
+ hgt := in size.
+ tot := 0.
+ found := OrderedCollection new.
+ 1 to: wid do: [ :i | 
+	| op vals sym nums | 
+	nums := OrderedCollection new.
+	1 to: (hgt - 1) do: [ :k | 	nums add: ((in at: k) at: i)  ].
+	op := ((in at: hgt) at: i).
+	self halt. "my breakpoint"
+	op = #+ ifTrue: [ "do add" 
+		| tot2 | 
+		tot2 := 0. 
+		nums do: [ :n | tot2 := tot2 + n ].
+		tot := tot + tot2 .
+		found add: { nums . op . tot2 . tot }
+		] 
+	ifFalse: [ "do mult" 
+		| tot2 | 
+		tot2 := 1. "was 0 - bug"
+		nums do: [ :n | tot2 := tot2 * n ].
+		tot := tot + tot2.
+		found add: { nums . op . tot2 . tot }
+		]].
+ ^ { found . tot }
 
-	^ self notYetImplemented
+
 ]
 
 { #category : 'as yet unclassified' }
