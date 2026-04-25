@@ -15,7 +15,7 @@ AOC2015Day6Test >> testSolution1Part1 [
 
 { #category : 'tests' }
 AOC2015Day6Test >> testSolution1Part2 [
-	self assert: (AOC2015Day5 new solution1Part2 = 1797)  description: 'expect 1797 answer'
+	self assert: ((AOC2015Day6 new solution1Part2) =  #('grid lights total =>' 14687245))
 	
 
 ]

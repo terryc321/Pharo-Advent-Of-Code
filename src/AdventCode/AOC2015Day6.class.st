@@ -456,6 +456,7 @@ AOC2015Day6 >> reset [
 { #category : 'as yet unclassified' }
 AOC2015Day6 >> solution1Part1 [
  | cmds | 
+ grid := AOC2015Day6Grid new.
  grid reset.
  cmds := self puzzleInputParsed .
  cmds do: [ :cmd | 
@@ -472,6 +473,18 @@ AOC2015Day6 >> solution1Part1 [
 
 { #category : 'as yet unclassified' }
 AOC2015Day6 >> solution1Part2 [
+ | cmds | 
+ grid := AOC2015Day6Grid2 new.
+ grid reset.
+ cmds := self puzzleInputParsed .
+ cmds do: [ :cmd | 
+	| ok |
+	ok := false.
+	((cmd at: 1) = #toggle) ifTrue:[ grid toggleCmd: cmd . ok := true ].
+	((cmd at: 1) = #turnOff) ifTrue:[ grid offCmd: cmd . ok := true ].
+	((cmd at: 1) = #turnOn) ifTrue:[ grid onCmd: cmd . ok := true ].
+	ok ifFalse:[ Error signal: 'cmd not recognised' ]
+	].
+ ^ grid status.
 
-	^ self notYetImplemented
 ]
