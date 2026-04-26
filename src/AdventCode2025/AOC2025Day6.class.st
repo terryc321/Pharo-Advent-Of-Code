@@ -30,6 +30,19 @@ AOC2025Day6 >> allSpaces: aCol [
 ]
 
 { #category : 'as yet unclassified' }
+AOC2025Day6 >> charsCollectionToInteger: aCol [
+	"collection contains only number characters "
+
+	| res |
+	res := String new: aCol size.
+	1 to: res size do: [ :i | res at: i put: (aCol at: i) ].
+	"bytestring to integer conversion"
+	^ res asInteger
+	
+
+]
+
+{ #category : 'as yet unclassified' }
 AOC2025Day6 >> numberFromDict: aDict at: anIndex [
 	"return item at given anIndex or return zero"
 
@@ -103,7 +116,13 @@ AOC2025Day6 >> puzzleInputParsed2 [
 	"1) split into lines. 
 	how define end of line \n \r\n \r "
 
-	^ self puzzleInput splitOn: String cr
+	|lines|
+	lines := self puzzleInput splitOn: String cr.
+	lines do:[ :line | 
+		line add: Character space.
+		].
+	^ lines.
+	
 ]
 
 { #category : 'as yet unclassified' }
@@ -223,36 +242,33 @@ AOC2025Day6 >> solution1Part1 [
 
 { #category : 'as yet unclassified' }
 AOC2025Day6 >> solution1Part2 [
-"now the numbers are composed from individual digits "
- | wid hgt in tot found | 
- in := self puzzleInputParsed.
- wid := (in at: 1) size.
- hgt := in size.
- tot := 0.
- found := OrderedCollection new.
- 1 to: wid do: [ :i | 
-	| op vals sym nums | 
-	nums := OrderedCollection new.
-	1 to: (hgt - 1) do: [ :k | 	nums add: ((in at: k) at: i)  ].
-	op := ((in at: hgt) at: i).
-	self halt. "my breakpoint"
-	op = #+ ifTrue: [ "do add" 
-		| tot2 | 
-		tot2 := 0. 
-		nums do: [ :n | tot2 := tot2 + n ].
-		tot := tot + tot2 .
-		found add: { nums . op . tot2 . tot }
-		] 
-	ifFalse: [ "do mult" 
-		| tot2 | 
-		tot2 := 1. "was 0 - bug"
-		nums do: [ :n | tot2 := tot2 * n ].
-		tot := tot + tot2.
-		found add: { nums . op . tot2 . tot }
-		]].
- ^ { found . tot }
+	"now the numbers are composed from individual digits "
+
+	| len in out acc busy n tot op subtot vals |
+	n := 1 .
+	tot := 0 .
+	subtot := 0 . 
+	busy := true.
+	in := self puzzleInputParsed2.
+	len := in size.
+		
+	[out := self takeValsOp: (self takeRows: in row: n) . 
+	 Transcript show: out printString ; cr .
+	 op := out at: #op . 
+	 vals := out at: #vals.
+ 	 op = $+ ifTrue: [subtot := vals inject: 0 into: [ :acc :each | acc + each ] ].
+	 op = $* ifTrue: [subtot := vals inject: 1 into: [ :acc :each | acc * each ] ].
+	 tot := tot + subtot .
+	 n := out at: #next. 	
+	 n >= 3723 ifTrue:[ busy := false ].  
+	 ] doWhileTrue: [ busy ].
+
+  "fixup 7737 * 477 last off by one - no end markers "
+  tot := tot + (7737 * 477).
+^ tot .
 
 
+	
 ]
 
 { #category : 'as yet unclassified' }
@@ -343,16 +359,21 @@ AOC2025Day6 >> takeRows: aCollection row: n [
 
 	| col2 s m busy |
 	m := n.
+	(m > ((aCollection at: 1) size)) ifTrue: [ ^ { nil . nil } ].
 	busy := true.
 	col2 := OrderedCollection new.
 	[
 		s := self takeRow: aCollection row: m.
+		m > ((aCollection at: 1) size) ifTrue:[ col2 add: (s reject: [:e | e = Character space] ).
+			busy := false ]
+		ifFalse:[
 		m := m + 1.
-		(self allSpaces: s)
+		(self allSpaces: s)  
 			ifTrue: [
 					busy := false.
-					m := m + 1 ]
-			ifFalse: [ col2 add: (s reject: [:e | e = Character space] ) ] "allSpaces" ] doWhileTrue: [ busy ].
+					]
+			ifFalse: [ col2 add: (s reject: [:e | e = Character space] ) ] "allSpaces" ]] 
+		doWhileTrue: [ busy  ].
 	^ {
 		  col2.
 		  m }
@@ -360,21 +381,25 @@ AOC2025Day6 >> takeRows: aCollection row: n [
 
 { #category : 'as yet unclassified' }
 AOC2025Day6 >> takeValsOp: aPair [
-  " ( chars collections .  next index ) "
-   
-  | arr next last op vals |   
-  arr := aPair at: 1 . 
-  vals := OrderedCollection new. 
+	" ( chars collections .  next index ) "
 
-  1 to: arr size do: [ :i | 
-	| col |
-	col := arr at: i .
-	last := col at: (col size) . 
-	(last = $+ or: [ last = $* ]) ifTrue: [ op := last . vals add: (col allButLast) ]
-											ifFalse:[ vals add: col ]
-	 ].
-  ^ {  'op=>' . op . 'vals=>' . vals } .
+	| arr next last op vals next dict |
+	arr := aPair at: 1.
+	next := aPair at: 2.
+	vals := OrderedCollection new.
 
-
-
+	1 to: arr size do: [ :i |
+			| col |
+			col := arr at: i.
+			last := col at: col size.
+			(last = $+ or: [ last = $* ])
+				ifTrue: [
+						op := last.
+						vals add: (self charsCollectionToInteger: col allButLast) ]
+				ifFalse: [ vals add: (self charsCollectionToInteger: col) ] ].
+	dict := Dictionary new.
+	dict at: #op put: op.
+	dict at: #vals put: vals.
+	dict at: #next put: next.
+   ^ dict .
 ]

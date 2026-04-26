@@ -19,7 +19,8 @@ AOC2025Day6Test >> testSolution1Part1 [
 
 { #category : 'tests' }
 AOC2025Day6Test >> testSolution1Part2 [
-	"self assert: (AOC2025Day6 new solution1Part2 = ???)"
+	self assert: (AOC2025Day6 new solution1Part2 = 10442203393132)
+	
 	
 
 ]
