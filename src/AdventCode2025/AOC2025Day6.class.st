@@ -116,12 +116,35 @@ AOC2025Day6 >> puzzleInputParsed2 [
 	"1) split into lines. 
 	how define end of line \n \r\n \r "
 
-	|lines|
+	|lines lines2 wid hgt horz |
+	lines2 := OrderedCollection new.
 	lines := self puzzleInput splitOn: String cr.
 	lines do:[ :line | 
-		line add: Character space.
+		lines2 add: line , '   '. 
 		].
-	^ lines.
+	"with lines2 read them vertically . height=lines2 size. width =(lines2 at: 1) size"
+	wid := (lines2 at: 1) size . 
+	hgt := lines2 size.
+	self halt.
+   horz := OrderedCollection new.
+	1 to: wid do: [ :w | 
+		| t | 
+			self halt.
+		t := OrderedCollection new.
+		1 to: hgt do: [ :h | 
+			| ch | 
+			ch := ((lines2 at: h) at: w).
+			t add: ch.
+		
+			 ].
+		horz add: t.
+		]
+	self halt.
+	^ horz.
+	
+
+
+
 	
 ]
 
@@ -358,8 +381,7 @@ AOC2025Day6 >> takeRows: aCollection row: n [
 	"return all rows starting from the nth row"
 
 	| col2 s m busy |
-	m := n.
-	(m > ((aCollection at: 1) size)) ifTrue: [ ^ { nil . nil } ].
+	m := n.	
 	busy := true.
 	col2 := OrderedCollection new.
 	[
