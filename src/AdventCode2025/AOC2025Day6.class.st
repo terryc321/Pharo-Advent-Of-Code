@@ -165,10 +165,14 @@ AOC2025Day6 >> puzzleInputParsed2 [
 			t add: ch ].
 		horz add: t ].	
 	
-	1 to: horz size do: [ 
+	self reset.
+	horz do: [ :row | 
+		(self allSpaces: row) ifTrue:[ self take ] ifFalse: [ self shunt: (row reject: [:e | e = Character space]) ].
 		 ]	.
+	"may be some left over"
+	self take.
 		
-	^ horz.
+	^ self heart.
 	
 	
 
