@@ -21,6 +21,15 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
+AOC2025Day6 >> allSpaces: aCol [
+
+	aCol do: [ :e | e = Character space ifFalse: [ ^ false ] ].
+	^ true
+	
+
+]
+
+{ #category : 'as yet unclassified' }
 AOC2025Day6 >> numberFromDict: aDict at: anIndex [
 	"return item at given anIndex or return zero"
 
@@ -308,12 +317,64 @@ as at moment the "
 ]
 
 { #category : 'as yet unclassified' }
+AOC2025Day6 >> spaceToZeros: aCol [
+"replace any space characters with zero character $0 "
+	^ aCol collect: [ :e | (e = Character space) ifTrue:[ $0 ] ifFalse: [ e ] ]
+
+
+]
+
+{ #category : 'as yet unclassified' }
 AOC2025Day6 >> takeRow: aCollection row: n [
 	"return row for every nth element of each item in collection"
 
 	| sz col2 |
 	sz := aCollection size.
 	col2 := OrderedCollection new.
-	1 to: sz do: [ :i | col2 add: (aCollection at: i) ].
+	1 to: sz do: [ :i | 
+		col2 add: ((aCollection at: i) at: n) ].
 	^ col2
+	
+]
+
+{ #category : 'as yet unclassified' }
+AOC2025Day6 >> takeRows: aCollection row: n [
+	"return all rows starting from the nth row"
+
+	| col2 s m busy |
+	m := n.
+	busy := true.
+	col2 := OrderedCollection new.
+	[
+		s := self takeRow: aCollection row: m.
+		m := m + 1.
+		(self allSpaces: s)
+			ifTrue: [
+					busy := false.
+					m := m + 1 ]
+			ifFalse: [ col2 add: (s reject: [:e | e = Character space] ) ] "allSpaces" ] doWhileTrue: [ busy ].
+	^ {
+		  col2.
+		  m }
+]
+
+{ #category : 'as yet unclassified' }
+AOC2025Day6 >> takeValsOp: aPair [
+  " ( chars collections .  next index ) "
+   
+  | arr next last op vals |   
+  arr := aPair at: 1 . 
+  vals := OrderedCollection new. 
+
+  1 to: arr size do: [ :i | 
+	| col |
+	col := arr at: i .
+	last := col at: (col size) . 
+	(last = $+ or: [ last = $* ]) ifTrue: [ op := last . vals add: (col allButLast) ]
+											ifFalse:[ vals add: col ]
+	 ].
+  ^ {  'op=>' . op . 'vals=>' . vals } .
+
+
+
 ]
