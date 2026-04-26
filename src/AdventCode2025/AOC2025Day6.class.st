@@ -9,6 +9,11 @@ AdventCode2025 is the package name
 AOC2025Day6 is class name since all classes live in the global scope
 
 This is a comment added from emacs.
+part2 
+self parsedInput2 
+heart -> almost there. just not strings/numbers and one entry has $+ or $* operation.
+bypass -> work on heart.
+
 
 
 
@@ -39,6 +44,29 @@ AOC2025Day6 >> allSpaces: aCol [
 	^ true
 	
 
+]
+
+{ #category : 'as yet unclassified' }
+AOC2025Day6 >> bypass [
+	"run self parsedInput2 before running this!. sanitize collections into values and operation #addition #multiply. may even just solve it "
+
+	| h res |
+	h := self heart.
+	res := OrderedCollection new.
+	h do: [ :col |
+			| nums op |
+			nums := OrderedCollection new.
+			col do: [ :row | "for each row vertical collection of digits - spaces - or math symbol "
+						| n s |
+						n := row reject: [ :e |
+								     e = (Character space) or: [
+										     (e = $+ or: [ e = $* ]) ifTrue: [
+												     op := e.
+												     true ] ].
+								     s := self toByteString: n.
+								     nums add: s asInteger ] ]. 
+				res add: {nums.	op } ].
+	^ res
 ]
 
 { #category : 'as yet unclassified' }
@@ -172,7 +200,7 @@ AOC2025Day6 >> puzzleInputParsed2 [
 	"may be some left over"
 	self take.
 		
-	^ self heart.
+	^ self bypass.
 	
 	
 
@@ -488,4 +516,13 @@ AOC2025Day6 >> takeValsOp: aPair [
 	dict at: #vals put: vals.
 	dict at: #next put: next.
    ^ dict .
+]
+
+{ #category : 'as yet unclassified' }
+AOC2025Day6 >> toByteString: c [
+
+	| s |
+	s := String new: (c size).
+	1 to: c size do: [ :i | s at: i put: (c at: i) ].
+	^ s
 ]
