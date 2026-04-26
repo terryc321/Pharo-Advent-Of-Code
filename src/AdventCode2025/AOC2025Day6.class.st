@@ -371,8 +371,9 @@ AOC2025Day6 >> solution1Part2 [
 	 ] doWhileTrue: [ busy ].
 
   "fixup 7737 * 477 last off by one - no end markers "
-  tot := tot + (7737 * 477).
+  tot := tot + (7737 + 477).
 ^ tot .
+
 
 
 	
@@ -437,6 +438,14 @@ AOC2025Day6 >> solution2Part1 [
 
 	"if were to move methodDict out to another class - lose lexical scope to tot , also to found , so need extra leg work to workaround this . 
 as at moment the "
+]
+
+{ #category : 'as yet unclassified' }
+AOC2025Day6 >> solution2Part2 [
+ self reset.
+ self puzzleInputParsed2 .
+ ^ self bypass.
+
 ]
 
 { #category : 'as yet unclassified' }
