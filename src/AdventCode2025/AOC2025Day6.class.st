@@ -50,7 +50,8 @@ AOC2025Day6 >> allSpaces: aCol [
 AOC2025Day6 >> bypass [
 	"run self parsedInput2 before running this!. sanitize collections into values and operation #addition #multiply. may even just solve it "
 
-	| h res |
+	| h res tot |
+	tot := 0.
 	h := self heart.
 	res := OrderedCollection new.
 	h do: [ :col |
@@ -58,15 +59,19 @@ AOC2025Day6 >> bypass [
 			nums := OrderedCollection new.
 			col do: [ :row | "for each row vertical collection of digits - spaces - or math symbol "
 						| n s |
-						n := row reject: [ :e |
-								     e = (Character space) or: [
-										     (e = $+ or: [ e = $* ]) ifTrue: [
-												     op := e.
-												     true ] ].
+						(row includes: $+) ifTrue: [ op := #add ].
+						(row includes: $*) ifTrue: [ op := #mul ].
+						n := row reject: [ :e | e = (Character space) or: [e = $+ or: [ e = $* ] ]].
 								     s := self toByteString: n.
-								     nums add: s asInteger ] ]. 
-				res add: {nums.	op } ].
+								     nums add: s asInteger ]. 
+            op ifNil: [ Error signal: 'no operator for group - in AOC bypass' ].					
+				op = #add ifTrue: [ | sub | sub := (nums inject: 0 into: [:acc :each | acc + each]) . tot := tot + sub . res add: {nums .	op . sub . tot } ].							
+				op = #mul ifTrue: [ | sub | sub := (nums inject: 1 into: [:acc :each | acc * each]) . tot := tot + sub . res add: {nums .	op . sub . tot } ].																										
+							]. 
 	^ res
+	
+	
+	
 ]
 
 { #category : 'as yet unclassified' }
