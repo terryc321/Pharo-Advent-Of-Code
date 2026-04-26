@@ -32,7 +32,7 @@ in search write inspect , click search , results in 957 packages highlighed
 $x
 ```
 
-lets look at the character x , evaluate this in playground using inspect it 
+lets look at the character x , evaluate this in playground using inspect it - it has 3 entries. self , codepoint and unicode all under the Character tab. here we can see how this is generated, this inspection uses StSimpleInspectorBuilder on aBuilder.
 
 ```
 inspectCharacterIn: aBuilder
@@ -44,7 +44,37 @@ inspectCharacterIn: aBuilder
 			stream << 'U+'.
 			self codePoint printOn: stream base: 16 nDigits: 4 ]);
 		table
-
-"here is the character"
-$x . 
 ```
+Here is another example from RSCanvas 
+
+```
+inspectorCanvas: aBuilder
+	<inspectorPresentationOrder: 90 title: 'Canvas'>
+	
+	^ (aBuilder instantiate: SpRoassalInspectorPresenter)
+		canvas: self;
+		yourself
+```
+
+Here is one from Collection class , if we inspect a collection ```#(1 2 3)``` we should find a tab called items which shows a list of two collumns - one called index which is ordered and second called value
+
+```
+inspectionItems: aBuilder
+	<inspectorPresentationOrder: 0 title: 'Items'> 
+	
+	^ aBuilder newTable
+		addStyle: 'stList';
+		addColumn: (SpIndexTableColumn new 
+			title: 'Index';
+			sortFunction: #yourself ascending;
+			beNotExpandable;
+			yourself);
+		addColumn: (SpStringTableColumn new  
+			title: 'Value'; 
+			evaluated: [ :each | StObjectPrinter asTruncatedTextFrom: each ];
+			beSortable;
+			yourself);
+		items: self asOrderedCollection;
+		yourself
+```
+
