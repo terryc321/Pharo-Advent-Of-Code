@@ -16,9 +16,21 @@ This is a comment added from emacs.
 Class {
 	#name : 'AOC2025Day6',
 	#superclass : 'Object',
+	#instVars : [
+		'heart',
+		'accumulator'
+	],
 	#category : 'AdventCode2025',
 	#package : 'AdventCode2025'
 }
+
+{ #category : 'as yet unclassified' }
+AOC2025Day6 >> accumulator [
+ ^ accumulator 
+
+
+
+]
 
 { #category : 'as yet unclassified' }
 AOC2025Day6 >> allSpaces: aCol [
@@ -39,6 +51,20 @@ AOC2025Day6 >> charsCollectionToInteger: aCol [
 	"bytestring to integer conversion"
 	^ res asInteger
 	
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2025Day6 >> heart [
+ ^ heart.
+
+
+]
+
+{ #category : 'initialization' }
+AOC2025Day6 >> initialize [ 
+ self reset.
+
 
 ]
 
@@ -125,22 +151,25 @@ AOC2025Day6 >> puzzleInputParsed2 [
 	"with lines2 read them vertically . height=lines2 size. width =(lines2 at: 1) size"
 	wid := (lines2 at: 1) size . 
 	hgt := lines2 size.
-	self halt.
+  
    horz := OrderedCollection new.
+  Transcript show: { 'wid => ' . wid  . 'hgt=>' . hgt} ; cr .
+
 	1 to: wid do: [ :w | 
 		| t | 
-			self halt.
+		Transcript show: { 'w=>' . w }	; cr.			
 		t := OrderedCollection new.
 		1 to: hgt do: [ :h | 
 			| ch | 
 			ch := ((lines2 at: h) at: w).
-			t add: ch.
+			t add: ch ].
+		horz add: t ].	
+	
+	1 to: horz size do: [ 
+		 ]	.
 		
-			 ].
-		horz add: t.
-		]
-	self halt.
 	^ horz.
+	
 	
 
 
@@ -211,6 +240,15 @@ Solve the problems on the math worksheet again. What is the grand total found by
 
 ]
 
+{ #category : 'initialization' }
+AOC2025Day6 >> reset [  
+ heart := OrderedCollection new.
+ accumulator := OrderedCollection new.
+
+
+
+]
+
 { #category : 'as yet unclassified' }
 AOC2025Day6 >> reverseNumberToDict: anInteger [
 	"given a number like 7446 return as orderedcollection of digits from least significant to most significant"
@@ -228,6 +266,15 @@ AOC2025Day6 >> reverseNumberToDict: anInteger [
 		col at: #size put: i.
 		i := i + 1 ] doWhileTrue: [ n > 0 ].
 	^ col
+]
+
+{ #category : 'as yet unclassified' }
+AOC2025Day6 >> shunt: x [
+ accumulator add: x.
+
+
+
+
 ]
 
 { #category : 'as yet unclassified' }
@@ -359,6 +406,19 @@ as at moment the "
 AOC2025Day6 >> spaceToZeros: aCol [
 "replace any space characters with zero character $0 "
 	^ aCol collect: [ :e | (e = Character space) ifTrue:[ $0 ] ifFalse: [ e ] ]
+
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2025Day6 >> take [
+ (accumulator size) = 0 ifFalse: [  heart add: accumulator ]. 
+ accumulator := OrderedCollection new.
+
+
+
+
+
 
 
 ]
