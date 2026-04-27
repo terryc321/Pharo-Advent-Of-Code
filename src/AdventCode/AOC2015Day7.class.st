@@ -314,8 +314,8 @@ AOC2015Day7 >> parsePass: inputLines [
 					a := out at: 1.
 					b := out at: 3.
 					c := out at: 5.
-					dict at: a put: a.
-					dict at: b put: b.
+					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7Node new. node val: a. node ] value) ].
+					b isInteger ifTrue: [dict at: b put: ([ |node| node := AOC2015Day7Node new. node val: b. node ] value) ].
 					dict at: c put: ([ |node| node := AOC2015Day7AndNode new. node addChild: a. node addChild: b. node ] value).
 					ok := true.
 					]. "#x #OR #y -> #z"
@@ -325,8 +325,8 @@ AOC2015Day7 >> parsePass: inputLines [
 					a := out at: 1.
 					b := out at: 3.
 					c := out at: 5.
-					dict at: a put: a.
-					dict at: b put: b.
+					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7Node new. node val: a. node ] value) ].
+					b isInteger ifTrue: [dict at: b put: ([ |node| node := AOC2015Day7Node new. node val: b. node ] value) ].					
 					dict at: c put: ([ |node| node := AOC2015Day7OrNode new. node addChild: a. node addChild: b. node ] value).
 					ok := true. ]. "#x #RSHIFT #y -> #z"
 			out := self parseLShift: in.
@@ -335,8 +335,8 @@ AOC2015Day7 >> parsePass: inputLines [
 					a := out at: 1.
 					b := out at: 3.
 					c := out at: 5.
-					dict at: a put: a.
-					dict at: b put: b.
+					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7Node new. node val: a. node ] value) ].
+					b isInteger ifTrue: [dict at: b put: ([ |node| node := AOC2015Day7Node new. node val: b. node ] value) ].										
 					dict at: c put: ([ |node| node := AOC2015Day7LShiftNode new. node addChild: a. node addChild: b. node ] value).
 					ok := true. ]. "#x #LSHIFT #y -> #z"
 			out := self parseRShift: in.
@@ -345,8 +345,8 @@ AOC2015Day7 >> parsePass: inputLines [
 					a := out at: 1.
 					b := out at: 3.
 					c := out at: 5.
-					dict at: a put: a.
-					dict at: b put: b.
+					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7Node new. node val: a. node ] value) ].
+					b isInteger ifTrue: [dict at: b put: ([ |node| node := AOC2015Day7Node new. node val: b. node ] value) ].					
 					dict at: c put: ([ |node| node := AOC2015Day7RShiftNode new. node addChild: a. node addChild: b. node ] value).
 					ok := true. ]. "#NOT #x -> #y"
 			out := self parseNot: in.
@@ -354,16 +354,16 @@ AOC2015Day7 >> parsePass: inputLines [
 					| a b |
 					a := out at: 2.
 					b := out at: 4.
-					dict at: a put: a.
-					dict at: b put: ([ |node| node := AOC2015Day7NotNode new; addChild: a. node ] value).
+					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7Node new. node val: a. node ] value) ].
+					dict at: b put: ([ |node| node := AOC2015Day7NotNode new. node addChild: a. node ] value).
 					ok := true. ]. "#x -> #y"
 			out := self parseAssign: in.
 			out className = 'Array' ifTrue: [
 					| a b |
 					a := out at: 1.
 					b := out at: 3.
-					dict at: a put: a.
-					dict at: b put: ([ |node| node := AOC2015Day7AssignNode new; addChild: a. node ] value).
+					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7Node new. node val: a. node ] value) ].
+					dict at: b put: ([ |node| node := AOC2015Day7AssignNode new. node addChild: a. node ] value).
 					ok := true. ].
 			ok ifFalse: [ Error signal: 'parse not handled' ] ].
 		 "pass 2" 
