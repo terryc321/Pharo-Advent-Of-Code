@@ -300,6 +300,89 @@ AOC2015Day7 >> parseOr: input [
 ]
 
 { #category : 'as yet unclassified' }
+AOC2015Day7 >> parsePass: inputLines [
+	"for given input try each of the parsers in turn until throw the towel in. 
+ 1 parseAnd 2parseOr 3parseLShift 4parseRShift 5parseAssign 6parseNot"
+
+	| out ok |
+	self reset.
+	inputLines do: [ :in |
+			ok := false. "pass 1" "#lf #AND #bg -> #cd"
+			out := self parseAnd: in.
+			out className = 'Array' ifTrue: [
+					| a b c |
+					a := out at: 1.
+					b := out at: 3.
+					c := out at: 5.
+					dict at: a put: a.
+					dict at: b put: b.
+					dict at: c put: ([ |node| node := AOC2015Day7AndNode new. node addChild: a. node addChild: b. node ] value).
+					ok := true.
+					]. "#x #OR #y -> #z"
+			out := self parseOr: in.
+			out className = 'Array' ifTrue: [
+					| a b c |
+					a := out at: 1.
+					b := out at: 3.
+					c := out at: 5.
+					dict at: a put: a.
+					dict at: b put: b.
+					dict at: c put: ([ |node| node := AOC2015Day7OrNode new. node addChild: a. node addChild: b. node ] value).
+					ok := true. ]. "#x #RSHIFT #y -> #z"
+			out := self parseLShift: in.
+			out className = 'Array' ifTrue: [
+					| a b c |
+					a := out at: 1.
+					b := out at: 3.
+					c := out at: 5.
+					dict at: a put: a.
+					dict at: b put: b.
+					dict at: c put: ([ |node| node := AOC2015Day7LShiftNode new. node addChild: a. node addChild: b. node ] value).
+					ok := true. ]. "#x #LSHIFT #y -> #z"
+			out := self parseRShift: in.
+			out className = 'Array' ifTrue: [
+					| a b c |
+					a := out at: 1.
+					b := out at: 3.
+					c := out at: 5.
+					dict at: a put: a.
+					dict at: b put: b.
+					dict at: c put: ([ |node| node := AOC2015Day7RShiftNode new. node addChild: a. node addChild: b. node ] value).
+					ok := true. ]. "#NOT #x -> #y"
+			out := self parseNot: in.
+			out className = 'Array' ifTrue: [
+					| a b |
+					a := out at: 2.
+					b := out at: 4.
+					dict at: a put: a.
+					dict at: b put: ([ |node| node := AOC2015Day7NotNode new; addChild: a. node ] value).
+					ok := true. ]. "#x -> #y"
+			out := self parseAssign: in.
+			out className = 'Array' ifTrue: [
+					| a b |
+					a := out at: 1.
+					b := out at: 3.
+					dict at: a put: a.
+					dict at: b put: ([ |node| node := AOC2015Day7AssignNode new; addChild: a. node ] value).
+					ok := true. ].
+			ok ifFalse: [ Error signal: 'parse not handled' ] ].
+		 "pass 2" 
+		
+self halt.
+		
+"ok := false.
+inputLines do: [ :in | 
+out := self parseAnd: in. out className = 'Array' ifTrue:[	self interAnd2: out. ok := true ].
+out := self parseOr: in. out className = 'Array' ifTrue:[	self interOr2: out. ok := true ].	
+out := self parseNot: in. out className = 'Array' ifTrue:[	self interNot2: out. ok := true ].			
+out := self parseLShift: in. out className = 'Array' ifTrue:[	self interLShift2: out. ok := true ].			
+out := self parseRShift: in. out className = 'Array' ifTrue:[	self interRShift2: out. ok := true ].												
+out := self parseAssign: in. out className = 'Array' ifTrue:[	self interAssign2: out. ok := true ].													
+ok ifFalse: [ Error signal: 'parse not handled' ]].
+"
+]
+
+{ #category : 'as yet unclassified' }
 AOC2015Day7 >> parseRShift: input [
 
 	| variable op impliesOp expression |
