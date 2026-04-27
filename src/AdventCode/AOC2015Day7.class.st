@@ -31,19 +31,99 @@ Class {
 	#package : 'AdventCode'
 }
 
-{ #category : 'examples' }
-AOC2015Day7 >> example [ 
+{ #category : 'accessing' }
+AOC2015Day7 >> interAnd: aCollection [ 
+"a AND b -> c"
+|a b c |
+a := aCollection at: 1 .
+b := aCollection at: 3 .
+c := aCollection at: 5 . 
+"output parse is strings - a could be a number in string form - huh"
+"add a deferred computation "
+self addRule: [ | condition va vb vc |
+	condition := self isKnown: a and: [ self isKnown: b ].
+	"a is a number and b is symbol "
+	"a is a symbol and b is a symbol"
+	vc := va andBit: vb 
+	].
 
-|day7|
-day7 := AOC2015Day7 new.
-day7 puzzleInput.
-day7 puzzleInput at: 1 .
-day7 parseVariableAnd: 'lf AND lq -> ls'.
-day7 parseVariableOr: 'lf OR lq -> ls'.
-day7 parseVariableRShift: 'gj RSHIFT 1 -> ls'.
-day7 parseVariableLShift: 'ip LSHIFT 15 -> it'.
-day7 parseNot: 'NOT kt -> ku'.
+	
 
+"16 bit radix FF"
+"16rFF"
+
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day7 >> parse: in [
+ "for given input try each of the parsers in turn until throw the towel in. 
+ 1 parseAnd 2parseOr 3parseLShift 4parseRShift 5parseAssign 6parseNot"
+ | out ok | 
+ok := false.
+out := self parseAnd: in. out className = 'Array' ifTrue:[	self interAnd: out. ok := true ].
+out := self parseOr: in. out className = 'Array' ifTrue:[	self interOr: out. ok := true ].	
+out := self parseNot: in. out className = 'Array' ifTrue:[	self interNot: out. ok := true ].			
+out := self parseLShift: in. out className = 'Array' ifTrue:[	self interLShift: out. ok := true ].			
+out := self parseRShift: in. out className = 'Array' ifTrue:[	self interRShift: out. ok := true ].												
+out := self parseAssign: in. out className = 'Array' ifTrue:[	self interAssign: out. ok := true ].													
+ok ifFalse: [ Error signal: 'parse not handled' ].
+
+
+
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day7 >> parseAnd: input [
+
+	| variable op impliesOp expression |
+	variable := #word asPParser star flatten.
+	op := 'AND' asPParser trim.
+	impliesOp := '->' asPParser trim.
+	expression := variable , op , variable , impliesOp , variable ==> [ :nodes |
+		              {
+			              nodes first.
+			              nodes second.
+			              nodes third.
+			              nodes fourth.
+			              nodes fifth } ].
+
+	^ expression parse: input
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day7 >> parseAssign: input [
+
+	| variable impliesOp expression |
+	variable := #word asPParser star flatten.	
+	impliesOp := '->' asPParser trim.
+	expression := variable , impliesOp , variable ==> [ :nodes |
+		              {
+			              nodes first.
+			              nodes second.
+			              nodes third
+			} ].
+
+	^ expression parse: input
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day7 >> parseLShift: input [
+
+	| variable op impliesOp expression |
+	variable := #word asPParser star flatten.
+	op := 'LSHIFT' asPParser trim.
+	impliesOp := '->' asPParser trim.
+	expression := variable , op , variable , impliesOp , variable ==> [ :nodes |
+		              {
+			              nodes first.
+			              nodes second.
+			              nodes third.
+			              nodes fourth.
+			              nodes fifth } ].
+
+	^ expression parse: input
 ]
 
 { #category : 'as yet unclassified' }
@@ -65,11 +145,11 @@ AOC2015Day7 >> parseNot: input [
 ]
 
 { #category : 'as yet unclassified' }
-AOC2015Day7 >> parseRShift: input [
+AOC2015Day7 >> parseOr: input [
 
 	| variable op impliesOp expression |
 	variable := #word asPParser star flatten.
-	op := 'RSHIFT' asPParser trim.
+	op := 'OR' asPParser trim.
 	impliesOp := '->' asPParser trim.
 	expression := variable , op , variable , impliesOp , variable ==> [ :nodes |
 		              {
@@ -83,49 +163,13 @@ AOC2015Day7 >> parseRShift: input [
 ]
 
 { #category : 'as yet unclassified' }
-AOC2015Day7 >> parseVariableAnd: input [
+AOC2015Day7 >> parseRShift: input [
 
-	| variable andOp impliesOp expression |
+	| variable op impliesOp expression |
 	variable := #word asPParser star flatten.
-	andOp := 'AND' asPParser trim.
+	op := 'RSHIFT' asPParser trim.
 	impliesOp := '->' asPParser trim.
-	expression := variable , andOp , variable , impliesOp , variable ==> [ :nodes |
-		              {
-			              nodes first.
-			              nodes second.
-			              nodes third.
-			              nodes fourth.
-			              nodes fifth } ].
-
-	^ expression parse: input
-]
-
-{ #category : 'as yet unclassified' }
-AOC2015Day7 >> parseVariableLShift: input [
-
-	| variable andOp impliesOp expression |
-	variable := #word asPParser star flatten.
-	andOp := 'LSHIFT' asPParser trim.
-	impliesOp := '->' asPParser trim.
-	expression := variable , andOp , variable , impliesOp , variable ==> [ :nodes |
-		              {
-			              nodes first.
-			              nodes second.
-			              nodes third.
-			              nodes fourth.
-			              nodes fifth } ].
-
-	^ expression parse: input
-]
-
-{ #category : 'as yet unclassified' }
-AOC2015Day7 >> parseVariableOr: input [
-
-	| variable andOp impliesOp expression |
-	variable := #word asPParser star flatten.
-	andOp := 'OR' asPParser trim.
-	impliesOp := '->' asPParser trim.
-	expression := variable , andOp , variable , impliesOp , variable ==> [ :nodes |
+	expression := variable , op , variable , impliesOp , variable ==> [ :nodes |
 		              {
 			              nodes first.
 			              nodes second.
