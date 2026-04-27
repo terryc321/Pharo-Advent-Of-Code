@@ -1,6 +1,6 @@
 "
 requires petitparser2 if going to run these - until we can write the equivalent in smalltalk
-
+parsing should really take care of whether 'lf' becomes a symbol #lf , and whether '123' becomes integer 123.
 dict instance variable = symbol values #lf can be nil undefined or should have a numerical value 0 to 65535 inclusive 16bit
 
 ```
@@ -82,14 +82,28 @@ self addRule: [ | condition va vb vc known |
 	condition := (known value: a) and: [ (known value: b) ].
 	"a is : number or known symbol "
 	"b is : number or known symbol "
+	(known value: a) ifTrue: [ va := a ].
+	(known value: b) ifTrue: [ vb := b ].
+	condition ifTrue:[ "both va vb known - compute vc"
 	vc := va andBit: vb . "<<<--- currently why va vb are nil ?? "
 	"nil and: [ nil ] .  <<< can we eliminate nil ? "
 	dict at: c put: vc .
 	"show us the progress in transcript"
 	Transcript show: 'computed ' , aCollection printString , ' :: ' , c printString , ' => ' , vc printString ; cr.	
+		].
 	].
 "16 bit radix FF"
 "16rFF"
+
+]
+
+{ #category : 'initialization' }
+AOC2015Day7 >> lookup: aSymbol [ 
+^ dict at: aSymbol . 
+
+
+
+
 
 ]
 
@@ -121,11 +135,11 @@ AOC2015Day7 >> parseAnd: input [
 	impliesOp := '->' asPParser trim.
 	expression := variable , op , variable , impliesOp , variable ==> [ :nodes |
 		              {
-			              nodes first.
+			              nodes first asSymbolOrInteger.
 			              nodes second.
-			              nodes third.
+			              nodes third asSymbolOrInteger.
 			              nodes fourth.
-			              nodes fifth } ].
+			              nodes fifth asSymbolOrInteger } ].
 
 	^ expression parse: input
 ]
