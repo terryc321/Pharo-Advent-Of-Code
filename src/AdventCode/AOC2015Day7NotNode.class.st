@@ -8,9 +8,9 @@ Class {
 { #category : 'initialization' }
 AOC2015Day7NotNode >> compute [ 
  "NOT node left "
- (self left ready) ifFalse:[ self left compute ].
- self val: (0 - (self left val) - 1).
- ^ val 
+ (self left ready) ifTrue:[ 
+	 self val: (0 - (self left val) - 1) ]
+
 
 ]
 

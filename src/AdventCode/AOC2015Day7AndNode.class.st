@@ -6,16 +6,9 @@ Class {
 }
 
 { #category : 'initialization' }
-AOC2015Day7AndNode >> compute [ 
- "AND node left / right "
- (self left ready) ifFalse:[ self left compute ].
- (self right ready) ifFalse:[ self right compute ]. 
- self val: ((self left val) bitAnd: (self right val)).
- ^ val 
-
-
-
-
+AOC2015Day7AndNode >> compute [
+	"AND node left / right "
+	(self left ready and: [ self right ready ]) ifTrue: [ self val: (self left val bitAnd: self right val) ].
 
 ]
 

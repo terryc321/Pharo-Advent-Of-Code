@@ -8,10 +8,8 @@ Class {
 { #category : 'initialization' }
 AOC2015Day7RShiftNode >> compute [ 
  "RSHIFT node left / right "
- (self left ready) ifFalse:[ self left compute ].
- (self right ready) ifFalse:[ self right compute ]. 
- self val: ((self left val) bitShift: (0 - (self right val))).
- ^ val 
+ ((self left ready) and:  (self right ready)) ifTrue: [ 
+	 self val: ((self left val) bitShift: (0 - (self right val)))].
 
 
 ]

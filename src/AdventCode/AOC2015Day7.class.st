@@ -2,8 +2,11 @@
 ```language=Pharo
 aoc := AOC2015Day7 new.
 aoc parsePass: (aoc puzzleInput).
-(aoc dict at: #a) compute.
+aoc computePass: #a.
+aoc.
+aoc dict at: #a . ""examine result stored in a ""
 ```
+
 
 
 
@@ -62,6 +65,22 @@ AOC2015Day7 >> addRule: rule [
 { #category : 'accessing' }
 AOC2015Day7 >> children [ 
  ^ children
+
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day7 >> computePass: aSymbol [
+"use parsePass before this. repeatedly compute all nodes until this node is ready"
+| targetNode allNodes |
+targetNode := self dict at: aSymbol.
+allNodes := (self dict) asOrderedCollection .
+
+[ allNodes do: [ :node | node compute ]] doWhileTrue: [ targetNode ready not ].
+^ self
+
+
+
 
 
 ]
