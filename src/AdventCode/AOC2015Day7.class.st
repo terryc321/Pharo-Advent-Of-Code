@@ -68,63 +68,71 @@ AOC2015Day7 >> initialize [
 ]
 
 { #category : 'accessing' }
-AOC2015Day7 >> interAnd: aCollection [ 
-"a AND b -> c"
-|a b c |
-a := aCollection at: 1 .
-b := aCollection at: 3 .
-c := aCollection at: 5 . 
-"output parse is strings - a could be a number or a symbol such as 'lf' - huh"
-"add a deferred computation "
-self addRule: [ | condition va vb vc known |
-	"known if either already given integer or lookup in dictionary is an integer"
-	known := [ :s | s isInteger or: [ (dict at: s) isInteger]].	
-	condition := (known value: a) and: [ (known value: b) ].
-	"a is : number or known symbol "
-	"b is : number or known symbol "
-	(known value: a) ifTrue: [ va := a ].
-	(known value: b) ifTrue: [ vb := b ].
-	condition ifTrue:[ "both va vb known - compute vc"
-	vc := va andBit: vb . "<<<--- currently why va vb are nil ?? "
-	"nil and: [ nil ] .  <<< can we eliminate nil ? "
-	dict at: c put: vc .
-	"show us the progress in transcript"
-	Transcript show: 'computed ' , aCollection printString , ' :: ' , c printString , ' => ' , vc printString ; cr.	
-		].
-	].
-"16 bit radix FF"
-"16rFF"
-
+AOC2015Day7 >> interAnd: aCollection [
+"#lf #AND #ge #-> #hf"
+	| a b c |
+	a := aCollection at: 1.
+	b := aCollection at: 3.
+	c := aCollection at: 5.
+	a isSymbol ifTrue:[ dict at: a put: nil ] . 
+	b isSymbol ifTrue:[ dict at: b put: nil ] . 
+   c isSymbol ifTrue:[ dict at: c put: nil ] . 		
+	self addRule: [
+			| va vb |
+			(self isDetermined: c) ifFalse: [
+					(self isDetermined: a) ifTrue: [
+							va := self valueOf: a.
+							(self isDetermined: b) ifTrue: [
+									vb := self valueOf: b. "both va vb now known"
+									dict at: c put: (va bitAnd: vb) ] ] ] ]
+					
+				
 ]
 
 { #category : 'accessing' }
-AOC2015Day7 >> interAssign: aCollection [ 
-"a -> b "
-|a b c vc |
-a := aCollection at: 1 . 
-b := aCollection at: 3 . 
+AOC2015Day7 >> interAssign: aCollection [
+"#lf #-> #ge"
+	| a b |
+	a := aCollection at: 1.
+	b := aCollection at: 3.
+	a isSymbol ifTrue:[ dict at: a put: nil ] . 
+	b isSymbol ifTrue:[ dict at: b put: nil ] . 
+	self addRule: [
+			| va |
+			(self isDetermined: b) ifFalse: [
+					(self isDetermined: a) ifTrue: [
+							va := self valueOf: a.
+							dict at: b put: va ]]].
+					
+					
+				
+]
 
+{ #category : 'accessing' }
+AOC2015Day7 >> interOr: aCollection [
 
-self addRule: [ | condition va vb known |
-	condition := (known value: a). 
-
-	(known value: a) ifTrue: [ va := a ].
-	condition ifTrue:[ "both va vb known - compute vc"
-	vb := va.
-	dict at: b put: vb .
-	"show us the progress in transcript"
-	Transcript show: 'computed ' , aCollection printString , ' :: ' , c printString , ' => ' , vc printString ; cr.	
-		].
-	].
-"16 bit radix FF"
-"16rFF"
-
+	| a b c |
+	a := aCollection at: 1.
+	b := aCollection at: 3.
+	c := aCollection at: 5.
+	self addRule: [
+			| va vb |
+			(self isDetermined: c) ifFalse: [
+					(self isDetermined: a) ifTrue: [
+							va := self valueOf: a.
+							(self isDetermined: b) ifTrue: [
+									vb := self valueOf: b. "both va vb now known"
+									dict at: c put: (va bitOr: vb) ] ] ] ]
+					
+				
 ]
 
 { #category : 'testing' }
-AOC2015Day7 >> isDetermined: symOrInt [ 
+AOC2015Day7 >> isDetermined: s [
+ "either it is an integer - or a symbol whose value in dict is an integer"
+	^ s isInteger or: [ (dict at: s ifAbsent:[ ^ false]) isInteger ]
+	
 
-^ true 
 ]
 
 { #category : 'initialization' }
@@ -166,9 +174,9 @@ AOC2015Day7 >> parseAnd: input [
 	expression := variable , op , variable , impliesOp , variable ==> [ :nodes |
 		              {
 			              nodes first asSymbolOrInteger.
-			              nodes second.
+			              nodes second asSymbol.
 			              nodes third asSymbolOrInteger.
-			              nodes fourth.
+			              nodes fourth asSymbol.
 			              nodes fifth asSymbolOrInteger } ].
 
 	^ expression parse: input
@@ -704,4 +712,14 @@ AOC2015Day7 >> solution1Part1 [
 AOC2015Day7 >> solution1Part2 [
 
 	^ self notYetImplemented
+]
+
+{ #category : 'testing' }
+AOC2015Day7 >> valueOf: s [
+ "use only after isDetermined has been computed  "
+ "either it is an integer - or a symbol whose value in dict is an integer"
+^  s isInteger ifTrue:[ ^ s ] ifFalse: [ dict at: s ].
+	
+
+
 ]

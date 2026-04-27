@@ -38,15 +38,14 @@ AOC2015Day7Test >> testParseAnd [
 { #category : 'tests' }
 AOC2015Day7Test >> testParseAssign [
 
-	| aoc p p2|
+	| aoc p |
 	aoc := AOC2015Day7 new.
 	p := aoc parseAssign: 'lf -> gf'.
 	self assert: (p at: 1) = #lf.
 	self assert: (p at: 3) = #gf.
 	
-	p2 := aoc parseAssign: '3 -> ge'.
-	self assert: (p2 at: 1) = 3.
-	self assert: (p2 at: 3) = #ge.
+	aoc parse: '3 -> ge'.
+	self assert: (aoc dict at: #ge) = 3.
 
 ]
 
