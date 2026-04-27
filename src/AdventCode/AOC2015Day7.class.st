@@ -1,6 +1,12 @@
 "
 requires petitparser2 if going to run these - until we can write the equivalent in smalltalk
 
+dict instance variable = symbol values #lf can be nil undefined or should have a numerical value 0 to 65535 inclusive 16bit
+
+```
+16rFFFF 
+```
+
 ```language=text
 can we define an infix operator in smalltalk ?
 ```
@@ -27,31 +33,62 @@ a class side method to return pattern of '()()()()()'
 Class {
 	#name : 'AOC2015Day7',
 	#superclass : 'Object',
+	#instVars : [
+		'dict',
+		'rules'
+	],
 	#category : 'AdventCode',
 	#package : 'AdventCode'
 }
+
+{ #category : 'initialization' }
+AOC2015Day7 >> addRule: rule [ 
+ rules add: rule .
+
+
+
+
+]
+
+{ #category : 'initialization' }
+AOC2015Day7 >> dict [ 
+^ dict 
+
+
+
+]
+
+{ #category : 'initialization' }
+AOC2015Day7 >> initialize [ 
+"dict to new dictionary , rules to new collection"
+ self reset 
+
+
+
+]
 
 { #category : 'accessing' }
 AOC2015Day7 >> interAnd: aCollection [ 
 "a AND b -> c"
 |a b c |
-a := aCollection at: 1 . [|e| e :=(a at: 1). (e >= $0 and: [ e <= $9]) ifTrue:[ a := a asInteger ]]value.
-b := aCollection at: 3 . [|e| e :=(b at: 1). (e >= $0 and: [ e <= $9]) ifTrue:[ b := b asInteger ]]value.
-c := aCollection at: 5 . 
-"output parse is strings - a could be a number in string form - huh"
+a := aCollection at: 1 . [|e| e :=(a at: 1). (e >= $0 and: [ e <= $9]) ifTrue:[ a := a asInteger ] ifFalse:[ a := a asSymbol ]]value.
+b := aCollection at: 3 . [|e| e :=(b at: 1). (e >= $0 and: [ e <= $9]) ifTrue:[ b := b asInteger ] ifFalse:[ b := b asSymbol ]]value.
+c := aCollection at: 5 . c := c asSymbol. "would we ever expect c to be a number? a AND b -> 3  ??"
+"output parse is strings - a could be a number or a symbol such as 'lf' - huh"
 "add a deferred computation "
-self addRule: [ | condition va vb vc |
-	condition := self isKnown: a and: [ self isKnown: b ].
-	"a is a number and b is symbol "
-	"a is a symbol and b is a symbol"
-	vc := va andBit: vb 
+self addRule: [ | condition va vb vc known |
+	"known if either already given integer or lookup in dictionary is an integer"
+	known := [ :s | s isInteger or: [ (dict at: s) isInteger]].	
+	condition := (known value: a) and: [ (known value: b) ].
+	"a is : number or known symbol "
+	"b is : number or known symbol "
+	vc := va andBit: vb .
+	dict at: c put: vc .
+	"show us the progress in transcript"
+	Transcript show: 'computed ' , aCollection printString , ' :: ' , c printString , ' => ' , vc printString ; cr.	
 	].
-
-	
-
 "16 bit radix FF"
 "16rFF"
-
 
 ]
 
@@ -581,6 +618,34 @@ AOC2015Day7 >> puzzlePart2 [
 ^ ' --- Part Two ---
 Now, take the signal you got on wire a, override wire b to that signal, and reset the other wires (including wire a). What new signal is ultimately provided to wire a?
 '
+
+]
+
+{ #category : 'initialization' }
+AOC2015Day7 >> reset [
+ dict := Dictionary new.
+ rules := OrderedCollection new.
+
+
+]
+
+{ #category : 'initialization' }
+AOC2015Day7 >> rules [
+^ rules 
+ 
+
+
+
+]
+
+{ #category : 'initialization' }
+AOC2015Day7 >> runRules [
+"run each rule "
+ rules do: [ :rule | rule value ] .
+
+
+
+
 
 ]
 
