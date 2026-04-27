@@ -82,7 +82,8 @@ self addRule: [ | condition va vb vc known |
 	condition := (known value: a) and: [ (known value: b) ].
 	"a is : number or known symbol "
 	"b is : number or known symbol "
-	vc := va andBit: vb .
+	vc := va andBit: vb . "<<<--- currently why va vb are nil ?? "
+	"nil and: [ nil ] .  <<< can we eliminate nil ? "
 	dict at: c put: vc .
 	"show us the progress in transcript"
 	Transcript show: 'computed ' , aCollection printString , ' :: ' , c printString , ' => ' , vc printString ; cr.	
