@@ -10,7 +10,7 @@ Class {
 	#name : 'AOC2015Day7Node',
 	#superclass : 'Object',
 	#instVars : [
-		'dict',
+		'children',
 		'ready',
 		'val'
 	],
@@ -19,8 +19,31 @@ Class {
 }
 
 { #category : 'initialization' }
-AOC2015Day7Node >> addDependent: x [
- dict add: x .
+AOC2015Day7Node >> addChild: x [
+ children add: x .
+
+ 
+
+]
+
+{ #category : 'initialization' }
+AOC2015Day7Node >> children [
+ ^ children
+
+
+
+
+ 
+
+]
+
+{ #category : 'initialization' }
+AOC2015Day7Node >> children: aCollection [
+ children := aCollection 
+
+
+
+
 
  
 
@@ -33,20 +56,20 @@ AOC2015Day7Node >> compute [
 ]
 
 { #category : 'initialization' }
-AOC2015Day7Node >> dependents [ 
- ^ dict
+AOC2015Day7Node >> initialize [ 
+ children := OrderedCollection new.
+ ready := false.
+ val := nil .
 
 
 
- 
+
 
 ]
 
 { #category : 'initialization' }
-AOC2015Day7Node >> initialize [ 
- dict := Dictionary new.
- ready := false.
- val := nil .
+AOC2015Day7Node >> isNode [ 
+ ^ true
 
 
 

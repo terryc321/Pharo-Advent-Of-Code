@@ -35,7 +35,8 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'dict',
-		'rules'
+		'rules',
+		'children'
 	],
 	#category : 'AdventCode',
 	#package : 'AdventCode'
@@ -46,6 +47,13 @@ AOC2015Day7 >> addRule: rule [
  rules add: rule .
 
 
+
+
+]
+
+{ #category : 'accessing' }
+AOC2015Day7 >> children [ 
+ ^ children
 
 
 ]
@@ -69,62 +77,101 @@ AOC2015Day7 >> initialize [
 
 { #category : 'accessing' }
 AOC2015Day7 >> interAnd: aCollection [
-"#lf #AND #ge #-> #hf"
+
 	| a b c |
-	a := aCollection at: 1.
+	a := aCollection at: 1. "a will be symbol or integer"
 	b := aCollection at: 3.
 	c := aCollection at: 5.
-	a isSymbol ifTrue:[ dict at: a put: nil ] . 
-	b isSymbol ifTrue:[ dict at: b put: nil ] . 
-   c isSymbol ifTrue:[ dict at: c put: nil ] . 		
-	self addRule: [
-			| va vb |
-			(self isDetermined: c) ifFalse: [
-					(self isDetermined: a) ifTrue: [
-							va := self valueOf: a.
-							(self isDetermined: b) ifTrue: [
-									vb := self valueOf: b. "both va vb now known"
-									dict at: c put: (va bitAnd: vb) ] ] ] ]
-					
-				
+	c isSymbol ifTrue: [
+			| t |
+			t := AOC2015Day7AndNode new.
+			t addChild: a.
+			t addChild: b.
+			dict at: c put: t ]
+		
+	
 ]
 
 { #category : 'accessing' }
 AOC2015Day7 >> interAssign: aCollection [
-"#lf #-> #ge"
-	| a b |
+	"#lf -> #gf"
+
+	| a c |
 	a := aCollection at: 1.
+	c := aCollection at: 3.
+	(c isSymbol) ifTrue: [
+			| t |
+			t := AOC2015Day7AssignNode new.
+			t val: a.
+			dict at: c put: t ]
+		
+		
+		
+	
+]
+
+{ #category : 'accessing' }
+AOC2015Day7 >> interLShift: aCollection [
+	"#lf #LSHIFT #ge #-> #hf ; really should be HF node is determined from LF and GE nodes"
+
+	| a b c |
+	a := aCollection at: 1. "a will be symbol or integer"
 	b := aCollection at: 3.
-	a isSymbol ifTrue:[ dict at: a put: nil ] . 
-	b isSymbol ifTrue:[ dict at: b put: nil ] . 
-	self addRule: [
-			| va |
-			(self isDetermined: b) ifFalse: [
-					(self isDetermined: a) ifTrue: [
-							va := self valueOf: a.
-							dict at: b put: va ]]].
-					
-					
-				
+	c := aCollection at: 5.
+	(c isSymbol) ifTrue: [
+			| t |
+			t := AOC2015Day7LShiftNode new.
+			t addDependent: a.
+			t addDependent: b.
+			dict at: c put: t ]
+		
+	
+]
+
+{ #category : 'accessing' }
+AOC2015Day7 >> interNot: aCollection [
+	"#NOT #lf -> #bc"
+
+	| a c |
+	a := aCollection at: 2.
+	c := aCollection at: 3.
+	c isSymbol ifTrue: [
+			| t |
+			t := AOC2015Day7NotNode new.
+			t addDependent: a.
+			dict at: c put: t ]
 ]
 
 { #category : 'accessing' }
 AOC2015Day7 >> interOr: aCollection [
+	"#lf #AND #ge #-> #hf ; really should be HF node is determined from LF and GE nodes"
 
 	| a b c |
-	a := aCollection at: 1.
+	a := aCollection at: 1. "a will be symbol or integer"
 	b := aCollection at: 3.
 	c := aCollection at: 5.
-	self addRule: [
-			| va vb |
-			(self isDetermined: c) ifFalse: [
-					(self isDetermined: a) ifTrue: [
-							va := self valueOf: a.
-							(self isDetermined: b) ifTrue: [
-									vb := self valueOf: b. "both va vb now known"
-									dict at: c put: (va bitOr: vb) ] ] ] ]
-					
-				
+	c isSymbol ifTrue: [
+			| t |
+			t := AOC2015Day7OrNode new.
+			t addDependent: a.
+			t addDependent: b.
+			dict at: c put: t ]
+]
+
+{ #category : 'accessing' }
+AOC2015Day7 >> interRShift: aCollection [
+	"#lf #RSHIFT #ge #-> #hf ; really should be HF node is determined from LF and GE nodes"
+
+	| a b c |
+	a := aCollection at: 1. "a will be symbol or integer"
+	b := aCollection at: 3.
+	c := aCollection at: 5.
+	c isSymbol ifTrue: [
+			| t |
+			t := AOC2015Day7RShiftNode new.
+			t addDependent: a.
+			t addDependent: b.
+			dict at: c put: t ]
 ]
 
 { #category : 'testing' }

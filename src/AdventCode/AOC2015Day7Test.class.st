@@ -45,7 +45,8 @@ AOC2015Day7Test >> testParseAssign [
 	self assert: (p at: 3) = #gf.
 	
 	aoc parse: '3 -> ge'.
-	self assert: (aoc dict at: #ge) = 3.
+	self assert: (aoc dict at: #ge) isNode.
+	
 
 ]
 
