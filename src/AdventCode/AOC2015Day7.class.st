@@ -344,8 +344,8 @@ so may only be one number '1' node represent integer 1 , but many nodes may have
 					a := out at: 1.
 					b := out at: 3.
 					c := out at: 5.
-					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7Node new. node val: a. node ] value) ].
-					b isInteger ifTrue: [dict at: b put: ([ |node| node := AOC2015Day7Node new. node val: b. node ] value) ].
+					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7NumNode new. node val: a. node ] value) ].
+					b isInteger ifTrue: [dict at: b put: ([ |node| node := AOC2015Day7NumNode new. node val: b. node ] value) ].
 					dict at: c put: ([ |node| node := AOC2015Day7AndNode new. node addChild: a. node addChild: b. node ] value).
 					ok := true.
 					]. "#x #OR #y -> #z"
@@ -355,8 +355,8 @@ so may only be one number '1' node represent integer 1 , but many nodes may have
 					a := out at: 1.
 					b := out at: 3.
 					c := out at: 5.
-					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7Node new. node val: a. node ] value) ].
-					b isInteger ifTrue: [dict at: b put: ([ |node| node := AOC2015Day7Node new. node val: b. node ] value) ].					
+					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7NumNode new. node val: a. node ] value) ].
+					b isInteger ifTrue: [dict at: b put: ([ |node| node := AOC2015Day7NumNode new. node val: b. node ] value) ].					
 					dict at: c put: ([ |node| node := AOC2015Day7OrNode new. node addChild: a. node addChild: b. node ] value).
 					ok := true. ]. "#x #RSHIFT #y -> #z"
 			out := self parseLShift: in.
@@ -365,8 +365,8 @@ so may only be one number '1' node represent integer 1 , but many nodes may have
 					a := out at: 1.
 					b := out at: 3.
 					c := out at: 5.
-					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7Node new. node val: a. node ] value) ].
-					b isInteger ifTrue: [dict at: b put: ([ |node| node := AOC2015Day7Node new. node val: b. node ] value) ].										
+					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7NumNode new. node val: a. node ] value) ].
+					b isInteger ifTrue: [dict at: b put: ([ |node| node := AOC2015Day7NumNode new. node val: b. node ] value) ].										
 					dict at: c put: ([ |node| node := AOC2015Day7LShiftNode new. node addChild: a. node addChild: b. node ] value).
 					ok := true. ]. "#x #LSHIFT #y -> #z"
 			out := self parseRShift: in.
@@ -375,8 +375,8 @@ so may only be one number '1' node represent integer 1 , but many nodes may have
 					a := out at: 1.
 					b := out at: 3.
 					c := out at: 5.
-					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7Node new. node val: a. node ] value) ].
-					b isInteger ifTrue: [dict at: b put: ([ |node| node := AOC2015Day7Node new. node val: b. node ] value) ].					
+					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7NumNode new. node val: a. node ] value) ].
+					b isInteger ifTrue: [dict at: b put: ([ |node| node := AOC2015Day7NumNode new. node val: b. node ] value) ].					
 					dict at: c put: ([ |node| node := AOC2015Day7RShiftNode new. node addChild: a. node addChild: b. node ] value).
 					ok := true. ]. "#NOT #x -> #y"
 			out := self parseNot: in.
@@ -384,7 +384,7 @@ so may only be one number '1' node represent integer 1 , but many nodes may have
 					| a b |
 					a := out at: 2.
 					b := out at: 4.
-					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7Node new. node val: a. node ] value) ].
+					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7NumNode new. node val: a. node ] value) ].
 					dict at: b put: ([ |node| node := AOC2015Day7NotNode new. node addChild: a. node ] value).
 					ok := true. ]. "#x -> #y"
 			out := self parseAssign: in.
@@ -392,7 +392,7 @@ so may only be one number '1' node represent integer 1 , but many nodes may have
 					| a b |
 					a := out at: 1.
 					b := out at: 3.
-					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7Node new. node val: a. node ] value) ].
+					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7NumNode new. node val: a. node ] value) ].
 					dict at: b put: ([ |node| node := AOC2015Day7AssignNode new. node addChild: a. node ] value).
 					ok := true. ].
 			ok ifFalse: [ Error signal: 'parse not handled' ] ].
