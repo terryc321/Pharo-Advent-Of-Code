@@ -68,9 +68,79 @@ AOC2015Day7Node >> initialize [
 ]
 
 { #category : 'initialization' }
+AOC2015Day7Node >> isAndNode [ 
+ ^ false
+
+
+
+]
+
+{ #category : 'initialization' }
+AOC2015Day7Node >> isAssignNode [ 
+ ^ false
+
+
+
+]
+
+{ #category : 'initialization' }
+AOC2015Day7Node >> isLShiftNode [ 
+ ^ false
+
+
+
+]
+
+{ #category : 'initialization' }
 AOC2015Day7Node >> isNode [ 
  ^ true
 
+
+
+]
+
+{ #category : 'initialization' }
+AOC2015Day7Node >> isNotNode [ 
+ ^ false
+
+
+
+]
+
+{ #category : 'initialization' }
+AOC2015Day7Node >> isNumNode [ 
+ ^ false
+
+
+
+]
+
+{ #category : 'initialization' }
+AOC2015Day7Node >> isOrNode [ 
+ ^ false
+
+
+
+]
+
+{ #category : 'initialization' }
+AOC2015Day7Node >> isRShiftNode [ 
+ ^ false
+
+
+
+]
+
+{ #category : 'accessing' }
+AOC2015Day7Node >> left [
+ children at: 1
+
+
+]
+
+{ #category : 'accessing' }
+AOC2015Day7Node >> left: x [ 
+ children at: 1 put: x 
 
 
 ]
@@ -86,6 +156,20 @@ AOC2015Day7Node >> ready: x [
 
 ]
 
+{ #category : 'accessing' }
+AOC2015Day7Node >> right [
+ children at: 2
+
+
+]
+
+{ #category : 'accessing' }
+AOC2015Day7Node >> right: x [ 
+ children at: 2 put: x 
+
+
+]
+
 { #category : 'initialization' }
 AOC2015Day7Node >> val [
  ^ val
@@ -97,7 +181,10 @@ AOC2015Day7Node >> val [
 
 { #category : 'initialization' }
 AOC2015Day7Node >> val: x [
- val := x 
+ val := x .
+ ready := true.
+
+
 
 
 

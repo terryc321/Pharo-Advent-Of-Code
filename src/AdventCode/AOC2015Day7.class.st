@@ -1,4 +1,12 @@
 "
+```language=Pharo
+aoc := AOC2015Day7 new.
+aoc parsePass: (aoc puzzleInput).
+(aoc dict at: #a) compute.
+```
+
+
+
 requires petitparser2 if going to run these - until we can write the equivalent in smalltalk
 parsing should really take care of whether 'lf' becomes a symbol #lf , and whether '123' becomes integer 123.
 dict instance variable = symbol values #lf can be nil undefined or should have a numerical value 0 to 65535 inclusive 16bit
@@ -301,8 +309,11 @@ AOC2015Day7 >> parseOr: input [
 
 { #category : 'as yet unclassified' }
 AOC2015Day7 >> parsePass: inputLines [
-	"for given input try each of the parsers in turn until throw the towel in. 
- 1 parseAnd 2parseOr 3parseLShift 4parseRShift 5parseAssign 6parseNot"
+"for given input try each of the parsers in turn until throw the towel in. 
+ 1 parseAnd 2parseOr 3parseLShift 4parseRShift 5parseAssign 6parseNot
+in this game , nodes point back towards their dependencies . 
+so may only be one number '1' node represent integer 1 , but many nodes may have this node as either left or right child - ok.
+"
 
 	| out ok |
 	self reset.
@@ -368,18 +379,69 @@ AOC2015Day7 >> parsePass: inputLines [
 			ok ifFalse: [ Error signal: 'parse not handled' ] ].
 		 "pass 2" 
 		
-self halt.
-		
-"ok := false.
-inputLines do: [ :in | 
-out := self parseAnd: in. out className = 'Array' ifTrue:[	self interAnd2: out. ok := true ].
-out := self parseOr: in. out className = 'Array' ifTrue:[	self interOr2: out. ok := true ].	
-out := self parseNot: in. out className = 'Array' ifTrue:[	self interNot2: out. ok := true ].			
-out := self parseLShift: in. out className = 'Array' ifTrue:[	self interLShift2: out. ok := true ].			
-out := self parseRShift: in. out className = 'Array' ifTrue:[	self interRShift2: out. ok := true ].												
-out := self parseAssign: in. out className = 'Array' ifTrue:[	self interAssign2: out. ok := true ].													
-ok ifFalse: [ Error signal: 'parse not handled' ]].
-"
+	inputLines do: [ :in |
+			ok := false. 
+			out := self parseAnd: in.
+			out className = 'Array' ifTrue: [
+					| a b c node |
+					a := out at: 1.
+					b := out at: 3.
+					c := out at: 5.
+					node := dict at: c.
+					node left: (dict at: a).
+					node right: (dict at: b).
+					ok := true.
+					]. "#x #OR #y -> #z"
+			out := self parseOr: in.
+			out className = 'Array' ifTrue: [
+					| a b c node |
+					a := out at: 1.
+					b := out at: 3.
+					c := out at: 5.
+					node := dict at: c.
+					node left: (dict at: a).
+					node right: (dict at: b).
+					ok := true. ]. "#x #RSHIFT #y -> #z"
+			out := self parseLShift: in.
+			out className = 'Array' ifTrue: [
+					| a b c node |
+					a := out at: 1.
+					b := out at: 3.
+					c := out at: 5.
+					node := dict at: c.
+					node left: (dict at: a).
+					node right: (dict at: b).
+					ok := true. ]. "#x #LSHIFT #y -> #z"
+			out := self parseRShift: in.
+			out className = 'Array' ifTrue: [
+					| a b c node |
+					a := out at: 1.
+					b := out at: 3.
+					c := out at: 5.
+					node := dict at: c.
+					node left: (dict at: a).
+					node right: (dict at: b).
+					ok := true. ]. "#NOT #x -> #y"
+			out := self parseNot: in.
+			out className = 'Array' ifTrue: [
+					| a b node |
+					a := out at: 2.
+					b := out at: 4.
+					node := dict at: b.
+					node left: (dict at: a).
+					ok := true. ]. "#x -> #y"
+			out := self parseAssign: in.
+			out className = 'Array' ifTrue: [
+					| a b node |
+					a := out at: 1.
+					b := out at: 3.
+					node := dict at: b.
+					node left: (dict at: a).
+					ok := true. ].
+			ok ifFalse: [ Error signal: 'parse not handled' ] ].
+
+
+
 ]
 
 { #category : 'as yet unclassified' }
@@ -842,6 +904,12 @@ AOC2015Day7 >> solution1Part1 [
 AOC2015Day7 >> solution1Part2 [
 
 	^ self notYetImplemented
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day7 >> solve1: node [
+
+
 ]
 
 { #category : 'testing' }
