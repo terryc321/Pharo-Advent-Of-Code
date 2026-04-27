@@ -35,8 +35,8 @@ Class {
 AOC2015Day7 >> interAnd: aCollection [ 
 "a AND b -> c"
 |a b c |
-a := aCollection at: 1 .
-b := aCollection at: 3 .
+a := aCollection at: 1 . [|e| e :=(a at: 1). (e >= $0 and: [ e <= $9]) ifTrue:[ a := a asInteger ]]value.
+b := aCollection at: 3 . [|e| e :=(b at: 1). (e >= $0 and: [ e <= $9]) ifTrue:[ b := b asInteger ]]value.
 c := aCollection at: 5 . 
 "output parse is strings - a could be a number in string form - huh"
 "add a deferred computation "
