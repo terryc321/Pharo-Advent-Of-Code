@@ -71,9 +71,9 @@ AOC2015Day7 >> initialize [
 AOC2015Day7 >> interAnd: aCollection [ 
 "a AND b -> c"
 |a b c |
-a := aCollection at: 1 . [|e| e :=(a at: 1). (e >= $0 and: [ e <= $9]) ifTrue:[ a := a asInteger ] ifFalse:[ a := a asSymbol ]]value.
-b := aCollection at: 3 . [|e| e :=(b at: 1). (e >= $0 and: [ e <= $9]) ifTrue:[ b := b asInteger ] ifFalse:[ b := b asSymbol ]]value.
-c := aCollection at: 5 . c := c asSymbol. "would we ever expect c to be a number? a AND b -> 3  ??"
+a := aCollection at: 1 .
+b := aCollection at: 3 .
+c := aCollection at: 5 . 
 "output parse is strings - a could be a number or a symbol such as 'lf' - huh"
 "add a deferred computation "
 self addRule: [ | condition va vb vc known |
@@ -95,6 +95,36 @@ self addRule: [ | condition va vb vc known |
 "16 bit radix FF"
 "16rFF"
 
+]
+
+{ #category : 'accessing' }
+AOC2015Day7 >> interAssign: aCollection [ 
+"a -> b "
+|a b c vc |
+a := aCollection at: 1 . 
+b := aCollection at: 3 . 
+
+
+self addRule: [ | condition va vb known |
+	condition := (known value: a). 
+
+	(known value: a) ifTrue: [ va := a ].
+	condition ifTrue:[ "both va vb known - compute vc"
+	vb := va.
+	dict at: b put: vb .
+	"show us the progress in transcript"
+	Transcript show: 'computed ' , aCollection printString , ' :: ' , c printString , ' => ' , vc printString ; cr.	
+		].
+	].
+"16 bit radix FF"
+"16rFF"
+
+]
+
+{ #category : 'testing' }
+AOC2015Day7 >> isDetermined: symOrInt [ 
+
+^ true 
 ]
 
 { #category : 'initialization' }
@@ -152,9 +182,9 @@ AOC2015Day7 >> parseAssign: input [
 	impliesOp := '->' asPParser trim.
 	expression := variable , impliesOp , variable ==> [ :nodes |
 		              {
-			              nodes first.
+			              nodes first asSymbolOrInteger .
 			              nodes second.
-			              nodes third
+			              nodes third asSymbolOrInteger
 			} ].
 
 	^ expression parse: input
@@ -169,11 +199,11 @@ AOC2015Day7 >> parseLShift: input [
 	impliesOp := '->' asPParser trim.
 	expression := variable , op , variable , impliesOp , variable ==> [ :nodes |
 		              {
-			              nodes first.
+			              nodes first asSymbolOrInteger.
 			              nodes second.
-			              nodes third.
+			              nodes third asSymbolOrInteger.
 			              nodes fourth.
-			              nodes fifth } ].
+			              nodes fifth asSymbolOrInteger } ].
 
 	^ expression parse: input
 ]
@@ -188,9 +218,9 @@ AOC2015Day7 >> parseNot: input [
 	expression := notOp , variable , impliesOp , variable ==> [ :nodes |
 		              {
 			              nodes first.
-			              nodes second.
+			              nodes second asSymbolOrInteger.
 			              nodes third.
-			              nodes fourth
+			              nodes fourth asSymbolOrInteger
 			} ].
 
 	^ expression parse: input
@@ -205,11 +235,11 @@ AOC2015Day7 >> parseOr: input [
 	impliesOp := '->' asPParser trim.
 	expression := variable , op , variable , impliesOp , variable ==> [ :nodes |
 		              {
-			              nodes first.
+			              nodes first asSymbolOrInteger.
 			              nodes second.
-			              nodes third.
+			              nodes third asSymbolOrInteger.
 			              nodes fourth.
-			              nodes fifth } ].
+			              nodes fifth asSymbolOrInteger} ].
 
 	^ expression parse: input
 ]
@@ -223,11 +253,11 @@ AOC2015Day7 >> parseRShift: input [
 	impliesOp := '->' asPParser trim.
 	expression := variable , op , variable , impliesOp , variable ==> [ :nodes |
 		              {
-			              nodes first.
+			              nodes first asSymbolOrInteger.
 			              nodes second.
-			              nodes third.
-			              nodes fourth.
-			              nodes fifth } ].
+			              nodes third asSymbolOrInteger.
+			              nodes fourth .
+			              nodes fifth asSymbolOrInteger } ].
 
 	^ expression parse: input
 ]
