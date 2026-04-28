@@ -114,7 +114,7 @@ AOC2015Day7Node >> compute [
 
 ]
 
-{ #category : 'initialization' }
+{ #category : 'ini' }
 AOC2015Day7Node >> initialize [ 
  children := Dictionary new.
  ready := false.
