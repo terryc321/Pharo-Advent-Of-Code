@@ -117,8 +117,11 @@ AOC2015Day7Node >> compute [
 { #category : 'initialization' }
 AOC2015Day7Node >> initialize [ 
  children := OrderedCollection new.
+ children add: nil.
+ children add: nil.
  ready := false.
  val := nil .
+
 
 
 
