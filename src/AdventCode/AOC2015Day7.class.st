@@ -1,15 +1,12 @@
 "
 ```language=Pharo
 aoc := AOC2015Day7 new.
-lines := aoc parseInput.   ""<<- collection of lines already !""
-lines do: [:line | 	aoc parseLine: line ]. ""makes nodes""
-lines do: [:line | 	aoc parseLine2: line ]. ""connects nodes""
-	
-
-aoc parsePass: (aoc puzzleInput).
-aoc computePass: #a.
+lines := (aoc puzzleInput).
+lines do: [ :aline | aoc parseLine: aline  ].
 aoc.
-aoc dict at: #a . ""examine result stored in a ""
+lines do: [ :aline | aoc parseLine2: aline  ].
+aoc parseLine3.
+aoc. ""<<--- aoc now has a complete graph built all using AOC2015Day7Node or subclasses theof.""
 ```
 
 
@@ -333,35 +330,27 @@ AOC2015Day7 >> dict [
 { #category : 'examples' }
 AOC2015Day7 >> example1 [
 <script: 'node first example'>
-|n1 n2 n3 boxes canvas data|
-n1 := AOC2015Day7Node new.
-n2 := AOC2015Day7Node new.
-n3 := AOC2015Day7Node new.
-n1  left: n2.
-n1 right: n3.
-data := Collection withAllSubclasses .
-boxes := data collect: [ :class | 
-	 RSBox new model: class ; popup ; draggable ; yourself ].
+|nodes boxes canvas lines|
+"trigger - thinking is a mans game"
+lines := (self puzzleInput).
+lines do: [ :aline | self parseLine: aline  ].
+lines do: [ :aline | self parseLine2: aline  ].
+self parseLine3.
 
-"boxes := {  RSBox new model: n1 ; popup ; draggable ; yourself . 
-				RSBox new model: n2 ; popup ; draggable ; yourself . 
-				RSBox new model: n3 ; popup ; draggable ; yourself 
-				}.
-"				
+
+nodes := (dict asOrderedCollection) .
+boxes := OrderedCollection new.
+nodes do: [ :node |
+	boxes add: (RSBox new model: node ; color: Color blue; size: 5 ; popup ; draggable ; yourself
+	)].
 canvas := RSCanvas new.
 canvas addAll: boxes.
-"normalize"				
-"line builder"				
-RSLineBuilder orthoVertical withVerticalAttachPoint ; shapes: boxes ; connectTo: #children .
-"layout"				
+RSLineBuilder orthoVertical withVerticalAttachPoint ; shapes: boxes ; connectTo: #left.
+RSLineBuilder orthoVertical withVerticalAttachPoint ; shapes: boxes ; connectTo: #right.
 RSTreeLayout on: boxes.
-"give it control"
 canvas @ RSCanvasController .
 ^ canvas.
 
-
-				
-			
 ]
 
 { #category : 'initialization' }
@@ -703,9 +692,13 @@ coll := dict asOrderedCollection .
 coll do: [ :node |  
 	| a b |
 	a := (node left).
-	a isInteger ifTrue: [ node left: [ | n| n := AOC2015Day7NumNode new. n val: a. n title: ('Num(' , a printString ,')')] value ] .
+	a isInteger ifTrue: [ 
+		Transcript show: 'fixing integer to numnode on node left =>' ; show: node ; cr.
+		node left: [ | n| n := AOC2015Day7NumNode new. n val: a. n title: ('Num(' , a printString ,')')] value ] .
 	b := (node right).
-	b isInteger ifTrue: [ node right: [ | n| n := AOC2015Day7NumNode new. n val: b. n title: ('Num(' , b printString ,')')] value ]
+	b isInteger ifTrue: [ 
+			Transcript show: 'fixing integer to numnode on node right =>' ; show: node ; cr.
+		node right: [ | n| n := AOC2015Day7NumNode new. n val: b. n title: ('Num(' , b printString ,')')] value ]
 	].
 
 
