@@ -116,11 +116,10 @@ AOC2015Day7Node >> compute [
 
 { #category : 'initialization' }
 AOC2015Day7Node >> initialize [ 
- children := OrderedCollection new.
- children add: nil.
- children add: nil. 
+ children := Dictionary new.
  ready := false.
  val := nil .
+
 
 
 
@@ -243,7 +242,8 @@ AOC2015Day7Node >> isRShiftNode [
 
 { #category : 'accessing' }
 AOC2015Day7Node >> left [
- children at: 1
+ children at: 1 ifAbsent: [ nil ].
+
 
 
 ]
@@ -270,7 +270,9 @@ AOC2015Day7Node >> ready: x [
 
 { #category : 'accessing' }
 AOC2015Day7Node >> right [
- children at: 2
+ children at: 2 ifAbsent: [ nil ].
+
+
 
 
 ]
