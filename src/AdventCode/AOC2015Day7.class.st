@@ -72,30 +72,31 @@ AOC2015Day7 >> children [
 
 { #category : 'as yet unclassified' }
 AOC2015Day7 >> computePass: aSymbol [
-"use parsePass before this. repeatedly compute all nodes until this node is ready"
-| targetNode allNodes  stop i |
-targetNode := self dict at: aSymbol.
-allNodes := (self dict) asOrderedCollection .
+	"use parsePass before this. repeatedly compute all nodes until this node is ready"
 
-stop := false.
-i := 0 .
-[ allNodes do: [ :node | 
-		 i := i + 1 .
-		      Processor yield. "give something else a change to run"
-				Transcript show: 'visiting node ' , i printString , ' =>' ; show: node ; cr.
-		(node ready) ifFalse: [node compute. (node ready)  ifTrue:[ 
-				Transcript show: 'computed =>' ; show: node ; cr.
-				stop := true ]].
-		]] doWhileTrue: [ (targetNode ready not) and: [ stop not]].
-^ self
+	| targetNode allNodes stop i |
+	targetNode := self dict at: aSymbol.
+	allNodes := self dict asOrderedCollection.
 
-
-
-
-
-
-
-
+	stop := false.
+	i := 0.
+	[ targetNode ready not and: [ stop not ] ] whileTrue: [
+			allNodes do: [ :node |
+					i := i + 1.
+					Processor yield. "give something else a change to run"
+					Transcript
+						show: 'visiting node ' , i printString , ' =>';
+						show: node;
+						cr.
+					node ready ifFalse: [
+							node compute.
+							node ready ifTrue: [
+									Transcript
+										show: 'computed =>';
+										show: node;
+										cr.
+									stop := true ] ] ] ].
+	^ self
 ]
 
 { #category : 'initialization' }
