@@ -143,6 +143,180 @@ AOC2015Day7 >> computePass: aSymbol [
 	^ self
 ]
 
+{ #category : 'as yet unclassified' }
+AOC2015Day7 >> connect: in [
+ | out ok | 
+ok := false.
+out := self parseAnd: in. out className = 'Array' ifTrue:[	self connectAnd: out. ok := true ].
+out := self parseOr: in. out className = 'Array' ifTrue:[	self connectOr: out. ok := true ].	
+out := self parseNot: in. out className = 'Array' ifTrue:[	self connectNot: out. ok := true ].			
+out := self parseLShift: in. out className = 'Array' ifTrue:[	self connectLShift: out. ok := true ].			
+out := self parseRShift: in. out className = 'Array' ifTrue:[	self connectRShift: out. ok := true ].												
+out := self parseAssign: in. out className = 'Array' ifTrue:[	self connectAssign: out. ok := true ].													
+ok ifFalse: [ Error signal: 'parse not handled' ].
+
+
+
+
+
+]
+
+{ #category : 'accessing' }
+AOC2015Day7 >> connectAnd: aCollection [
+
+	| node a b  c |
+	aCollection isArray ifFalse:[ ^ false].	
+	a := aCollection at: 1.
+   b := aCollection at: 3.
+	c := aCollection at: 5.
+	node := dict at: c. 
+	node title: c.
+	node left: (dict at: a).
+	node right: (dict at: b). 
+		
+^ true
+
+
+
+
+]
+
+{ #category : 'accessing' }
+AOC2015Day7 >> connectAssign: aCollection [
+
+	| node a b  c |
+	aCollection isArray ifFalse:[ ^ false].	
+		"#lf -> #lf"
+	a := aCollection at: 1.
+   b := aCollection at: 3.
+	node := dict at: b. 
+	node title: b.
+	node left: (dict at: a).
+		
+^ true
+
+
+
+
+]
+
+{ #category : 'accessing' }
+AOC2015Day7 >> connectBinary: aCollection [
+
+	| node a b  c |
+	aCollection isArray ifFalse:[ ^ false].	
+	a := aCollection at: 1.
+   b := aCollection at: 3.
+	c := aCollection at: 5.
+	node := dict at: c. 
+	node left: (dict at: a).
+	node right: (dict at: b). 
+		
+^ true
+
+
+
+
+]
+
+{ #category : 'accessing' }
+AOC2015Day7 >> connectLShift: aCollection [
+
+	| node a b  c |
+	aCollection isArray ifFalse:[ ^ false].	
+	a := aCollection at: 1.
+   b := aCollection at: 3.
+	c := aCollection at: 5.
+	node := dict at: c. 
+	node title: c.
+	node left: (dict at: a).
+	node right: (dict at: b). 
+		
+^ true
+
+
+
+
+]
+
+{ #category : 'accessing' }
+AOC2015Day7 >> connectNot: aCollection [
+
+	| node a b  c |
+	aCollection isArray ifFalse:[ ^ false].	
+		"#NOT #lf -> #gf"
+	a := aCollection at: 2.
+   b := aCollection at: 4.
+	node := dict at: b. 
+	node title: b.
+	node left: (dict at: a).
+		
+^ true
+
+
+
+
+]
+
+{ #category : 'accessing' }
+AOC2015Day7 >> connectOr: aCollection [
+
+	| node a b  c |
+	aCollection isArray ifFalse:[ ^ false].	
+	a := aCollection at: 1.
+   b := aCollection at: 3.
+	c := aCollection at: 5.
+	node := dict at: c. 
+	node title: c.
+	node left: (dict at: a).
+	node right: (dict at: b). 
+		
+^ true
+
+
+
+
+]
+
+{ #category : 'accessing' }
+AOC2015Day7 >> connectRShift: aCollection [
+
+	| node a b  c |
+	aCollection isArray ifFalse:[ ^ false].	
+	a := aCollection at: 1.
+   b := aCollection at: 3.
+	c := aCollection at: 5.
+	node := dict at: c. 
+	node title: c.
+	node left: (dict at: a).
+	node right: (dict at: b). 
+		
+^ true
+
+
+
+
+]
+
+{ #category : 'accessing' }
+AOC2015Day7 >> connectUnary: aCollection [
+
+	| node a b c |
+	aCollection isArray ifFalse:[ ^ false].	
+	a := aCollection at: 1.
+   b := aCollection at: 3.
+	c := aCollection at: 5.
+	node := dict at: c. 
+	node left: (dict at: a).
+	node right: (dict at: b). 
+		
+^ true
+
+
+
+
+]
+
 { #category : 'initialization' }
 AOC2015Day7 >> dict [ 
 ^ dict 
@@ -164,99 +338,93 @@ AOC2015Day7 >> initialize [
 AOC2015Day7 >> interAnd: aCollection [
 
 	| a b c |
-	a := aCollection at: 1. "a will be symbol or integer"
-	b := aCollection at: 3.
+	aCollection isArray ifFalse:[ ^ false].
+	a := aCollection at: 1.
+   b := aCollection at: 3.
 	c := aCollection at: 5.
-	c isSymbol ifTrue: [
-			| t |
-			t := AOC2015Day7AndNode new.
-			t addChild: a.
-			t addChild: b.
-			dict at: c put: t ]
-		
-	
+	a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7NumNode new. node val: a. node ] value) ].
+	b isInteger ifTrue: [dict at: b put: ([ |node| node := AOC2015Day7NumNode new. node val: b. node ] value) ].
+	dict at: c put: ([ |node| node := AOC2015Day7AndNode new. node addChild: a. node addChild: b. node ] value).
+^ true
+
+
+
+
 ]
 
 { #category : 'accessing' }
 AOC2015Day7 >> interAssign: aCollection [
-	"#lf -> #gf"
 
-	| a c |
+	| a b c |
+	aCollection isArray ifFalse:[ ^ false].
 	a := aCollection at: 1.
-	c := aCollection at: 3.
-	(c isSymbol) ifTrue: [
-			| t |
-			t := AOC2015Day7AssignNode new.
-			t val: a.
-			dict at: c put: t ]
-		
-		
-		
-	
+   b := aCollection at: 3.
+	a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7NumNode new. node val: a. node ] value) ].
+	dict at: c put: ([ |node| node := AOC2015Day7AssignNode new. node ] value).
+^ true
+
 ]
 
 { #category : 'accessing' }
 AOC2015Day7 >> interLShift: aCollection [
-	"#lf #LSHIFT #ge #-> #hf ; really should be HF node is determined from LF and GE nodes"
-
 	| a b c |
-	a := aCollection at: 1. "a will be symbol or integer"
-	b := aCollection at: 3.
+	aCollection isArray ifFalse:[ ^ false].
+	a := aCollection at: 1.
+   b := aCollection at: 3.
 	c := aCollection at: 5.
-	(c isSymbol) ifTrue: [
-			| t |
-			t := AOC2015Day7LShiftNode new.
-			t addDependent: a.
-			t addDependent: b.
-			dict at: c put: t ]
-		
-	
+	a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7NumNode new. node val: a. node ] value) ].
+	b isInteger ifTrue: [dict at: b put: ([ |node| node := AOC2015Day7NumNode new. node val: b. node ] value) ].
+	dict at: c put: ([ |node| node := AOC2015Day7LShiftNode new. node ] value).
+^ true
+
+
 ]
 
 { #category : 'accessing' }
 AOC2015Day7 >> interNot: aCollection [
 	"#NOT #lf -> #bc"
 
-	| a c |
+	| a b c |
+	aCollection isArray ifFalse:[ ^ false].
 	a := aCollection at: 2.
-	c := aCollection at: 3.
-	c isSymbol ifTrue: [
-			| t |
-			t := AOC2015Day7NotNode new.
-			t addDependent: a.
-			dict at: c put: t ]
+   b := aCollection at: 4.
+	a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7NumNode new. node val: a. node ] value) ].
+	dict at: b put: ([ |node| node := AOC2015Day7NotNode new. node ] value).
+^ true
+
 ]
 
 { #category : 'accessing' }
 AOC2015Day7 >> interOr: aCollection [
-	"#lf #AND #ge #-> #hf ; really should be HF node is determined from LF and GE nodes"
 
 	| a b c |
-	a := aCollection at: 1. "a will be symbol or integer"
-	b := aCollection at: 3.
+	aCollection isArray ifFalse:[ ^ false].
+	a := aCollection at: 1.
+   b := aCollection at: 3.
 	c := aCollection at: 5.
-	c isSymbol ifTrue: [
-			| t |
-			t := AOC2015Day7OrNode new.
-			t addDependent: a.
-			t addDependent: b.
-			dict at: c put: t ]
+	a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7NumNode new. node val: a. node ] value) ].
+	b isInteger ifTrue: [dict at: b put: ([ |node| node := AOC2015Day7NumNode new. node val: b. node ] value) ].
+	dict at: c put: ([ |node| node := AOC2015Day7OrNode new. node ] value).
+^ true
+
+
+
+
 ]
 
 { #category : 'accessing' }
 AOC2015Day7 >> interRShift: aCollection [
-	"#lf #RSHIFT #ge #-> #hf ; really should be HF node is determined from LF and GE nodes"
-
 	| a b c |
-	a := aCollection at: 1. "a will be symbol or integer"
-	b := aCollection at: 3.
+	aCollection isArray ifFalse:[ ^ false].
+	a := aCollection at: 1.
+   b := aCollection at: 3.
 	c := aCollection at: 5.
-	c isSymbol ifTrue: [
-			| t |
-			t := AOC2015Day7RShiftNode new.
-			t addDependent: a.
-			t addDependent: b.
-			dict at: c put: t ]
+	a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7NumNode new. node val: a. node ] value) ].
+	b isInteger ifTrue: [dict at: b put: ([ |node| node := AOC2015Day7NumNode new. node val: b. node ] value) ].
+	dict at: c put: ([ |node| node := AOC2015Day7RShiftNode new. node ] value).
+^ true
+
+
 ]
 
 { #category : 'testing' }
@@ -391,134 +559,12 @@ AOC2015Day7 >> parsePass: inputLines [
 in this game , nodes point back towards their dependencies . 
 so may only be one number '1' node represent integer 1 , but many nodes may have this node as either left or right child - ok.
 "
-
-	| out ok |
+	
 	self reset.
-	inputLines do: [ :in |
-			ok := false. "pass 1" "#lf #AND #bg -> #cd"
-			out := self parseAnd: in.
-			out className = 'Array' ifTrue: [
-					| a b c |
-					a := out at: 1.
-					b := out at: 3.
-					c := out at: 5.
-					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7NumNode new. node val: a. node ] value) ].
-					b isInteger ifTrue: [dict at: b put: ([ |node| node := AOC2015Day7NumNode new. node val: b. node ] value) ].
-					dict at: c put: ([ |node| node := AOC2015Day7AndNode new. node addChild: a. node addChild: b. node ] value).
-					ok := true.
-					]. "#x #OR #y -> #z"
-			out := self parseOr: in.
-			out className = 'Array' ifTrue: [
-					| a b c |
-					a := out at: 1.
-					b := out at: 3.
-					c := out at: 5.
-					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7NumNode new. node val: a. node ] value) ].
-					b isInteger ifTrue: [dict at: b put: ([ |node| node := AOC2015Day7NumNode new. node val: b. node ] value) ].					
-					dict at: c put: ([ |node| node := AOC2015Day7OrNode new. node addChild: a. node addChild: b. node ] value).
-					ok := true. ]. "#x #RSHIFT #y -> #z"
-			out := self parseLShift: in.
-			out className = 'Array' ifTrue: [
-					| a b c |
-					a := out at: 1.
-					b := out at: 3.
-					c := out at: 5.
-					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7NumNode new. node title: a .node val: a. node ] value) ].
-					b isInteger ifTrue: [dict at: b put: ([ |node| node := AOC2015Day7NumNode new. node title: b .node val: b. node ] value) ].										
-					dict at: c put: ([ |node| node := AOC2015Day7LShiftNode new. node title: c . node addChild: a. node addChild: b. node ] value).
-					ok := true. ]. "#x #LSHIFT #y -> #z"
-			out := self parseRShift: in.
-			out className = 'Array' ifTrue: [
-					| a b c |
-					a := out at: 1.
-					b := out at: 3.
-					c := out at: 5.
-					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7NumNode new. node title: a .node val: a. node ] value) ].
-					b isInteger ifTrue: [dict at: b put: ([ |node| node := AOC2015Day7NumNode new. node title: b .node val: b. node ] value) ].					
-					dict at: c put: ([ |node| node := AOC2015Day7RShiftNode new. node addChild: a. node title: c . node addChild: b. node ] value).
-					ok := true. ]. "#NOT #x -> #y"
-			out := self parseNot: in.
-			out className = 'Array' ifTrue: [
-					| a b |
-					a := out at: 2.
-					b := out at: 4.
-					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7NumNode new. node title: a .node val: a. node ] value) ].
-					dict at: b put: ([ |node| node := AOC2015Day7NotNode new. node title: b . node addChild: a. node ] value).
-					ok := true. ]. "#x -> #y"
-			out := self parseAssign: in.
-			out className = 'Array' ifTrue: [
-					| a b |
-					a := out at: 1.
-					b := out at: 3.
-					a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7NumNode new. node title: a . node val: a. node ] value) ].
-					dict at: b put: ([ |node| node := AOC2015Day7AssignNode new. node title: b .node addChild: a. node ] value).
-					ok := true. ].
-			ok ifFalse: [ Error signal: 'parse not handled' ] ].
-		 "pass 2" 
-		
-	inputLines do: [ :in |
-			ok := false. 
-			out := self parseAnd: in.
-			out className = 'Array' ifTrue: [
-					| a b c node |
-					a := out at: 1.
-					b := out at: 3.
-					c := out at: 5.
-					node := dict at: c.
-					node left: (dict at: a).
-					node right: (dict at: b).
-					ok := true.
-					]. "#x #OR #y -> #z"
-			out := self parseOr: in.
-			out className = 'Array' ifTrue: [
-					| a b c node |
-					a := out at: 1.
-					b := out at: 3.
-					c := out at: 5.
-					node := dict at: c.
-					node left: (dict at: a).
-					node right: (dict at: b).
-					ok := true. ]. "#x #RSHIFT #y -> #z"
-			out := self parseLShift: in.
-			out className = 'Array' ifTrue: [
-					| a b c node |
-					a := out at: 1.
-					b := out at: 3.
-					c := out at: 5.
-					node := dict at: c.
-					node left: (dict at: a).
-					node right: (dict at: b).
-					ok := true. ]. "#x #LSHIFT #y -> #z"
-			out := self parseRShift: in.
-			out className = 'Array' ifTrue: [
-					| a b c node |
-					a := out at: 1.
-					b := out at: 3.
-					c := out at: 5.
-					node := dict at: c.
-					node left: (dict at: a).
-					node right: (dict at: b).
-					ok := true. ]. "#NOT #x -> #y"
-			out := self parseNot: in.
-			out className = 'Array' ifTrue: [
-					| a b node |
-					a := out at: 2.
-					b := out at: 4.
-					node := dict at: b.
-					node left: (dict at: a).
-					ok := true. ]. "#x -> #y"
-			out := self parseAssign: in.
-			out className = 'Array' ifTrue: [
-					| a b node |
-					a := out at: 1.
-					b := out at: 3.
-					node := dict at: b.
-					node left: (dict at: a).
-					ok := true. ].
-			ok ifFalse: [ Error signal: 'parse not handled' ] ].
-
-
-
+	inputLines do: [ :in | self parse: in ] . 		
+	inputLines do: [ :in | self connect: in ].
+	
+	
 ]
 
 { #category : 'as yet unclassified' }

@@ -128,7 +128,7 @@ AOC2015Day7Node >> initialize [
 
 { #category : 'as yet unclassified' }
 AOC2015Day7Node >> inspectorFor: aBuilder [
-    <inspectorPresentationOrder: 0 title: 'Nodes'> 
+    <inspectorPresentationOrder: 9999 title: 'Nodes'> 
 	| canvas numbers marker |
 	canvas := RSCanvas new.
 	numbers := (1 to: 3) shuffled collect: [ :n |
@@ -165,8 +165,11 @@ AOC2015Day7Node >> inspectorFor: aBuilder [
 		toShapes: numbers;
 		connectTo: [ :n | n + 1 ].
 	RSSimpleForceBasedLayout on: numbers.
-	canvas @ RSCanvasController simple.	
-	^ canvas
+	canvas @ RSCanvasController simple.
+	^ (aBuilder instantiate: SpRoassalInspectorPresenter)
+		canvas: self canvas;
+		yourself	
+
 
 ]
 
