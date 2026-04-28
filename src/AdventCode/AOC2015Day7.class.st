@@ -77,7 +77,7 @@ AOC2015Day7 >> computePass: aSymbol [
 	| targetNode allNodes stop i |
 	targetNode := self dict at: aSymbol.
 	allNodes := self dict asOrderedCollection.
-   self halt.
+   
 	stop := false.
 	i := 0.
 	[ targetNode ready not and: [ stop not ] ] whileTrue: [
@@ -499,16 +499,16 @@ AOC2015Day7 >> parseRShift: input [
 AOC2015Day7 >> part1 [ 
 | progress | 
 progress := true .
-process := [ 
-  [ progress ] whileTrue: [ 
+process := [ self computePass: #a ] forkAt: Processor userBackgroundPriority.
+process name: 'My Background Process for day7'.
+
+  "[ progress ] whileTrue: [ 
     self computePass: #a.
     Transcript show: 'Running...'; cr.
     Processor yield.  
-    progress := false.  
-  ] 
-] forkAt: Processor userBackgroundPriority.
+    progress := false.  "  
 
-process name: 'My Background Process for day7'.
+
 
 
 

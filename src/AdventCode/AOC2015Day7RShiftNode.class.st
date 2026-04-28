@@ -9,9 +9,15 @@ Class {
 AOC2015Day7RShiftNode >> compute [ 
  "RSHIFT node left / right "
 	self ready ifTrue: [ ^ self val ].
+		Processor yield.
 	self left compute .
+		Processor yield.
 	self right compute.
+		Processor yield.
 	self val: ((self left val) bitShift: (0 - (self right val))).
+		Transcript show: 'computed ' , val printString , 'for RShift node ' , self printString.	
+	Processor yield.
+	
 	^ self val 
 
 

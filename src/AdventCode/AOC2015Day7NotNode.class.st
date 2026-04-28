@@ -9,8 +9,11 @@ Class {
 AOC2015Day7NotNode >> compute [ 
  "NOT node left "
 	self ready ifTrue: [ ^ self val ].
+		Processor yield.
 	self left compute .
 	self val: (self left val bitInvert).
+		Transcript show: 'computed ' , val printString , 'for NOT node ' , self printString.
+		Processor yield.
 	^ self val 
 	
 	

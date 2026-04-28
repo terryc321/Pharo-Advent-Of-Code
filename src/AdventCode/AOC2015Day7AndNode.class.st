@@ -9,9 +9,12 @@ Class {
 AOC2015Day7AndNode >> compute [
 	"AND node left / right "
 	self ready ifTrue: [ ^ self val ].
+	Processor yield.
 	self left compute .
 	self right compute.
-	self val: (self left val bitAnd: self right val).
+	self val: (self left val bitAnd: self right val).	
+	Transcript show: 'computed ' , val printString , 'for AND node ' , self printString.
+	Processor yield.
 	^ self val 
 	
 	

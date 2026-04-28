@@ -9,8 +9,11 @@ Class {
 AOC2015Day7AssignNode >> compute [ 
  "ASSIGN node left "
 	self ready ifTrue: [ ^ self val ].
+		Processor yield.
 	self left compute .
 	self val: (self left val).
+	Transcript show: 'computed ' , val printString , 'for Assign node ' , self printString.
+	Processor yield.
 	^ self val 
 
 
