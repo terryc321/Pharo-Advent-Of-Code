@@ -700,6 +700,8 @@ coll do: [ :node |
 			Transcript show: 'fixing integer to numnode on node right =>' ; show: node ; cr.
 		node right: [ | n| n := AOC2015Day7NumNode new. n val: b. n title: ('Num(' , b printString ,')')] value ]
 	].
+^ coll.
+
 
 
 ]

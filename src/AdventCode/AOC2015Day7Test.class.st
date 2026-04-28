@@ -112,6 +112,33 @@ AOC2015Day7Test >> testParseRShift [
 ]
 
 { #category : 'tests' }
+AOC2015Day7Test >> testPart1 [
+
+	| aoc lines |
+	aoc := AOC2015Day7 new.
+	lines := aoc puzzleInput.
+	lines do: [ :aline | aoc parseLine: aline ].
+	lines do: [ :aline | aoc parseLine2: aline ].
+	aoc parseLine3.
+	aoc dict at: #a.
+	self assert: (aoc dict at: #a) compute = 16076
+]
+
+{ #category : 'tests' }
+AOC2015Day7Test >> testPart2 [
+"over=ride b with result from part1 "
+	| aoc lines |
+	aoc := AOC2015Day7 new.
+	lines := aoc puzzleInput.
+	lines do: [ :aline | aoc parseLine: aline ].
+	lines do: [ :aline | aoc parseLine2: aline ].
+	aoc parseLine3.
+	(aoc dict at: #b) left val: 16076.
+	self assert: ((aoc dict at: #a) compute) = 2797 .
+	
+]
+
+{ #category : 'tests' }
 AOC2015Day7Test >> testSolution1Part1 [
 	self assert: (AOC2015Day5 new solution1Part1 = 280)  description: 'expect 280 answer'
 	
