@@ -625,8 +625,8 @@ out := self parseAnd: in. out className = 'Array' ifTrue:[
 		b := out at: 3.
 		c := out at: 5.
 		dk := dict at: c. "better be a node"
-		dk left: (dict at: a). 
-		dk right: (dict at: b).
+		dk left: (dict at: a).  dk left isSymbol ifTrue:[ dk left: (dict at: (dk left))].
+		dk right: (dict at: b). dk right isSymbol ifTrue:[ dk right: (dict at: (dk right))].
 		ok := true ].
 out := self parseOr: in. out className = 'Array' ifTrue:[	
 		"#lf OR #gf -> #he"
@@ -635,8 +635,8 @@ out := self parseOr: in. out className = 'Array' ifTrue:[
 		b := out at: 3.
 		c := out at: 5.
 		dk := dict at: c. "better be a node"
-		dk left: a. 
-		dk right: b.		
+		dk left: a.  dk left isSymbol ifTrue:[ dk left: (dict at: (dk left))].
+		dk right: b.	dk right isSymbol ifTrue:[ dk right: (dict at: (dk right))].	
 		ok := true ].	
 
 out := self parseLShift: in. out className = 'Array' ifTrue:[	
@@ -646,18 +646,18 @@ out := self parseLShift: in. out className = 'Array' ifTrue:[
 		b := out at: 3.
 		c := out at: 5.
 		dk := dict at: c. "better be a node"
-		dk left: a. 
-		dk right: b.
+		dk left: a. dk left isSymbol ifTrue:[ dk left: (dict at: (dk left))].
+		dk right: b. dk right isSymbol ifTrue:[ dk right: (dict at: (dk right))].
 		out. ok := true ].			
 out := self parseRShift: in. out className = 'Array' ifTrue:[	
 		"#lf RSHIFT #gf -> #he"
 		|a b c dk|
-		a := out at: 1.
+		a := out at: 1. 
 		b := out at: 3.
 		c := out at: 5.
 		dk := dict at: c. "better be a node"
-		dk left: a. 
-		dk right: b.
+		dk left: a.  dk left isSymbol ifTrue:[ dk left: (dict at: (dk left))].
+		dk right: b. dk right isSymbol ifTrue:[ dk right: (dict at: (dk right))].
 		ok := true ].												
 out := self parseAssign: in. out className = 'Array' ifTrue:[	
 		"#lf -> #he"
@@ -665,7 +665,7 @@ out := self parseAssign: in. out className = 'Array' ifTrue:[
 		a := out at: 1.
 		c := out at: 3.
 		dk := dict at: c. "better be a node"
-		dk left: a. 	
+		dk left: a. 	 dk left isSymbol ifTrue:[ dk left: (dict at: (dk left))].
 		ok := true ].													
 out := self parseNot: in. out className = 'Array' ifTrue:[	
 		"NOT #lf -> #he"
@@ -673,7 +673,7 @@ out := self parseNot: in. out className = 'Array' ifTrue:[
 		a := out at: 2.
 		c := out at: 4.
 		dk := dict at: c. "better be a node"
-		dk left: a. 
+		dk left: a.  dk left isSymbol ifTrue:[ dk left: (dict at: (dk left))].
 		ok := true ].			
 ok ifFalse: [ Error signal: 'parse not handled' ].
 
