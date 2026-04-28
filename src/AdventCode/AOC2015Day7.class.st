@@ -480,18 +480,75 @@ AOC2015Day7 >> lookup: aSymbol [
 ]
 
 { #category : 'as yet unclassified' }
-AOC2015Day7 >> parse: in [
- "for given input try each of the parsers in turn until throw the towel in. 
- 1 parseAnd 2parseOr 3parseLShift 4parseRShift 5parseAssign 6parseNot"
- | out ok | 
+AOC2015Day7 >> parse: lines [
+ "please give parse a collection of strings - typically from splitOn splitBy"
+ | out ok  | 
+dict := Dictionary new.
+lines do: [ :in | 
 ok := false.
-out := self parseAnd: in. out className = 'Array' ifTrue:[	self interAnd: out. ok := true ].
-out := self parseOr: in. out className = 'Array' ifTrue:[	self interOr: out. ok := true ].	
-out := self parseNot: in. out className = 'Array' ifTrue:[	self interNot: out. ok := true ].			
-out := self parseLShift: in. out className = 'Array' ifTrue:[	self interLShift: out. ok := true ].			
-out := self parseRShift: in. out className = 'Array' ifTrue:[	self interRShift: out. ok := true ].												
-out := self parseAssign: in. out className = 'Array' ifTrue:[	self interAssign: out. ok := true ].													
-ok ifFalse: [ Error signal: 'parse not handled' ].
+out := self parseAnd: in. out className = 'Array' ifTrue:[	
+		"#lf AND #gf -> #he"
+		|a b c|
+		a := out at: 1.
+		b := out at: 3.
+		c := out at: 5.
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [ dict at: a put: a ].
+		dict at: b ifPresent:[:v | ^v] ifAbsent: [ dict at: b put: b ].
+		dict at: c put: [ |n | n := AOC2015Day7AndNode new. 	n title: c; left: a ; right: b ; yourself] value.
+		ok := true ].
+out := self parseOr: in. out className = 'Array' ifTrue:[	
+		"#lf OR #gf -> #he"
+		|a b c|
+		a := out at: 1.
+		b := out at: 3.
+		c := out at: 5.
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [ dict at: a put: a ].
+		dict at: b ifPresent:[:v | ^v] ifAbsent: [ dict at: b put: b ].
+		dict at: c put: [ |n | n := AOC2015Day7OrNode new. 
+			n title: c; left: a ; right: b ; yourself] value.
+		ok := true ].	
+
+out := self parseLShift: in. out className = 'Array' ifTrue:[	
+		"#lf LSHIFT #gf -> #he"
+		|a b c|
+		a := out at: 1.
+		b := out at: 3.
+		c := out at: 5.
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [ dict at: a put: a ].
+		dict at: b ifPresent:[:v | ^v] ifAbsent: [ dict at: b put: b ].
+		dict at: c put: [ |n | n := AOC2015Day7LShiftNode new. 
+			n title: c; left: a ; right: b ; yourself] value.		
+		out. ok := true ].			
+out := self parseRShift: in. out className = 'Array' ifTrue:[	
+		"#lf RSHIFT #gf -> #he"
+		|a b c|
+		a := out at: 1.
+		b := out at: 3.
+		c := out at: 5.
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [ dict at: a put: a ].
+		dict at: b ifPresent:[:v | ^v] ifAbsent: [ dict at: b put: b ].
+		dict at: c put: [ |n | n := AOC2015Day7RShiftNode new. 
+			n title: c; left: a ; right: b ; yourself] value.				
+		ok := true ].												
+out := self parseAssign: in. out className = 'Array' ifTrue:[	
+		"#lf -> #he"
+		|a b c|
+		a := out at: 1.
+		c := out at: 3.
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [ dict at: a put: a ].
+		dict at: c put: [ |n | n := AOC2015Day7AssignNode new. 
+			n title: c; left: a ; yourself] value.				
+		ok := true ].													
+out := self parseNot: in. out className = 'Array' ifTrue:[	
+		"NOT #lf -> #he"
+		|a b c|
+		a := out at: 2.
+		c := out at: 4.
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [ dict at: a put: a ].
+		dict at: c put: [ |n | n := AOC2015Day7NotNode new. 
+			n title: c; left: a ; yourself] value.						
+		ok := true ].			
+ok ifFalse: [ Error signal: 'parse not handled' ]].
 
 
 
@@ -548,6 +605,81 @@ AOC2015Day7 >> parseLShift: input [
 			              nodes fifth asSymbolOrInteger } ].
 
 	^ expression parse: input
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day7 >> parseLine: in [
+ "please give parse a collection of strings - typically from splitOn splitBy"
+ | out ok  | 
+
+ok := false.
+out := self parseAnd: in. out className = 'Array' ifTrue:[	
+		"#lf AND #gf -> #he"
+		|a b c|
+		a := out at: 1.
+		b := out at: 3.
+		c := out at: 5.
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [ dict at: a put: a ].
+		dict at: b ifPresent:[:v | ^v] ifAbsent: [ dict at: b put: b ].
+		dict at: c put: [ |n | n := AOC2015Day7AndNode new. 	n title: c; left: a ; right: b ; yourself] value.
+		ok := true ].
+out := self parseOr: in. out className = 'Array' ifTrue:[	
+		"#lf OR #gf -> #he"
+		|a b c|
+		a := out at: 1.
+		b := out at: 3.
+		c := out at: 5.
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [ dict at: a put: a ].
+		dict at: b ifPresent:[:v | ^v] ifAbsent: [ dict at: b put: b ].
+		dict at: c put: [ |n | n := AOC2015Day7OrNode new. 
+			n title: c; left: a ; right: b ; yourself] value.
+		ok := true ].	
+
+out := self parseLShift: in. out className = 'Array' ifTrue:[	
+		"#lf LSHIFT #gf -> #he"
+		|a b c|
+		a := out at: 1.
+		b := out at: 3.
+		c := out at: 5.
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [ dict at: a put: a ].
+		dict at: b ifPresent:[:v | ^v] ifAbsent: [ dict at: b put: b ].
+		dict at: c put: [ |n | n := AOC2015Day7LShiftNode new. 
+			n title: c; left: a ; right: b ; yourself] value.		
+		out. ok := true ].			
+out := self parseRShift: in. out className = 'Array' ifTrue:[	
+		"#lf RSHIFT #gf -> #he"
+		|a b c|
+		a := out at: 1.
+		b := out at: 3.
+		c := out at: 5.
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [ dict at: a put: a ].
+		dict at: b ifPresent:[:v | ^v] ifAbsent: [ dict at: b put: b ].
+		dict at: c put: [ |n | n := AOC2015Day7RShiftNode new. 
+			n title: c; left: a ; right: b ; yourself] value.				
+		ok := true ].												
+out := self parseAssign: in. out className = 'Array' ifTrue:[	
+		"#lf -> #he"
+		|a b c|
+		a := out at: 1.
+		c := out at: 3.
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [ dict at: a put: a ].
+		dict at: c put: [ |n | n := AOC2015Day7AssignNode new. 
+			n title: c; left: a ; yourself] value.				
+		ok := true ].													
+out := self parseNot: in. out className = 'Array' ifTrue:[	
+		"NOT #lf -> #he"
+		|a b c|
+		a := out at: 2.
+		c := out at: 4.
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [ dict at: a put: a ].
+		dict at: c put: [ |n | n := AOC2015Day7NotNode new. 
+			n title: c; left: a ; yourself] value.						
+		ok := true ].			
+ok ifFalse: [ Error signal: 'parse not handled' ].
+
+
+
+
 ]
 
 { #category : 'as yet unclassified' }
