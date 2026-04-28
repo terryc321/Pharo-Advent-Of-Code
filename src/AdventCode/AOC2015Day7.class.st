@@ -71,6 +71,45 @@ AOC2015Day7 >> children [
 ]
 
 { #category : 'as yet unclassified' }
+AOC2015Day7 >> computePass2: aSymbol [
+	"use parsePass before this. repeatedly compute all nodes until this node is ready"
+
+	"| targetNode allNodes todo i |
+	targetNode := self dict at: aSymbol."
+	|allNodes| 
+	allNodes := self dict asOrderedCollection.
+
+	allNodes do: [ :node |
+			(node ready) ifFalse: [ "only if node is not ready. num node already "
+					node isAssignNode ifTrue: [
+							node left ready ifTrue: [
+									node val: node left val.
+									^ true ] ].
+					node isNotNode ifTrue: [
+							node left ready ifTrue: [
+									node val: node left val.
+									^ true ] ].
+
+					node isAndNode ifTrue: [
+							(node left ready and: [ node right ready ]) ifTrue: [
+									node val: node left val + node right val.
+									^ true ] ].
+					node isOrNode ifTrue: [
+							(node left ready and: [ node right ready ]) ifTrue: [
+									node val: node left val + node right val.
+									^ true ] ].
+					node isLShiftNode ifTrue: [
+							(node left ready and: [ node right ready ]) ifTrue: [
+									node val: node left val + node right val.
+									^ true ] ].
+					node isRShiftNode ifTrue: [
+							(node left ready and: [ node right ready ]) ifTrue: [
+									node val: node left val + node right val.
+									^ true ] ] ] ].
+					
+]
+
+{ #category : 'as yet unclassified' }
 AOC2015Day7 >> computePass: aSymbol [
 	"use parsePass before this. repeatedly compute all nodes until this node is ready"
 
