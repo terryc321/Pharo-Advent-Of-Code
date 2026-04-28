@@ -124,7 +124,7 @@ AOC2015Day7Node >> initialize [
 
 { #category : 'inspector' }
 AOC2015Day7Node >> inspectorFor: aBuilder [
-    <inspectorPresentationOrder: 0 title: 'Node'> 
+    <inspectorPresentationOrder: 9999 title: 'Node'> 
 |boxes nodes canvas |
 boxes := OrderedCollection new.
 nodes := { self } .
