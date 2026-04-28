@@ -81,6 +81,7 @@ stop := false.
 i := 0 .
 [ allNodes do: [ :node | 
 		 i := i + 1 .
+		      Processor yield. "give something else a change to run"
 				Transcript show: 'visiting node ' , i printString , ' =>' ; show: node ; cr.
 		(node ready) ifFalse: [node compute. (node ready)  ifTrue:[ 
 				Transcript show: 'computed =>' ; show: node ; cr.
@@ -495,9 +496,25 @@ AOC2015Day7 >> parseRShift: input [
 
 { #category : 'as yet unclassified' }
 AOC2015Day7 >> part1 [ 
- process := [self computePass: #a ] forkNamed: 'solving-part1'.
+process := [ 
+  [ true ] whileTrue: [ 
+    self computePass: #a.
+    Transcript show: 'Running...'; cr.
+    Processor yield.    
+  ] 
+] forkAt: Processor userBackgroundPriority.
+
+process name: 'My Background Process for day7'.
 
 
+
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day7 >> part1halt [
+"Later, to terminate it:"
+process terminate.
 
 ]
 
