@@ -80,7 +80,7 @@ AOC2015Day7 >> computePass2: aSymbol [
 	allNodes := self dict asOrderedCollection.
 
 	allNodes do: [ :node |
-			(node ready) ifFalse: [ "only if node is not ready. num node already "
+			(node ready) ifTrue:[ Transcript show: 'node ready => ' ; show: node ; cr. ] ifFalse: [ "only if node is not ready. num node already "
 					node isAssignNode ifTrue: [
 							node left ready ifTrue: [
 								Transcript show: 'assignment progress.' ; cr.
