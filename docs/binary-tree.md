@@ -134,7 +134,27 @@ canvas @ RSCanvasController .
 ```
 
 
-
+```
+n0 := AOC2015Day7Node new. n0 title: 'root' ; yourself.
+n1 := AOC2015Day7Node new. n1 title: 'foo' ; yourself.
+n2 := AOC2015Day7Node new. n2 title: 'bar' ; yourself.
+n3 := AOC2015Day7Node new. n3 title: 'baz' ; yourself.
+n0 left: n1. 
+n1 left: n2.
+n1 right: n3. 
+nodes := { n0 . n1 . n2 . n3 } .
+boxes := OrderedCollection new.
+nodes do: [ :node |
+	boxes add: (RSBox new model: node ; color: Color blue; size: 5 ; popup ; draggable ; yourself
+	)].
+canvas := RSCanvas new.
+canvas addAll: boxes.
+RSLineBuilder orthoVertical withVerticalAttachPoint ; shapes: boxes ; connectTo: #left.
+RSLineBuilder orthoVertical withVerticalAttachPoint ; shapes: boxes ; connectTo: #right.
+RSTreeLayout on: boxes.
+canvas @ RSCanvasController .
+^ canvas.
+```
 
 
 ``` smalltalk
