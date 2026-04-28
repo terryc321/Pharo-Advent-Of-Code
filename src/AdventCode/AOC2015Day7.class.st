@@ -83,27 +83,32 @@ AOC2015Day7 >> computePass2: aSymbol [
 			(node ready) ifFalse: [ "only if node is not ready. num node already "
 					node isAssignNode ifTrue: [
 							node left ready ifTrue: [
+								Transcript show: 'assignment progress.' ; cr.
 									node val: node left val.
 									^ true ] ].
 					node isNotNode ifTrue: [
 							node left ready ifTrue: [
+								Transcript show: 'negation progress.' ; cr.								
 									node val: node left val.
 									^ true ] ].
-
 					node isAndNode ifTrue: [
 							(node left ready and: [ node right ready ]) ifTrue: [
+								Transcript show: 'conjunction progress.' ; cr.																
 									node val: node left val + node right val.
 									^ true ] ].
 					node isOrNode ifTrue: [
 							(node left ready and: [ node right ready ]) ifTrue: [
 									node val: node left val + node right val.
+								Transcript show: 'disjunction progress.' ; cr.																	
 									^ true ] ].
 					node isLShiftNode ifTrue: [
 							(node left ready and: [ node right ready ]) ifTrue: [
+											Transcript show: 'left shift progress.' ; cr.								
 									node val: node left val + node right val.
 									^ true ] ].
 					node isRShiftNode ifTrue: [
 							(node left ready and: [ node right ready ]) ifTrue: [
+								Transcript show: 'right shift progress.' ; cr.																
 									node val: node left val + node right val.
 									^ true ] ] ] ].
 					
