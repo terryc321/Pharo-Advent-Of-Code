@@ -759,7 +759,9 @@ Error signal: 'parse not handled'.
 
 { #category : 'as yet unclassified' }
 AOC2015Day7 >> parseLineIntegerHelper: a [
-	a isInteger ifTrue:[ dict at: a put: [ | n| n := AOC2015Day7NumNode new. n val: a. n title: (a printString)] value].
+	(a isInteger) ifTrue:[ dict at: a put: [ | n| n := AOC2015Day7NumNode new. n val: a. n title: ('Num(' , a printString ,')')] value].
+	
+	
 	
 ]
 
