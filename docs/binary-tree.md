@@ -156,6 +156,31 @@ canvas @ RSCanvasController .
 ^ canvas.
 ```
 
+here is a working version for day 7 , for some reason the number nodes are not connected , 
+but they clearly are on the dictionary.
+
+```
+aoc := AOC2015Day7 new.
+lines := (aoc puzzleInput).
+lines do: [ :aline | aoc parseLine: aline  ].
+lines do: [ :aline | aoc parseLine2: aline  ].
+aoc parseLine3.
+
+nodes := (aoc dict asOrderedCollection) .
+boxes := OrderedCollection new.
+nodes do: [ :node |
+	boxes add: (RSBox new model: node ; color: Color blue; size: 5 ; popup ; draggable ; yourself
+	)].
+canvas := RSCanvas new.
+canvas addAll: boxes.
+RSLineBuilder orthoVertical withVerticalAttachPoint ; shapes: boxes ; connectTo: #left.
+RSLineBuilder orthoVertical withVerticalAttachPoint ; shapes: boxes ; connectTo: #right.
+RSTreeLayout on: boxes.
+canvas @ RSCanvasController .
+^ canvas.
+```
+
+
 
 ``` smalltalk
 Collection >> inspectionNode: aBuilder [
