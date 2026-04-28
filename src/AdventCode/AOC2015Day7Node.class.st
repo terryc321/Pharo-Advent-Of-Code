@@ -122,51 +122,21 @@ AOC2015Day7Node >> initialize [
  title := 'no-title'.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'inspector' }
 AOC2015Day7Node >> inspectorFor: aBuilder [
-    <inspectorPresentationOrder: 9999 title: 'Nodes'> 
-	| canvas numbers marker |
-	canvas := RSCanvas new.
-	numbers := (1 to: 3) shuffled collect: [ :n |
-		({ RSLabel text: n } asGroup asShapeFor: n)
-			color: Color white;
-			withBorder;
-			padding: 10;
-			yourself ] as: RSGroup.
-	numbers @ RSDraggable new.
-	canvas addAll: numbers.
-	marker := (RSShapeFactory arrow
-		size: 10;
-		asMarker)
-		offset: 5;
-		yourself.
-	RSLineBuilder line
-		attachPoint: (RSShortestVerticalAttachPoint new
-			"endOffset: 5;"
-			yourself);
-		canvas: canvas;
-		markerEnd: marker;
-		color: Color gray translucent;
-		fromShapes: (numbers select: [:each | each model even]);
-		toShapes: numbers;
-		connectTo: [ :n | n + 1 ].
-	RSLineBuilder line
-		attachPoint: (RSShortestHorizontalAttachPoint new
-			"endOffset: 5;"
-			yourself);
-		canvas: canvas;
-		markerEnd: marker;
-		color: Color gray translucent;
-		fromShapes: (numbers select: [:each | each model odd]);
-		toShapes: numbers;
-		connectTo: [ :n | n + 1 ].
-	RSSimpleForceBasedLayout on: numbers.
-	canvas @ RSCanvasController simple.
-	^ (aBuilder instantiate: SpRoassalInspectorPresenter)
-		canvas: self canvas;
-		yourself	
-
-
+    <inspectorPresentationOrder: 0 title: 'Node'> 
+|boxes nodes canvas |
+boxes := OrderedCollection new.
+nodes := { self } .
+nodes do: [ :node |
+	boxes add: (RSBox new model: node ; color: Color blue; size: 5 ; popup ; draggable ; yourself)].
+canvas := RSCanvas new.
+canvas addAll: boxes.
+RSLineBuilder orthoVertical withVerticalAttachPoint ; shapes: boxes ; connectTo: #left.
+RSLineBuilder orthoVertical withVerticalAttachPoint ; shapes: boxes ; connectTo: #right.
+RSTreeLayout on: boxes.
+canvas @ RSCanvasController .
+^ canvas.
 ]
 
 { #category : 'initialization' }
