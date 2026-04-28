@@ -647,7 +647,7 @@ out := self parseLShift: in. out className = 'Array' ifTrue:[
 		c := out at: 5.
 		dk := dict at: c. "better be a node"
 		dk left: a. 
-		dk right b.
+		dk right: b.
 		out. ok := true ].			
 out := self parseRShift: in. out className = 'Array' ifTrue:[	
 		"#lf RSHIFT #gf -> #he"
@@ -694,7 +694,7 @@ out := self parseAnd: in. out className = 'Array' ifTrue:[
 		a := out at: 1.
 		b := out at: 3.
 		c := out at: 5.
-		dict at: c put: [ |n | n := AOC2015Day7AndNode new. 	n title: c; left: a ; right: b ; yourself] value.
+		dict at: c put: [ |n | n := AOC2015Day7AndNode new. 	n title: c; yourself] value.
 	 ^ true ].
 
 out := self parseOr: in. 
@@ -705,7 +705,7 @@ out className = 'Array' ifTrue:[
 		b := out at: 3.
 		c := out at: 5.
 		dict at: c put: [ |n | n := AOC2015Day7OrNode new. 
-			n title: c; left: a ; right: b ; yourself] value.
+			n title: c; yourself] value.
 		^ true ].	
 
 out := self parseLShift: in. 
@@ -716,7 +716,7 @@ out className = 'Array' ifTrue:[
 		b := out at: 3.
 		c := out at: 5.
 		dict at: c put: [ |n | n := AOC2015Day7LShiftNode new. 
-			n title: c; left: a ; right: b ; yourself] value.		
+			n title: c; yourself] value.		
 		^ true ].			
 
 out := self parseRShift: in. out className = 'Array' ifTrue:[	
@@ -726,7 +726,7 @@ out := self parseRShift: in. out className = 'Array' ifTrue:[
 		b := out at: 3.
 		c := out at: 5.
 		dict at: c put: [ |n | n := AOC2015Day7RShiftNode new. 
-			n title: c; left: a ; right: b ; yourself] value.				
+			n title: c; yourself] value.				
 		ok := true.
 		^ true ].												
 
@@ -737,7 +737,7 @@ out className = 'Array' ifTrue:[
 		a := out at: 1.
 		c := out at: 3.
 		dict at: c put: [ |n | n := AOC2015Day7AssignNode new. 
-			n title: c; left: a ; yourself] value.				
+			n title: c; yourself] value.				
 		^ true ].													
 
 out := self parseNot: in. out className = 'Array' ifTrue:[	
@@ -746,7 +746,7 @@ out := self parseNot: in. out className = 'Array' ifTrue:[
 		a := out at: 2.
 		c := out at: 4.
 		dict at: c put: [ |n | n := AOC2015Day7NotNode new. 
-			n title: c; left: a ; yourself] value.						
+			n title: c; yourself] value.						
 		^ true ].			
 
 Error signal: 'parse not handled'.

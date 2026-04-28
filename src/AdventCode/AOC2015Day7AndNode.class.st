@@ -25,3 +25,11 @@ AOC2015Day7AndNode >> compute [
 AOC2015Day7AndNode >> isAndNode [ 
  ^ true 
 ]
+
+{ #category : 'printing' }
+AOC2015Day7AndNode >> printOn: aStream [
+	aStream nextPutAll: 'AndNode{';
+	        nextPutAll: (self title);
+		     nextPutAll: '}'.
+		
+]
