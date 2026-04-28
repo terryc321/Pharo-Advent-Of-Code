@@ -118,9 +118,10 @@ AOC2015Day7Node >> compute [
 AOC2015Day7Node >> initialize [ 
  children := OrderedCollection new.
  children add: nil.
- children add: nil.
+ children add: nil. 
  ready := false.
  val := nil .
+
 
 
 
@@ -252,6 +253,8 @@ AOC2015Day7Node >> left: x [
  children at: 1 put: x 
 
 
+
+
 ]
 
 { #category : 'initialization' }
@@ -274,7 +277,13 @@ AOC2015Day7Node >> right [
 
 { #category : 'accessing' }
 AOC2015Day7Node >> right: x [ 
- children at: 2 put: x 
+  children at: 2 put: x 
+
+
+
+
+
+
 
 
 ]

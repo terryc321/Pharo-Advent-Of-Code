@@ -325,6 +325,40 @@ AOC2015Day7 >> dict [
 
 ]
 
+{ #category : 'examples' }
+AOC2015Day7 >> example1 [
+<script: 'node first example'>
+|n1 n2 n3 boxes canvas data|
+n1 := AOC2015Day7Node new.
+n2 := AOC2015Day7Node new.
+n3 := AOC2015Day7Node new.
+n1  left: n2.
+n1 right: n3.
+data := Collection withAllSubclasses .
+boxes := data collect: [ :class | 
+	 RSBox new model: class ; popup ; draggable ; yourself ].
+
+"boxes := {  RSBox new model: n1 ; popup ; draggable ; yourself . 
+				RSBox new model: n2 ; popup ; draggable ; yourself . 
+				RSBox new model: n3 ; popup ; draggable ; yourself 
+				}.
+"				
+canvas := RSCanvas new.
+canvas addAll: boxes.
+"normalize"				
+"line builder"				
+RSLineBuilder orthoVertical withVerticalAttachPoint ; shapes: boxes ; connectTo: #children .
+"layout"				
+RSTreeLayout on: boxes.
+"give it control"
+canvas @ RSCanvasController .
+^ canvas.
+
+
+				
+			
+]
+
 { #category : 'initialization' }
 AOC2015Day7 >> initialize [ 
 "dict to new dictionary , rules to new collection"
@@ -344,7 +378,7 @@ AOC2015Day7 >> interAnd: aCollection [
 	c := aCollection at: 5.
 	a isInteger ifTrue: [dict at: a put: ([ |node| node := AOC2015Day7NumNode new. node val: a. node ] value) ].
 	b isInteger ifTrue: [dict at: b put: ([ |node| node := AOC2015Day7NumNode new. node val: b. node ] value) ].
-	dict at: c put: ([ |node| node := AOC2015Day7AndNode new. node addChild: a. node addChild: b. node ] value).
+	dict at: c put: ([ |node| node := AOC2015Day7AndNode new. node ] value).
 ^ true
 
 
