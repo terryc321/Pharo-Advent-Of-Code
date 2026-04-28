@@ -1,6 +1,11 @@
 "
 ```language=Pharo
 aoc := AOC2015Day7 new.
+lines := aoc parseInput.   ""<<- collection of lines already !""
+lines do: [:line | 	aoc parseLine: line ]. ""makes nodes""
+lines do: [:line | 	aoc parseLine2: line ]. ""connects nodes""
+	
+
 aoc parsePass: (aoc puzzleInput).
 aoc computePass: #a.
 aoc.
@@ -480,7 +485,7 @@ AOC2015Day7 >> lookup: aSymbol [
 ]
 
 { #category : 'as yet unclassified' }
-AOC2015Day7 >> parse: lines [
+AOC2015Day7 >> parseAllLines: lines [
  "please give parse a collection of strings - typically from splitOn splitBy"
  | out ok  | 
 dict := Dictionary new.
@@ -565,10 +570,10 @@ AOC2015Day7 >> parseAnd: input [
 	expression := variable , op , variable , impliesOp , variable ==> [ :nodes |
 		              {
 			              nodes first asSymbolOrInteger.
-			              nodes second asSymbol.
+			              nodes second asSymbolOrInteger.
 			              nodes third asSymbolOrInteger.
-			              nodes fourth asSymbol.
-			              nodes fifth asSymbolOrInteger } ].
+			              nodes fourth asSymbolOrInteger.
+			              nodes fifth asSymbolOrInteger.  } ].
 
 	^ expression parse: input
 ]
@@ -608,6 +613,81 @@ AOC2015Day7 >> parseLShift: input [
 ]
 
 { #category : 'as yet unclassified' }
+AOC2015Day7 >> parseLine2: in [
+ "please give parse a collection of strings - typically from splitOn splitBy"
+ | out ok  | 
+
+ok := false.
+out := self parseAnd: in. out className = 'Array' ifTrue:[	
+		"#lf AND #gf -> #he"
+		|a b c|
+		a := out at: 1.
+		b := out at: 3.
+		c := out at: 5.
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [  ].
+		dict at: b ifPresent:[:v | ^v] ifAbsent: [  ].
+		dict at: c put: [ |n | n := AOC2015Day7AndNode new. 	n title: c; left: a ; right: b ; yourself] value.
+		ok := true ].
+out := self parseOr: in. out className = 'Array' ifTrue:[	
+		"#lf OR #gf -> #he"
+		|a b c|
+		a := out at: 1.
+		b := out at: 3.
+		c := out at: 5.
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [  ].
+		dict at: b ifPresent:[:v | ^v] ifAbsent: [  ].
+		dict at: c put: [ |n | n := AOC2015Day7OrNode new. 
+			n title: c; left: a ; right: b ; yourself] value.
+		ok := true ].	
+
+out := self parseLShift: in. out className = 'Array' ifTrue:[	
+		"#lf LSHIFT #gf -> #he"
+		|a b c|
+		a := out at: 1.
+		b := out at: 3.
+		c := out at: 5.
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [  ].
+		dict at: b ifPresent:[:v | ^v] ifAbsent: [  ].
+		dict at: c put: [ |n | n := AOC2015Day7LShiftNode new. 
+			n title: c; left: a ; right: b ; yourself] value.		
+		out. ok := true ].			
+out := self parseRShift: in. out className = 'Array' ifTrue:[	
+		"#lf RSHIFT #gf -> #he"
+		|a b c|
+		a := out at: 1.
+		b := out at: 3.
+		c := out at: 5.
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [  ].
+		dict at: b ifPresent:[:v | ^v] ifAbsent: [ ].
+		dict at: c put: [ |n | n := AOC2015Day7RShiftNode new. 
+			n title: c; left: a ; right: b ; yourself] value.				
+		ok := true ].												
+out := self parseAssign: in. out className = 'Array' ifTrue:[	
+		"#lf -> #he"
+		|a b c|
+		a := out at: 1.
+		c := out at: 3.
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [  ].
+		dict at: c put: [ |n | n := AOC2015Day7AssignNode new. 
+			n title: c; left: a ; yourself] value.				
+		ok := true ].													
+out := self parseNot: in. out className = 'Array' ifTrue:[	
+		"NOT #lf -> #he"
+		|a b c|
+		a := out at: 2.
+		c := out at: 4.
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [  ].
+		dict at: c put: [ |n | n := AOC2015Day7NotNode new. 
+			n title: c; left: a ; yourself] value.						
+		ok := true ].			
+ok ifFalse: [ Error signal: 'parse not handled' ].
+
+
+
+
+]
+
+{ #category : 'as yet unclassified' }
 AOC2015Day7 >> parseLine: in [
  "please give parse a collection of strings - typically from splitOn splitBy"
  | out ok  | 
@@ -619,8 +699,8 @@ out := self parseAnd: in. out className = 'Array' ifTrue:[
 		a := out at: 1.
 		b := out at: 3.
 		c := out at: 5.
-		dict at: a ifPresent:[:v | ^v] ifAbsent: [ dict at: a put: a ].
-		dict at: b ifPresent:[:v | ^v] ifAbsent: [ dict at: b put: b ].
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [  ].
+		dict at: b ifPresent:[:v | ^v] ifAbsent: [  ].
 		dict at: c put: [ |n | n := AOC2015Day7AndNode new. 	n title: c; left: a ; right: b ; yourself] value.
 		ok := true ].
 out := self parseOr: in. out className = 'Array' ifTrue:[	
@@ -629,8 +709,8 @@ out := self parseOr: in. out className = 'Array' ifTrue:[
 		a := out at: 1.
 		b := out at: 3.
 		c := out at: 5.
-		dict at: a ifPresent:[:v | ^v] ifAbsent: [ dict at: a put: a ].
-		dict at: b ifPresent:[:v | ^v] ifAbsent: [ dict at: b put: b ].
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [  ].
+		dict at: b ifPresent:[:v | ^v] ifAbsent: [  ].
 		dict at: c put: [ |n | n := AOC2015Day7OrNode new. 
 			n title: c; left: a ; right: b ; yourself] value.
 		ok := true ].	
@@ -641,8 +721,8 @@ out := self parseLShift: in. out className = 'Array' ifTrue:[
 		a := out at: 1.
 		b := out at: 3.
 		c := out at: 5.
-		dict at: a ifPresent:[:v | ^v] ifAbsent: [ dict at: a put: a ].
-		dict at: b ifPresent:[:v | ^v] ifAbsent: [ dict at: b put: b ].
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [  ].
+		dict at: b ifPresent:[:v | ^v] ifAbsent: [  ].
 		dict at: c put: [ |n | n := AOC2015Day7LShiftNode new. 
 			n title: c; left: a ; right: b ; yourself] value.		
 		out. ok := true ].			
@@ -652,8 +732,8 @@ out := self parseRShift: in. out className = 'Array' ifTrue:[
 		a := out at: 1.
 		b := out at: 3.
 		c := out at: 5.
-		dict at: a ifPresent:[:v | ^v] ifAbsent: [ dict at: a put: a ].
-		dict at: b ifPresent:[:v | ^v] ifAbsent: [ dict at: b put: b ].
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [  ].
+		dict at: b ifPresent:[:v | ^v] ifAbsent: [ ].
 		dict at: c put: [ |n | n := AOC2015Day7RShiftNode new. 
 			n title: c; left: a ; right: b ; yourself] value.				
 		ok := true ].												
@@ -662,7 +742,7 @@ out := self parseAssign: in. out className = 'Array' ifTrue:[
 		|a b c|
 		a := out at: 1.
 		c := out at: 3.
-		dict at: a ifPresent:[:v | ^v] ifAbsent: [ dict at: a put: a ].
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [  ].
 		dict at: c put: [ |n | n := AOC2015Day7AssignNode new. 
 			n title: c; left: a ; yourself] value.				
 		ok := true ].													
@@ -671,7 +751,7 @@ out := self parseNot: in. out className = 'Array' ifTrue:[
 		|a b c|
 		a := out at: 2.
 		c := out at: 4.
-		dict at: a ifPresent:[:v | ^v] ifAbsent: [ dict at: a put: a ].
+		dict at: a ifPresent:[:v | ^v] ifAbsent: [  ].
 		dict at: c put: [ |n | n := AOC2015Day7NotNode new. 
 			n title: c; left: a ; yourself] value.						
 		ok := true ].			
@@ -780,6 +860,7 @@ process terminate.
 
 { #category : 'accessing' }
 AOC2015Day7 >> puzzleInput [ 
+"this has already been split into lines - see end - splitOn: String cr "
 ^ 'lf AND lq -> ls
 iu RSHIFT 1 -> jn
 bo OR bu -> bv
