@@ -8,7 +8,10 @@ Class {
 { #category : 'initialization' }
 AOC2015Day7AssignNode >> compute [ 
  "ASSIGN node left "
- (self left ready) ifTrue:[ self val: (self left val) ]
+	self ready ifTrue: [ ^ self val ].
+	self left compute .
+	self val: (self left val).
+	^ self val 
 
 
 

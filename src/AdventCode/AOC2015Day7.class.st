@@ -77,7 +77,7 @@ AOC2015Day7 >> computePass: aSymbol [
 	| targetNode allNodes stop i |
 	targetNode := self dict at: aSymbol.
 	allNodes := self dict asOrderedCollection.
-
+   self halt.
 	stop := false.
 	i := 0.
 	[ targetNode ready not and: [ stop not ] ] whileTrue: [

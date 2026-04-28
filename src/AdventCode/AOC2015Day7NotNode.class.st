@@ -8,9 +8,12 @@ Class {
 { #category : 'initialization' }
 AOC2015Day7NotNode >> compute [ 
  "NOT node left "
- (self left ready) ifTrue:[ 
-	 self val: (0 - (self left val) - 1) ]
-
+	self ready ifTrue: [ ^ self val ].
+	self left compute .
+	self val: (self left val bitInvert).
+	^ self val 
+	
+	
 
 ]
 

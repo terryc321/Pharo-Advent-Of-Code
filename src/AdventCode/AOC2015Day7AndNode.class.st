@@ -8,7 +8,13 @@ Class {
 { #category : 'initialization' }
 AOC2015Day7AndNode >> compute [
 	"AND node left / right "
-	(self left ready and: [ self right ready ]) ifTrue: [ self val: (self left val bitAnd: self right val) ].
+	self ready ifTrue: [ ^ self val ].
+	self left compute .
+	self right compute.
+	self val: (self left val bitAnd: self right val).
+	^ self val 
+	
+	
 
 ]
 
