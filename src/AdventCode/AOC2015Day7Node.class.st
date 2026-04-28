@@ -114,19 +114,12 @@ AOC2015Day7Node >> compute [
 
 ]
 
-{ #category : 'ini' }
+{ #category : 'initialization' }
 AOC2015Day7Node >> initialize [ 
  children := Dictionary new.
  ready := false.
  val := nil .
-
-
-
-
-
-
-
-
+ title := 'no-title'.
 ]
 
 { #category : 'as yet unclassified' }
@@ -242,7 +235,8 @@ AOC2015Day7Node >> isRShiftNode [
 
 { #category : 'accessing' }
 AOC2015Day7Node >> left [
- children at: 1 ifAbsent: [ nil ].
+ ^ children at: 1 ifAbsent: [ nil ].
+
 
 
 
@@ -255,6 +249,14 @@ AOC2015Day7Node >> left: x [
 
 
 
+]
+
+{ #category : 'printing' }
+AOC2015Day7Node >> printOn: aStream [
+	aStream nextPutAll: 'Node{';
+	        nextPutAll: (self title);
+		     nextPutAll: '}'.
+		
 ]
 
 { #category : 'initialization' }
@@ -270,7 +272,7 @@ AOC2015Day7Node >> ready: x [
 
 { #category : 'accessing' }
 AOC2015Day7Node >> right [
- children at: 2 ifAbsent: [ nil ].
+ ^ children at: 2 ifAbsent: [ nil ].
 
 
 
@@ -290,25 +292,18 @@ AOC2015Day7Node >> right: x [
 
 ]
 
-{ #category : 'initialization' }
+{ #category : 'accessing' }
 AOC2015Day7Node >> title [
- ^ title
+ ^ title 
 
 
-
-
+ 
 
 ]
 
-{ #category : 'initialization' }
-AOC2015Day7Node >> title: s [
- title := s .
-
-
-
-
-
-
+{ #category : 'accessing' }
+AOC2015Day7Node >> title: x [
+ title := x 
 
 ]
 
