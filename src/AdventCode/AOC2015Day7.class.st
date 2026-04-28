@@ -625,8 +625,8 @@ out := self parseAnd: in. out className = 'Array' ifTrue:[
 		b := out at: 3.
 		c := out at: 5.
 		dk := dict at: c. "better be a node"
-		dk left: a. 
-		dk right: b.
+		dk left: (dict at: a). 
+		dk right: (dict at: b).
 		ok := true ].
 out := self parseOr: in. out className = 'Array' ifTrue:[	
 		"#lf OR #gf -> #he"
@@ -691,8 +691,8 @@ AOC2015Day7 >> parseLine: in [
 out := self parseAnd: in. out className = 'Array' ifTrue:[	
 		"#lf AND #gf -> #he"
 		|a b c|
-		a := out at: 1.
-		b := out at: 3.
+		a := out at: 1. self parseLineIntegerHelper: a.
+		b := out at: 3. self parseLineIntegerHelper: b.
 		c := out at: 5.
 		dict at: c put: [ |n | n := AOC2015Day7AndNode new. 	n title: c; yourself] value.
 	 ^ true ].
@@ -701,8 +701,8 @@ out := self parseOr: in.
 out className = 'Array' ifTrue:[	
 		"#lf OR #gf -> #he"
 		|a b c|
-		a := out at: 1.
-		b := out at: 3.
+		a := out at: 1. self parseLineIntegerHelper: a.
+		b := out at: 3. self parseLineIntegerHelper: b.
 		c := out at: 5.
 		dict at: c put: [ |n | n := AOC2015Day7OrNode new. 
 			n title: c; yourself] value.
@@ -712,8 +712,8 @@ out := self parseLShift: in.
 out className = 'Array' ifTrue:[	
 		"#lf LSHIFT #gf -> #he"
 		|a b c|
-		a := out at: 1.
-		b := out at: 3.
+		a := out at: 1. self parseLineIntegerHelper: a.
+		b := out at: 3. self parseLineIntegerHelper: b.
 		c := out at: 5.
 		dict at: c put: [ |n | n := AOC2015Day7LShiftNode new. 
 			n title: c; yourself] value.		
@@ -722,8 +722,8 @@ out className = 'Array' ifTrue:[
 out := self parseRShift: in. out className = 'Array' ifTrue:[	
 		"#lf RSHIFT #gf -> #he"
 		|a b c|
-		a := out at: 1.
-		b := out at: 3.
+		a := out at: 1. self parseLineIntegerHelper: a.
+		b := out at: 3. self parseLineIntegerHelper: b.
 		c := out at: 5.
 		dict at: c put: [ |n | n := AOC2015Day7RShiftNode new. 
 			n title: c; yourself] value.				
@@ -734,7 +734,7 @@ out := self parseAssign: in.
 out className = 'Array' ifTrue:[	
 		"#lf -> #he"
 		|a c|
-		a := out at: 1.
+		a := out at: 1. self parseLineIntegerHelper: a.
 		c := out at: 3.
 		dict at: c put: [ |n | n := AOC2015Day7AssignNode new. 
 			n title: c; yourself] value.				
@@ -743,7 +743,7 @@ out className = 'Array' ifTrue:[
 out := self parseNot: in. out className = 'Array' ifTrue:[	
 		"NOT #lf -> #he"
 		|a c|
-		a := out at: 2.
+		a := out at: 2. self parseLineIntegerHelper: a.
 		c := out at: 4.
 		dict at: c put: [ |n | n := AOC2015Day7NotNode new. 
 			n title: c; yourself] value.						
@@ -755,6 +755,12 @@ Error signal: 'parse not handled'.
 
 
 
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day7 >> parseLineIntegerHelper: a [
+	a isInteger ifTrue:[ dict at: a put: [ | n| n := AOC2015Day7NumNode new. n val: a. n title: (a printString)] value].
+	
 ]
 
 { #category : 'as yet unclassified' }

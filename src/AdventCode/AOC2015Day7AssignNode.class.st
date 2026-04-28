@@ -26,3 +26,11 @@ AOC2015Day7AssignNode >> isAssignNode [
  ^ true
 
 ]
+
+{ #category : 'printing' }
+AOC2015Day7AssignNode >> printOn: aStream [
+	aStream nextPutAll: 'AssignNode{';
+	        nextPutAll: (self title);
+		     nextPutAll: '}'.
+
+]

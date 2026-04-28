@@ -27,3 +27,11 @@ AOC2015Day7LShiftNode >> compute [
 AOC2015Day7LShiftNode >> isLShiftNode [ 
  ^ true 
 ]
+
+{ #category : 'printing' }
+AOC2015Day7LShiftNode >> printOn: aStream [
+	aStream nextPutAll: 'LShiftNode{';
+	        nextPutAll: (self title);
+		     nextPutAll: '}'.
+		
+]

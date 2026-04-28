@@ -26,3 +26,11 @@ AOC2015Day7NotNode >> isNotNode [
 
 
 ]
+
+{ #category : 'printing' }
+AOC2015Day7NotNode >> printOn: aStream [
+	aStream nextPutAll: 'NotNode{';
+	        nextPutAll: (self title);
+		     nextPutAll: '}'.
+		
+]

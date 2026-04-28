@@ -28,3 +28,12 @@ AOC2015Day7OrNode >> isOrNode [
 
 
 ]
+
+{ #category : 'printing' }
+AOC2015Day7OrNode >> printOn: aStream [
+	aStream nextPutAll: 'OrNode{';
+	        nextPutAll: (self title);
+		     nextPutAll: '}'.
+		
+	
+]

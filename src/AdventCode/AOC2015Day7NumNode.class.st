@@ -18,3 +18,11 @@ AOC2015Day7NumNode >> isNumNode [
  ^ true 
 
 ]
+
+{ #category : 'printing' }
+AOC2015Day7NumNode >> printOn: aStream [
+	aStream nextPutAll: 'NumNode{';
+	        nextPutAll: (self val printString);
+		     nextPutAll: '}'.
+		
+]

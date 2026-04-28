@@ -28,3 +28,11 @@ AOC2015Day7RShiftNode >> isRShiftNode [
  ^ true 
 
 ]
+
+{ #category : 'printing' }
+AOC2015Day7RShiftNode >> printOn: aStream [
+	aStream nextPutAll: 'RShiftNode{';
+	        nextPutAll: (self title);
+		     nextPutAll: '}'.
+		
+]
