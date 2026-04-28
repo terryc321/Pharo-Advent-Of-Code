@@ -47,7 +47,8 @@ Class {
 	#instVars : [
 		'dict',
 		'rules',
-		'children'
+		'children',
+		'process'
 	],
 	#category : 'AdventCode',
 	#package : 'AdventCode'
@@ -72,12 +73,23 @@ AOC2015Day7 >> children [
 { #category : 'as yet unclassified' }
 AOC2015Day7 >> computePass: aSymbol [
 "use parsePass before this. repeatedly compute all nodes until this node is ready"
-| targetNode allNodes |
+| targetNode allNodes  stop i |
 targetNode := self dict at: aSymbol.
 allNodes := (self dict) asOrderedCollection .
 
-[ allNodes do: [ :node | node compute ]] doWhileTrue: [ targetNode ready not ].
+stop := false.
+i := 0 .
+[ allNodes do: [ :node | 
+		 i := i + 1 .
+				Transcript show: 'visiting node ' , i printString , ' =>' ; show: node ; cr.
+		(node ready) ifFalse: [node compute. (node ready)  ifTrue:[ 
+				Transcript show: 'computed =>' ; show: node ; cr.
+				stop := true ]].
+		]] doWhileTrue: [ (targetNode ready not) and: [ stop not]].
 ^ self
+
+
+
 
 
 
@@ -479,6 +491,14 @@ AOC2015Day7 >> parseRShift: input [
 			              nodes fifth asSymbolOrInteger } ].
 
 	^ expression parse: input
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day7 >> part1 [ 
+ process := [self computePass: #a ] forkNamed: 'solving-part1'.
+
+
+
 ]
 
 { #category : 'accessing' }
