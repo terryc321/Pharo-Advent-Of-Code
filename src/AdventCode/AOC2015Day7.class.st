@@ -496,11 +496,14 @@ AOC2015Day7 >> parseRShift: input [
 
 { #category : 'as yet unclassified' }
 AOC2015Day7 >> part1 [ 
+| progress | 
+progress := true .
 process := [ 
-  [ true ] whileTrue: [ 
+  [ progress ] whileTrue: [ 
     self computePass: #a.
     Transcript show: 'Running...'; cr.
-    Processor yield.    
+    Processor yield.  
+    progress := false.  
   ] 
 ] forkAt: Processor userBackgroundPriority.
 
