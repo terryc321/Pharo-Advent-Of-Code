@@ -683,6 +683,35 @@ ok ifFalse: [ Error signal: 'parse not handled' ].
 ]
 
 { #category : 'as yet unclassified' }
+AOC2015Day7 >> parseLine2Helper: dk left: a right: b [
+ "double lookup if symbol - otherwise make a number node if integer "
+	dk left isSymbol ifTrue: [ dk left: (dict at: dk left) ].
+	dk right isSymbol ifTrue: [ dk right: (dict at: dk right) ].
+	dk left isInteger ifTrue: [ dk left: ( [ | n| n := AOC2015Day7NumNode new. n val: (dk left). n title: ('Num(' , (dk left) printString ,')')] value) ].
+	dk right isInteger ifTrue: [ dk right: ( [ | n| n := AOC2015Day7NumNode new. n val: (dk right). n title: ('Num(' , (dk right) printString ,')')] value) ].
+	
+	
+	
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day7 >> parseLine3 [
+ "fix whatever integer to integer nodes needs to be done"
+
+| coll |
+coll := dict asOrderedCollection .
+coll do: [ :node |  
+	| a b |
+	a := (node left).
+	a isInteger ifTrue: [ node left: [ | n| n := AOC2015Day7NumNode new. n val: a. n title: ('Num(' , a printString ,')')] value ] .
+	b := (node right).
+	b isInteger ifTrue: [ node right: [ | n| n := AOC2015Day7NumNode new. n val: b. n title: ('Num(' , b printString ,')')] value ]
+	].
+
+
+]
+
+{ #category : 'as yet unclassified' }
 AOC2015Day7 >> parseLine: in [
  "please give parse a collection of strings - typically from splitOn splitBy"
  | out ok  | 
