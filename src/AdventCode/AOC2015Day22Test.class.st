@@ -11,5 +11,5 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-AOC2015Day22Test >> solve1 [
+AOC2015Day22Test >> testSolve1 [
 ]
