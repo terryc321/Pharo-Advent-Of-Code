@@ -37,6 +37,22 @@ Class {
 }
 
 { #category : 'accessing' }
+AOC2015Day8 >> _ [
+	| tot |
+	tot := 0.
+	self inputLines do: [ :line | tot := tot + (self countDifference: line) ].
+	^ tot
+]
+
+{ #category : 'accessing' }
+AOC2015Day8 >> check: aString [ 
+"although extra work calling each method - also checking consistency?"
+| s |
+s := aString.
+^ { self countChars: s . self countCharsInMemory: s . self countDifference: s }
+]
+
+{ #category : 'accessing' }
 AOC2015Day8 >> countChars: aString [
 ^ aString size.
 
@@ -54,14 +70,17 @@ t := 0 .
 ifTrue: [ "slash doublequote 2 chars in length" 
             i := i + 2. t := t + 1 ]
 ifFalse:[ 
-   ((s at: i) = $\ and: [ (s at: (i + 1)) = $x ]) 
+((s at: i) = $\ and: [ (s at: (i + 1)) = $\ ]) 
+ifTrue: [ "single backslash 2 chars in length" 
+            i := i + 2. t := t + 1 ]
+            ifFalse:[  ((s at: i) = $\ and: [ (s at: (i + 1)) = $x ]) 
    ifTrue: [ "slash hex 4 chars in length" 
              i := i + 4. t := t + 1 ] 
     ifFalse:[  "is it whitespace?"
     ((s at: i) = String space) ifTrue:[ i := i + 1 ]
                                ifFalse:[ "normal character 1 char in length"
 						              i := i + 1.
-            						  t := t + 1]]]].
+            						  t := t + 1]]]]].
 ^ t              
 ]
 
@@ -95,6 +114,17 @@ AOC2015Day8 >> repoDir [
 AOC2015Day8 >> solve [
 
 	^ self notYetImplemented
+]
+
+{ #category : 'accessing' }
+AOC2015Day8 >> solve1 [
+"count all "
+|tot |
+tot := 0.
+self inputLines do:[:line |
+tot := tot + (self countDifference: line).
+].
+^ tot
 ]
 
 { #category : 'as yet unclassified' }
