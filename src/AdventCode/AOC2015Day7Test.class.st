@@ -140,6 +140,7 @@ AOC2015Day7Test >> testPart2 [
 
 { #category : 'tests' }
 AOC2015Day7Test >> testSolution1Part1 [
+"see testPart1"
 	self assert: (AOC2015Day5 new solution1Part1 = 280)  description: 'expect 280 answer'
 	
 
@@ -147,6 +148,7 @@ AOC2015Day7Test >> testSolution1Part1 [
 
 { #category : 'tests' }
 AOC2015Day7Test >> testSolution1Part2 [
+ "see testPart2"
 	self assert: (AOC2015Day5 new solution1Part2 = 1797)  description: 'expect 1797 answer'
 	
 

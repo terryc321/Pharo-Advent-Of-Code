@@ -125,11 +125,16 @@ AOC2015Day7Node >> initialize [
 { #category : 'inspector' }
 AOC2015Day7Node >> inspectorFor: aBuilder [
     <inspectorPresentationOrder: 9999 title: 'Node'> 
+"this inspector does not work since we have no access to AOC2015Day7 object ? "
 |boxes nodes canvas |
 boxes := OrderedCollection new.
-nodes := { self } .
+nodes := (self dict) asOrderedCollection .
 nodes do: [ :node |
-	boxes add: (RSBox new model: node ; color: Color blue; size: 5 ; popup ; draggable ; yourself)].
+	self = node ifTrue: [ 
+	boxes add: (RSBox new model: node ; color: Color red; size: 20 ; popup ; draggable ; yourself).]
+   ifFalse:[ 
+	boxes add: (RSBox new model: node ; color: Color blue; size: 5 ; popup ; draggable ; yourself).]].
+
 canvas := RSCanvas new.
 canvas addAll: boxes.
 RSLineBuilder orthoVertical withVerticalAttachPoint ; shapes: boxes ; connectTo: #left.
