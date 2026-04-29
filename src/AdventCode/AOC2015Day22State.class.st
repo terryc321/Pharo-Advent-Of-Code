@@ -24,27 +24,49 @@ Class {
 	#package : 'AdventCode'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
+AOC2015Day22State >> bossHits [
+	^ bossHits
+]
+
+{ #category : 'accessing' }
+AOC2015Day22State >> bossHits: anObject [
+	bossHits := anObject
+]
+
+{ #category : 'movement' }
 AOC2015Day22State >> bossMove [
 "effects"
-(missileCount > 0) ifTrue: [ bossHits := bossHits - 4. missileCount := missileCount - 1 max: 0 ].
-(drainCount > 0) ifTrue: [ bossHits := bossHits - 2. myHits := myHits + 2 . 
-                           drainCount := drainCount - 1 max: 0 ].
-(shieldCount > 0) ifTrue: [ myArmor := 7. shieldCount := shieldCount - 1 max: 0 ].
-(poisonCount > 0) ifTrue: [ bossHits := bossHits - 3 . poisonCount := poisonCount - 1 max: 0 ].
-(rechargeCount > 0) ifTrue: [ bossHits := bossHits - 3 . poisonCount := poisonCount - 1 max: 0].
+| s|
+s := self copy.
+(s missileCount > 0) ifTrue: [ s bossHits: (s bossHits - 4) . s missileCount: (s missileCount - 1 max: 0) ].
+(s drainCount > 0) ifTrue: [ s bossHits: (s bossHits - 2) . s myHits: (s myHits + 2) . 
+                           s drainCount: (s drainCount - 1 max: 0) ].
+(s shieldCount > 0) ifTrue: [ s myArmor: 7. s shieldCount: (s shieldCount - 1 max: 0) ].
+(s poisonCount > 0) ifTrue: [ s bossHits: (s bossHits - 3) . s poisonCount: (s poisonCount - 1 max: 0) ].
+(s rechargeCount > 0) ifTrue: [ s mana:  (s mana + 101) . s rechargeCount: (s rechargeCount - 1 max: 0)].
 
 (bossHits <= 0) ifTrue:[ ^ #bossDead ].
 "boss deals 8 damage usually , atleast 1 damage"
 myHits := myHits - ((8 - myArmor) min: 1) . 
 
+]
 
+{ #category : 'accessing' }
+AOC2015Day22State >> drainCount [
+	^ drainCount
+]
 
+{ #category : 'accessing' }
+AOC2015Day22State >> drainCount: anObject [
+	drainCount := anObject
 ]
 
 { #category : 'initialization' }
 AOC2015Day22State >> initialize [
 myMana := 500. 
+myManaSpent := 0.
+myManaSpendLimit := 99999999.
 myHits := 50.
 myArmor := 0.
 bossHits := 55.
@@ -57,34 +79,153 @@ rechargeCount := 0.
 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
+AOC2015Day22State >> missileCount [
+	^ missileCount
+]
+
+{ #category : 'accessing' }
+AOC2015Day22State >> missileCount: anObject [
+	missileCount := anObject
+]
+
+{ #category : 'accessing' }
+AOC2015Day22State >> myArmor [
+	^ myArmor
+]
+
+{ #category : 'accessing' }
+AOC2015Day22State >> myArmor: anObject [
+	myArmor := anObject
+]
+
+{ #category : 'accessing' }
+AOC2015Day22State >> myHits [
+	^ myHits
+]
+
+{ #category : 'accessing' }
+AOC2015Day22State >> myHits: anObject [
+	myHits := anObject
+]
+
+{ #category : 'accessing' }
+AOC2015Day22State >> myMana [
+	^ myMana
+]
+
+{ #category : 'accessing' }
+AOC2015Day22State >> myMana: anObject [
+	myMana := anObject
+]
+
+{ #category : 'accessing' }
+AOC2015Day22State >> myManaSpent [
+	^ myManaSpent
+]
+
+{ #category : 'accessing' }
+AOC2015Day22State >> myManaSpent: anObject [
+	myManaSpent := anObject
+]
+
+{ #category : 'movement' }
 AOC2015Day22State >> playerMove [
 "copy state before we call this - we always trash state"
-| spells |
-(myMana <= 0) ifTrue:[ ^ #playerDead ].
+| spells s |
+
+myManaSpent > myManaSpendLimit ifTrue: [ ^ #overspend ].
+
+s := self copy.
+
+(s myMana <= 0) ifTrue:[ ^ #playerDead ].
+
 "effects"
-(missileCount > 0) ifTrue: [ bossHits := bossHits - 4. missileCount := missileCount - 1 max: 0 ].
-(drainCount > 0) ifTrue: [ bossHits := bossHits - 2. myHits := myHits + 2 . 
-                           drainCount := drainCount - 1 max: 0 ].
-(shieldCount > 0) ifTrue: [ myArmor := 7. shieldCount := shieldCount - 1 max: 0 ].
-(poisonCount > 0) ifTrue: [ bossHits := bossHits - 3 . poisonCount := poisonCount - 1 max: 0 ].
-(rechargeCount > 0) ifTrue: [ bossHits := bossHits - 3 . poisonCount := poisonCount - 1 max: 0].
+(s missileCount > 0) ifTrue: [ s bossHits: (s bossHits - 4). 
+                               s missileCount: (s missileCount - 1 max: 0) ].
+                               
+(s drainCount > 0) ifTrue: [ s bossHits: (s bossHits - 2). 
+                             s myHits: (s myHits + 2) . 
+                             s drainCount: (s drainCount - 1 max: 0) ].
+                             
+(s shieldCount > 0) ifTrue: [ s myArmor: 7.   
+                              s shieldCount: (s shieldCount - 1 max: 0) ].
+                              
+(s poisonCount > 0) ifTrue: [ s bossHits: (s bossHits - 3) .   
+                             s poisonCount: (s poisonCount - 1 max: 0) ].
+                               
+(s rechargeCount > 0) ifTrue: [ s mana:  (s mana + 101) . s rechargeCount: (s rechargeCount - 1 max: 0)].
+
+                                
+"check if boss dead"
+(s bossHits <= 0) ifTrue:[ ^ #bossDead ].
+
 "decide on effect to cast based on amount mana player has"
 spells := OrderedCollection new.
-((myMana >= 53) & (missileCount = 0)) ifTrue: [ spells add: #missile ].
-((myMana >= 73) & (drainCount = 0)) ifTrue: [ spells add: #drain ].
-((myMana >= 113) & (shieldCount = 0)) ifTrue: [ spells add: #shield ].
-((myMana >= 173) & (poisonCount = 0)) ifTrue: [ spells add: #poison ].
-((myMana >= 229) & (rechargeCount = 0)) ifTrue: [ spells add: #recharge ].
+((s myMana >= 53) & (s missileCount = 0)) ifTrue: [ spells add: #missile ].
+((s myMana >= 73) & (s drainCount = 0)) ifTrue: [ spells add: #drain ].
+((s myMana >= 113) & (s shieldCount = 0)) ifTrue: [ spells add: #shield ].
+((s myMana >= 173) & (s poisonCount = 0)) ifTrue: [ spells add: #poison ].
+((s myMana >= 229) & (s rechargeCount = 0)) ifTrue: [ spells add: #recharge ].
 "no spells can be cast - player dies"
 (spells size = 0) ifTrue:[ ^ #playerDead ].
 
 spells do: [:spell |
- (spell = #missile) ifTrue: [ myMana := myMana - 53 . missileCount := 1 ].
- (spell = #drain) ifTrue: [ myMana := myMana - 73 .  drainCount := 1 ].
- (spell = #shield) ifTrue: [ myMana := myMana - 113 . shieldCount := 6 ].
- (spell = #poison) ifTrue: [ myMana := myMana - 173 . poisonCount := 6 ].
- (spell = #recharge) ifTrue: [ myMana := myMana - 229 . rechargeCount := 5 ].
+ (spell = #missile) 
+ ifTrue: [ | t | t:= s copy .  t myMana: (t myMana - 53) . t myManaSpent: (t myManaSpent + 53) . t missileCount: 1 . t bossMove  ].
+ 
+ (spell = #drain) 
+ ifTrue: [ | t | t:= s copy . t myMana: (t myMana - 73) .  t myManaSpent: (t myManaSpent + 73) . t drainCount: 1 . t bossMove ].
+ 
+ (spell = #shield) 
+ ifTrue: [ | t | t:= s copy . t myMana: (t myMana - 113) . t myManaSpent: (t myManaSpent + 113) . t shieldCount: 6 . t bossMove ].
+ 
+ (spell = #poison) 
+ ifTrue: [ | t | t:= s copy . t myMana: (t myMana - 173) . t myManaSpent: (t myManaSpent + 173) . t poisonCount: 6 . t bossMove ].
+ 
+ (spell = #recharge) 
+ ifTrue: [ | t | t:= s copy . t myMana: (t myMana - 229) . t myManaSpent: (t myManaSpent + 229) . t rechargeCount: 5 . t bossMove ].
+ 
 ]
 
+
+
+
+
+
+
+
+
+
+
+]
+
+{ #category : 'accessing' }
+AOC2015Day22State >> poisonCount [
+	^ poisonCount
+]
+
+{ #category : 'accessing' }
+AOC2015Day22State >> poisonCount: anObject [
+	poisonCount := anObject
+]
+
+{ #category : 'accessing' }
+AOC2015Day22State >> rechargeCount [
+	^ rechargeCount
+]
+
+{ #category : 'accessing' }
+AOC2015Day22State >> rechargeCount: anObject [
+	^ rechargeCount := anObject
+]
+
+{ #category : 'accessing' }
+AOC2015Day22State >> shieldCount [
+	^ shieldCount
+]
+
+{ #category : 'accessing' }
+AOC2015Day22State >> shieldCount: anObject [
+	shieldCount := anObject
 ]
