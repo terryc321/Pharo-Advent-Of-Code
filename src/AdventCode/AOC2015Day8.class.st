@@ -37,13 +37,13 @@ Class {
 }
 
 { #category : 'accessing' }
-AOC2015Day8 class >> countChars: aString [
+AOC2015Day8 >> countChars: aString [
 ^ aString size.
 
 ]
 
 { #category : 'accessing' }
-AOC2015Day8 class >> countCharsInMemory: aString [
+AOC2015Day8 >> countCharsInMemory: aString [
 | s i t |
 s := aString.
 "skip first double quote"
@@ -62,37 +62,33 @@ ifFalse:[
                                ifFalse:[ "normal character 1 char in length"
 						              i := i + 1.
             						  t := t + 1]]]].
-t              
+^ t              
 ]
 
 { #category : 'as yet unclassified' }
-AOC2015Day8 class >> countDifference: aString [
+AOC2015Day8 >> countDifference: aString [
 ^ (self countChars: aString) - (self countCharsInMemory: aString).
-]
-
-{ #category : 'accessing' }
-AOC2015Day8 class >> inputFile [
-^ (self repoDir / 'input.txt') readStreamDo: [:stream | stream contents].
-]
-
-{ #category : 'accessing' }
-AOC2015Day8 class >> inputLines [
-^ self inputFile splitOn: (String lf)
-]
-
-{ #category : 'accessing' }
-AOC2015Day8 class >> repoDir [
-^ FileSystem disk / 'home' / 'terry' / 'bin' / 'pharo-13' / 'pharo-local' / 'iceberg' / 'terryc321' / 'Pharo-Advent-Of-Code/' / 'docs' / 'advent-code' / '2015' / 'day8'  .
-]
-
-{ #category : 'as yet unclassified' }
-AOC2015Day8 >> countDifference [
 ]
 
 { #category : 'accessing' }
 AOC2015Day8 >> input [ 
 ^ ''.
 
+]
+
+{ #category : 'accessing' }
+AOC2015Day8 >> inputFile [
+^ (self repoDir / 'input.txt') readStreamDo: [:stream | stream contents].
+]
+
+{ #category : 'accessing' }
+AOC2015Day8 >> inputLines [
+^ self inputFile splitOn: (String lf)
+]
+
+{ #category : 'accessing' }
+AOC2015Day8 >> repoDir [
+^ FileSystem disk / 'home' / 'terry' / 'bin' / 'pharo-13' / 'pharo-local' / 'iceberg' / 'terryc321' / 'Pharo-Advent-Of-Code/' / 'docs' / 'advent-code' / '2015' / 'day8'  .
 ]
 
 { #category : 'as yet unclassified' }
