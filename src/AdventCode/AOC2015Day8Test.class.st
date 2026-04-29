@@ -5,23 +5,20 @@ Class {
 	#package : 'AdventCode'
 }
 
-{ #category : 'tests' }
-AOC2015Day8Test >> testSolution1Part1 [
-	"self assert: (AOC2015Day5 new solution1Part1 = 280)  description: 'expect 280 answer'"
-	self notYetImplemented 
-	
-	
-	
-
+{ #category : 'as yet unclassified' }
+AOC2015Day8Test >> example1 [
+| s |
+s := '""' .
+self assert: (AOC2015Day8 countChars: s) = 2 .
+self assert: (AOC2015Day8 countCharsInMemory: s) = 0 .
+self assert: (AOC2015Day8 countDifference: s) = 2 .
 ]
 
-{ #category : 'tests' }
-AOC2015Day8Test >> testSolution1Part2 [
-	"self assert: (AOC2015Day5 new solution1Part2 = 1797)  description: 'expect 1797 answer'"
-	self notYetImplemented 
-	
-	
-	
-	
-
+{ #category : 'as yet unclassified' }
+AOC2015Day8Test >> example2 [
+| s |
+s := '"abc"' .
+self assert: (AOC2015Day8 countChars: s) = 5 .
+self assert: (AOC2015Day8 countCharsInMemory: s) = 3 .
+self assert: (AOC2015Day8 countDifference: s) = 2 .
 ]
