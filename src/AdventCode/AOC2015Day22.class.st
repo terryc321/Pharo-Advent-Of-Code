@@ -9,16 +9,18 @@ Class {
 AOC2015Day22 >> initialState [
 |state missileEffect drainEffect shieldEffect poisonEffect rechargeEffect effects|
 state := Dictionary new.
-state at: #myMana put: 500. 
+state at: #myManaSpentLimit put: 1000. "maximum amount of mana can spend"
+state at: #myManaSpent put: 0. "amount spent"
+state at: #myMana put: 500. "start with"
 state at: #myHits put: 50. "health"
 state at: #bossHits put: 55. "health"
 state at: #bossDamage put: 8. "plain damage each turn"
 "boss is essentially static in game"
-missileEffect := self makeEffect: #('magic missile' 1 53 4 0 0 0 0).
-drainEffect := self makeEffect: #('drain' 1 73 2 2 0 0 0).
-shieldEffect := self makeEffect: #('shield' 6 113 0 0 7 0 0).
-poisonEffect := self makeEffect: #('poison' 6 173 3 0 0 0 0).
-rechargeEffect := self makeEffect: #('recharge' 5 229 0 0 0 101 0).
+missileEffect := self makeEffect: #(#magicMissile 1 53 4 0 0 0 0).
+drainEffect := self makeEffect: #(#drain 1 73 2 2 0 0 0).
+shieldEffect := self makeEffect: #(#shield 6 113 0 0 7 0 0).
+poisonEffect := self makeEffect: #(#poison 6 173 3 0 0 0 0).
+rechargeEffect := self makeEffect: #(#recharge 5 229 0 0 0 101 0).
 effects := { missileEffect . drainEffect . shieldEffect . poisonEffect. rechargeEffect }.
 state at: #effects put: effects.
 ^ state
@@ -38,4 +40,18 @@ dict at: #armorEffect put: (anArray at: 6).
 dict at: #manaEffect put: (anArray at: 7).
 dict at: #turnCount put: (anArray at: 8).
 ^ dict
+]
+
+{ #category : 'accessing' }
+AOC2015Day22 >> nextState: aState [ 
+|state2 state3 |
+state2 := self playerMove: aState.
+state3 := self bossMove: state2.
+^ state3
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day22 >> playerMove: aState [
+"apply effects and reduce any active effect turn time by one unit"
+
 ]
