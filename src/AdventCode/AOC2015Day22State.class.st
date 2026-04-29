@@ -20,9 +20,35 @@ Class {
 		'poisonCount',
 		'rechargeCount'
 	],
+	#classInstVars : [
+		'best'
+	],
 	#category : 'AdventCode',
 	#package : 'AdventCode'
 }
+
+{ #category : 'accessing' }
+AOC2015Day22State class >> best [
+ ^ best
+
+
+]
+
+{ #category : 'accessing' }
+AOC2015Day22State class >> best: n [ 
+ best := n .
+
+]
+
+{ #category : 'accessing' }
+AOC2015Day22State class >> initialize [ 
+"something absurdly large"
+ best := 999999999999999.
+
+
+
+
+]
 
 { #category : 'accessing' }
 AOC2015Day22State >> bossHits [
@@ -46,8 +72,9 @@ s := self copy.
 (s poisonCount > 0) ifTrue: [ s bossHits: (s bossHits - 3) . s poisonCount: (s poisonCount - 1 max: 0) ].
 (s rechargeCount > 0) ifTrue: [ s myMana:  (s myMana + 101) . s rechargeCount: (s rechargeCount - 1 max: 0)].
 
-(bossHits <= 0) ifTrue:[ 
+(bossHits <= 0) ifTrue:[ 	
 	Transcript show: { 'PLAYER Wins !! mana spent => ' . (s myManaSpent) } ; cr .
+	((s myManaSpent) < (s class best)) ifTrue: [ s class best: (s myManaSpent) ] .	
 	^ #bossDead ].
 "boss deals 8 damage usually , atleast 1 damage"
 s myHits: (s myHits - ((8 - (s myArmor)) min: 1)). 
@@ -70,7 +97,7 @@ AOC2015Day22State >> drainCount: anObject [
 AOC2015Day22State >> initialize [
 myMana := 500. 
 myManaSpent := 0.
-myManaSpendLimit := 1000.
+myManaSpendLimit := 9999999999.
 myHits := 50.
 myArmor := 0.
 bossHits := 55.
@@ -138,9 +165,10 @@ AOC2015Day22State >> playerMove [
 "copy state before we call this - we always trash state"
 | spells s |
 
-myManaSpent > myManaSpendLimit ifTrue: [ ^ #overspend ].
-
 s := self copy.
+
+myManaSpent > myManaSpendLimit ifTrue: [ ^ #overspend ].
+((s myManaSpent) > (s class best)) ifTrue: [ ^ #overspend ] .	
 
 (s myMana <= 0) ifTrue:[ ^ #playerDead ].
 
@@ -163,7 +191,10 @@ s := self copy.
 
                                 
 "check if boss dead"
-(s bossHits <= 0) ifTrue:[ ^ #bossDead ].
+(s bossHits <= 0) ifTrue:[ 
+	Transcript show: { 'PLAYER Wins !! mana spent => ' . (s myManaSpent) } ; cr .
+	((s myManaSpent) < (s class best)) ifTrue: [ s class best: (s myManaSpent) ] .	
+	^ #bossDead ].
 
 "decide on effect to cast based on amount mana player has"
 spells := OrderedCollection new.
