@@ -37,42 +37,19 @@ Class {
 }
 
 { #category : 'accessing' }
-AOC2015Day8 >> puzzleInput [ 
+AOC2015Day8 >> input [ 
 ^ ''.
 
 ]
 
 { #category : 'as yet unclassified' }
-AOC2015Day8 >> puzzleInputParsed [
-	"parsed input goes here"
-	^ self notYetImplemented 
-	
-	
-]
-
-{ #category : 'as yet unclassified' }
-AOC2015Day8 >> puzzlePart1 [	
-^ ' 
-'
-
-]
-
-{ #category : 'as yet unclassified' }
-AOC2015Day8 >> puzzlePart2 [	
-^ ' 
-
-'
-
-]
-
-{ #category : 'as yet unclassified' }
-AOC2015Day8 >> solution1 [
+AOC2015Day8 >> solve [
 
 	^ self notYetImplemented
 ]
 
 { #category : 'as yet unclassified' }
-AOC2015Day8 >> solution2 [
+AOC2015Day8 >> solve2 [
 
 	^ self notYetImplemented
 ]
