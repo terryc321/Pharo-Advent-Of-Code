@@ -44,11 +44,15 @@ s := self copy.
                            s drainCount: (s drainCount - 1 max: 0) ].
 (s shieldCount > 0) ifTrue: [ s myArmor: 7. s shieldCount: (s shieldCount - 1 max: 0) ].
 (s poisonCount > 0) ifTrue: [ s bossHits: (s bossHits - 3) . s poisonCount: (s poisonCount - 1 max: 0) ].
-(s rechargeCount > 0) ifTrue: [ s mana:  (s mana + 101) . s rechargeCount: (s rechargeCount - 1 max: 0)].
+(s rechargeCount > 0) ifTrue: [ s myMana:  (s myMana + 101) . s rechargeCount: (s rechargeCount - 1 max: 0)].
 
-(bossHits <= 0) ifTrue:[ ^ #bossDead ].
+(bossHits <= 0) ifTrue:[ 
+	Transcript show: { 'PLAYER Wins !! mana spent => ' . (s myManaSpent) } ; cr .
+	^ #bossDead ].
 "boss deals 8 damage usually , atleast 1 damage"
-myHits := myHits - ((8 - myArmor) min: 1) . 
+s myHits: (s myHits - ((8 - (s myArmor)) min: 1)). 
+
+s playerMove.
 
 ]
 
@@ -66,7 +70,7 @@ AOC2015Day22State >> drainCount: anObject [
 AOC2015Day22State >> initialize [
 myMana := 500. 
 myManaSpent := 0.
-myManaSpendLimit := 99999999.
+myManaSpendLimit := 1000.
 myHits := 50.
 myArmor := 0.
 bossHits := 55.
@@ -154,7 +158,8 @@ s := self copy.
 (s poisonCount > 0) ifTrue: [ s bossHits: (s bossHits - 3) .   
                              s poisonCount: (s poisonCount - 1 max: 0) ].
                                
-(s rechargeCount > 0) ifTrue: [ s mana:  (s mana + 101) . s rechargeCount: (s rechargeCount - 1 max: 0)].
+(s rechargeCount > 0) ifTrue: [ s myMana:  (s myMana + 101) . 
+	                            s rechargeCount: (s rechargeCount - 1 max: 0)].
 
                                 
 "check if boss dead"
@@ -218,6 +223,16 @@ AOC2015Day22State >> rechargeCount [
 { #category : 'accessing' }
 AOC2015Day22State >> rechargeCount: anObject [
 	^ rechargeCount := anObject
+]
+
+{ #category : 'running' }
+AOC2015Day22State >> run [
+	Transcript show: 'RUN has started .' ; cr .
+	self playerMove.
+	Transcript show: 'RUN has completed .' ; cr .
+	
+	
+
 ]
 
 { #category : 'accessing' }
