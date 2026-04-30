@@ -49,22 +49,37 @@ Class {
 
 { #category : 'translating' }
 LearnRoassalOne >> generate [
-| rsc |
+| rsc window form prefix file |
+
+file := (FileSystem / 'home' / 'terry' / 'code' / 'smalltalk' / 'Pharo-Roassal' / 'RSChart' / 'readme.md' ) nextVersion.
+file writeStreamDo: [:stream |
+    stream nextPutAll: '#Learn Roassal RSChart , in Pharo 13!'; nl.
+
 rsc := RSChartExample new.
-Transcript clear.
 (RSChartExample methodDict keys)  asSortedCollection do: [ :name |
 	| method |
-
 	method := RSChartExample methodDict at: name.
-	Transcript show: '#' , name ; cr .
-	Transcript show: method sourceCode; cr.
+    stream nextPutAll: '#' , name ; nl .
+"	Transcript show: '#' , name ; cr ."
+    stream nextPutAll: '```smalltalk' ; nl.	
+    stream nextPutAll: method sourceCode; nl.
+    stream nextPutAll: '```' ; nl.	
+"	Transcript show: method sourceCode; cr."
 "	Transcript show: '```smalltalk' , cr .
 	Transcript show: '```' , cr .
 "	
-	Transcript show: '![Alt Text](images/' , name , '.png)' ; cr ; cr.
-	(rsc perform: name) open.
-	"Smalltalk evaluate: 'RSChartExample new ' , name."
+	"Transcript show: '![Alt Text](images/' , name , '.png)' ; cr ; cr."
+	stream nextPutAll: '![Alt Text](images/' , name , '.png)' ; nl ; nl.	
+	window := ((rsc perform: name) open).
+	form := window asForm.
+	prefix := name printString allButFirst. 
+	PNGReadWriter
+			putForm: form
+			onFileNamed: (FileSystem / 'home' / 'terry' / 'code' / 'smalltalk' / 'Pharo-Roassal' / 'RSChart' / 'images' / prefix , 'png') nextVersion.
+	window close.
+	
  ].
+].
 
 
 ]
