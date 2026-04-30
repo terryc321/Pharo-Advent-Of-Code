@@ -2,7 +2,6 @@ Class {
 	#name : 'AOC2015Day22State',
 	#superclass : 'Object',
 	#instVars : [
-		'myManaSpendLimit',
 		'myManaSpent',
 		'myMana',
 		'myHits',
@@ -69,7 +68,7 @@ s := self copy.
 (s missileCount > 0) ifTrue: [ s bossHits: (s bossHits - 4) . s missileCount: (s missileCount - 1 max: 0) ].
 (s drainCount > 0) ifTrue: [ s bossHits: (s bossHits - 2) . s myHits: (s myHits + 2) . 
                            s drainCount: (s drainCount - 1 max: 0) ].
-(s shieldCount > 0) ifTrue: [ s myArmor: 7. s shieldCount: (s shieldCount - 1 max: 0) ].
+(s shieldCount > 0) ifTrue: [ s myArmor: (s myArmor + 7). s shieldCount: (s shieldCount - 1 max: 0) ].
 (s poisonCount > 0) ifTrue: [ s bossHits: (s bossHits - 3) . s poisonCount: (s poisonCount - 1 max: 0) ].
 (s rechargeCount > 0) ifTrue: [ s myMana:  (s myMana + 101) . s rechargeCount: (s rechargeCount - 1 max: 0)].
 
@@ -99,7 +98,6 @@ AOC2015Day22State >> initialize [
 self class best ifNil:[ self class initialize ].
 myMana := 500. 
 myManaSpent := 0.
-myManaSpendLimit := 9999999999.
 myHits := 50.
 myArmor := 0.
 bossHits := 55.
@@ -183,7 +181,7 @@ s := self deepCopy.
                              s myHits: (s myHits + 2) . 
                              s drainCount: (s drainCount - 1 max: 0) ].
                              
-(s shieldCount > 0) ifTrue: [ s myArmor: 7.   
+(s shieldCount > 0) ifTrue: [ s myArmor: (s myArmor + 7).   
                               s shieldCount: (s shieldCount - 1 max: 0) ].
                               
 (s poisonCount > 0) ifTrue: [ s bossHits: (s bossHits - 3) .   
