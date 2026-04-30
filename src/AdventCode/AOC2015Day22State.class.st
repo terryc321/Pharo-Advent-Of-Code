@@ -18,7 +18,8 @@ Class {
 		'drainCount',
 		'shieldCount',
 		'poisonCount',
-		'rechargeCount'
+		'rechargeCount',
+		'spells'
 	],
 	#classInstVars : [
 		'best'
@@ -72,13 +73,13 @@ s := self copy.
 (s poisonCount > 0) ifTrue: [ s bossHits: (s bossHits - 3) . s poisonCount: (s poisonCount - 1 max: 0) ].
 (s rechargeCount > 0) ifTrue: [ s myMana:  (s myMana + 101) . s rechargeCount: (s rechargeCount - 1 max: 0)].
 
-(bossHits <= 0) ifTrue:[ 	
+(s bossHits <= 0) ifTrue:[ 	
 	Transcript show: { 'PLAYER Wins !! mana spent => ' . (s myManaSpent) } ; cr .
 	((s myManaSpent) < (s class best)) ifTrue: [ s class best: (s myManaSpent) ] .	
 	^ #bossDead ].
 "boss deals 8 damage usually , atleast 1 damage"
 s myHits: (s myHits - ((8 - (s myArmor)) min: 1)). 
-
+(s myMana <= 0) ifTrue:[ ^ #playerDead ].
 s playerMove.
 
 ]
@@ -95,6 +96,7 @@ AOC2015Day22State >> drainCount: anObject [
 
 { #category : 'initialization' }
 AOC2015Day22State >> initialize [
+self class best ifNil:[ self class initialize ].
 myMana := 500. 
 myManaSpent := 0.
 myManaSpendLimit := 9999999999.
@@ -107,6 +109,7 @@ drainCount := 0.
 shieldCount := 0.
 poisonCount := 0.
 rechargeCount := 0.
+
 
 ]
 
@@ -163,11 +166,11 @@ AOC2015Day22State >> myManaSpent: anObject [
 { #category : 'movement' }
 AOC2015Day22State >> playerMove [
 "copy state before we call this - we always trash state"
-| spells s |
+|  s |
 
-s := self copy.
-
-myManaSpent > myManaSpendLimit ifTrue: [ ^ #overspend ].
+s := self deepCopy.
+"myManaSpendLimit"
+((s myManaSpent) > (s class best)) ifTrue: [ ^ #overspend ].
 ((s myManaSpent) > (s class best)) ifTrue: [ ^ #overspend ] .	
 
 (s myMana <= 0) ifTrue:[ ^ #playerDead ].
@@ -197,16 +200,16 @@ myManaSpent > myManaSpendLimit ifTrue: [ ^ #overspend ].
 	^ #bossDead ].
 
 "decide on effect to cast based on amount mana player has"
-spells := OrderedCollection new.
-((s myMana >= 53) & (s missileCount = 0)) ifTrue: [ spells add: #missile ].
-((s myMana >= 73) & (s drainCount = 0)) ifTrue: [ spells add: #drain ].
-((s myMana >= 113) & (s shieldCount = 0)) ifTrue: [ spells add: #shield ].
-((s myMana >= 173) & (s poisonCount = 0)) ifTrue: [ spells add: #poison ].
-((s myMana >= 229) & (s rechargeCount = 0)) ifTrue: [ spells add: #recharge ].
+s spells: OrderedCollection new.
+((s myMana >= 53) & (s missileCount = 0)) ifTrue: [ s spells add: #missile ].
+((s myMana >= 73) & (s drainCount = 0)) ifTrue: [ s spells add: #drain ].
+((s myMana >= 113) & (s shieldCount = 0)) ifTrue: [ s spells add: #shield ].
+((s myMana >= 173) & (s poisonCount = 0)) ifTrue: [ s spells add: #poison ].
+((s myMana >= 229) & (s rechargeCount = 0)) ifTrue: [ s spells add: #recharge ].
 "no spells can be cast - player dies"
-(spells size = 0) ifTrue:[ ^ #playerDead ].
+(s spells size = 0) ifTrue:[ ^ #playerDead ].
 
-spells do: [:spell |
+s spells do: [:spell |
  (spell = #missile) 
  ifTrue: [ | t | t:= s copy .  t myMana: (t myMana - 53) . t myManaSpent: (t myManaSpent + 53) . t missileCount: 1 . t bossMove  ].
  
@@ -261,6 +264,7 @@ AOC2015Day22State >> run [
 	Transcript show: 'RUN has started .' ; cr .
 	self playerMove.
 	Transcript show: 'RUN has completed .' ; cr .
+	Transcript show: 'RUN best =>' ; show:(self class best) ; cr .
 	
 	
 
@@ -274,4 +278,14 @@ AOC2015Day22State >> shieldCount [
 { #category : 'accessing' }
 AOC2015Day22State >> shieldCount: anObject [
 	shieldCount := anObject
+]
+
+{ #category : 'accessing' }
+AOC2015Day22State >> spells [
+	^ spells
+]
+
+{ #category : 'accessing' }
+AOC2015Day22State >> spells: anObject [
+	spells := anObject
 ]
