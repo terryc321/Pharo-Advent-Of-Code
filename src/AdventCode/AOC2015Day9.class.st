@@ -6,6 +6,11 @@ Class {
 }
 
 { #category : 'accessing' }
+AOC2015Day9 class >> inputFile [
+^ (AdventRepository repoDir / '2015' / 'day9'  / 'input.txt') readStreamDo: [:stream | stream contents].
+]
+
+{ #category : 'accessing' }
 AOC2015Day9 >> puzzleInput [ 
 ^ ''.
 
