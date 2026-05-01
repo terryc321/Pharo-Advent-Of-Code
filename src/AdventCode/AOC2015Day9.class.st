@@ -127,22 +127,31 @@ AOC2015Day9 >> recurse: set at: here dist: d [
 	"curtail search if exceed best found so far"
 	d > best ifTrue: [ ^ #toofar ].
 
+	Transcript
+		show: 'set=>';
+		show: set;
+		cr.
 	set isEmpty
 		ifTrue: [ | tot |
-			tot := d + ((distances at: here) at: 1) tot < best
-					ifTrue: [ best := tot.
-						Transcript
-							show: 'new best found ';
-							show: best;
-							cr ] ].	"otherwise pick one from set and keep recurse"
+			tot := d + ((distances at: here) at: 1).
+			tot < best
+				ifTrue: [ best := tot.
+					Transcript
+						show: 'new best found ';
+						show: best;
+						cr ] ].	"otherwise pick one from set and keep recurse"
 	choices := set asOrderedCollection.
 	choices
 		do: [ :choice | 
-			| extra |
-			extra := (distances at: here) at: choice. 
-			self recurse: (set remove: choice) at: choice dist: (d + extra).
-			].	
-"
+			| extra newSet |
+			newSet := set copy.
+			newSet remove: choice.
+			extra := (distances at: here) at: choice.
+			Processor yield.
+			self
+				recurse: newSet
+				at: choice
+				dist: d + extra ]	"
 we start at location 1 .
 if collection size is zero - we have exhausted all our choices
 "
@@ -150,7 +159,9 @@ if collection size is zero - we have exhausted all our choices
 
 { #category : 'as yet unclassified' }
 AOC2015Day9 >> run [
+Transcript show: 'starting run ....' ; cr.
 self recurse: ((2 to: towns size) asSet) at: 1 dist: 0.
+Transcript show: 'finished now .....' ; cr.
 ]
 
 { #category : 'as yet unclassified' }
