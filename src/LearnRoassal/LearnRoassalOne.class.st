@@ -53,23 +53,23 @@ LearnRoassalOne >> generate [
 
 file := (FileSystem / 'home' / 'terry' / 'code' / 'smalltalk' / 'Pharo-Roassal' / 'RSChart' / 'readme.md' ) nextVersion.
 file writeStreamDo: [:stream |
-    stream nextPutAll: '#Learn Roassal RSChart , in Pharo 13!'; nl.
+    stream nextPutAll: '#Learn Roassal RSChart , in Pharo 13!'; cr.
 
 rsc := RSChartExample new.
 (RSChartExample methodDict keys)  asSortedCollection do: [ :name |
 	| method |
 	method := RSChartExample methodDict at: name.
-    stream nextPutAll: '#' , name ; nl .
+    stream nextPutAll: '#' , name ; cr .
 "	Transcript show: '#' , name ; cr ."
-    stream nextPutAll: '```smalltalk' ; nl.	
-    stream nextPutAll: method sourceCode; nl.
-    stream nextPutAll: '```' ; nl.	
+    stream nextPutAll: '```smalltalk' ; cr.	
+    stream nextPutAll: method sourceCode; cr.
+    stream nextPutAll: '```' ; cr.	
 "	Transcript show: method sourceCode; cr."
 "	Transcript show: '```smalltalk' , cr .
 	Transcript show: '```' , cr .
 "	
 	"Transcript show: '![Alt Text](images/' , name , '.png)' ; cr ; cr."
-	stream nextPutAll: '![Alt Text](images/' , name , '.png)' ; nl ; nl.	
+	stream nextPutAll: '![Alt Text](images/' , name , '.png)' ; cr ; cr.	
 	window := ((rsc perform: name) open).
 	form := window asForm.
 	prefix := name printString allButFirst. 
