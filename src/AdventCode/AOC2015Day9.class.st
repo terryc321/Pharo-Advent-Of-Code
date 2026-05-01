@@ -2,6 +2,7 @@ Class {
 	#name : 'AOC2015Day9',
 	#superclass : 'Object',
 	#instVars : [
+		'best',
 		'towns',
 		'distances',
 		'triples',
@@ -18,6 +19,9 @@ AOC2015Day9 >> distances [
 
 { #category : 'as yet unclassified' }
 AOC2015Day9 >> initialize [
+best := 999999999999999999. "some arbitrarily large value"
+self makeTownTriples.
+self makeDistances.
 
 ]
 
@@ -33,30 +37,33 @@ AOC2015Day9 >> inputLines [
 
 { #category : 'accessing' }
 AOC2015Day9 >> makeDistances [
-"
+	"
 assign a unique integer to each town
 make a two dimensional collection
 iterate over triples - retrieve index town A , index town B , distance insert into 2d collection
 triple is a / b / distance-a-to-b
 "
-townDictionary := Dictionary new.
 
-1 to: towns size do:[:n | townDictionary at: (towns at: n) put: n ]. 
+	townDictionary := Dictionary new.
 
-distances := OrderedCollection new: (towns size).
-1 to: distances size do: [:n | distances  at: n put: (OrderedCollection new: distances size)].
+	1 to: towns size do: [ :n | townDictionary at: (towns at: n) put: n ].
 
-triples do: [:triple | 
- |  townA townB distance indexA indexB|
- townA := triple at: 1 . 
- townB := triple at: 2 .
- distance := triple at: 3. 
- indexA := townDictionary at: townA.
- indexB := townDictionary at: townB.
- (distances at: indexA) at: indexB put: distance.
- (distances at: indexB) at: indexA put: distance.
- ].
- ^ distances
+	distances := OrderedCollection new: towns size withAll: nil.
+	1
+		to: distances size
+		do: [ :n | distances at: n put: (OrderedCollection new: distances size withAll: nil) ].
+
+	triples
+		do: [ :triple | 
+			| townA townB distance indexA indexB |
+			townA := triple at: 1.
+			townB := triple at: 2.
+			distance := triple at: 3.
+			indexA := townDictionary at: townA.
+			indexB := townDictionary at: townB.
+			(distances at: indexA) at: indexB put: distance.
+			(distances at: indexB) at: indexA put: distance ].
+	^ distances
 ]
 
 { #category : 'accessing' }
@@ -86,25 +93,6 @@ AOC2015Day9 >> makeTownTriples [
 ]
 
 { #category : 'accessing' }
-AOC2015Day9 >> privateMakeDistances [
-"a dictionary of dictionaries"
-| top |
-top := Dictionary new.
-towns do:[:town |
-	top at: town put: (Dictionary new)
-].
-towns do: [:triple | "a / b / distance-a-to-b"
- |  a b dist |
- a := triple at: 1 . 
- b := triple at: 2 .
- dist := triple at: 3. 
- (top at: a) at: b put: dist.
- (top at: b) at: a put: dist.
- ].
-distances:= top.
-]
-
-{ #category : 'accessing' }
 AOC2015Day9 >> puzzleInput [ 
 ^ ''.
 
@@ -131,6 +119,38 @@ AOC2015Day9 >> puzzlePart2 [
 
 '
 
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day9 >> recurse: set at: here dist: d [
+	| choices |
+	"curtail search if exceed best found so far"
+	d > best ifTrue: [ ^ #toofar ].
+
+	set isEmpty
+		ifTrue: [ | tot |
+			tot := d + ((distances at: here) at: 1) tot < best
+					ifTrue: [ best := tot.
+						Transcript
+							show: 'new best found ';
+							show: best;
+							cr ] ].	"otherwise pick one from set and keep recurse"
+	choices := set asOrderedCollection.
+	choices
+		do: [ :choice | 
+			| extra |
+			extra := (distances at: here) at: choice. 
+			self recurse: (set remove: choice) at: choice dist: (d + extra).
+			].	
+"
+we start at location 1 .
+if collection size is zero - we have exhausted all our choices
+"
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day9 >> run [
+self recurse: ((2 to: towns size) asSet) at: 1 dist: 0.
 ]
 
 { #category : 'as yet unclassified' }
