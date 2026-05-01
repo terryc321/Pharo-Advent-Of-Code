@@ -11,6 +11,11 @@ AOC2015Day9 class >> inputFile [
 ]
 
 { #category : 'accessing' }
+AOC2015Day9 class >> inputLines [
+^ self inputFile splitOn: (String lf)
+]
+
+{ #category : 'accessing' }
 AOC2015Day9 >> puzzleInput [ 
 ^ ''.
 
