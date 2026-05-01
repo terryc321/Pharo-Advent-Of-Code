@@ -32,3 +32,10 @@ AOC2015Day8Test >> testExample4 [
 aoc := AOC2015Day8 new.
 self assert: (aoc check:  '"\x27"')= #(6  1  5).
 ]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day8Test >> testSolve1 [
+| aoc|
+aoc := AOC2015Day8 new.
+self assert: (aoc solve1)= 1333.
+]
