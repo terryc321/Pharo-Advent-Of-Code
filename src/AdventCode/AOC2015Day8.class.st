@@ -59,6 +59,20 @@ AOC2015Day8 >> countChars: aString [
 ]
 
 { #category : 'accessing' }
+AOC2015Day8 >> countCharsInMemory2: aString [
+|s r |
+s := aString.
+r := '"'. "the result"
+s do: [:ch |
+ (ch = $") ifTrue:[ r := r , '\"' ] ifFalse:[
+ (ch = $\) ifTrue: [r := r , '\\'  ] ifFalse:[
+ r := r , { ch }.
+ ]]].
+r := r , '"' .
+^ (r size)
+]
+
+{ #category : 'accessing' }
 AOC2015Day8 >> countCharsInMemory: aString [
 | s i t |
 s := aString.
@@ -82,6 +96,11 @@ ifTrue: [ "single backslash 2 chars in length"
 						              i := i + 1.
             						  t := t + 1]]]]].
 ^ t              
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day8 >> countDifference2: aString [
+^  (self countCharsInMemory2: aString) -(self countChars: aString).
 ]
 
 { #category : 'as yet unclassified' }
@@ -129,6 +148,11 @@ tot := tot + (self countDifference: line).
 
 { #category : 'as yet unclassified' }
 AOC2015Day8 >> solve2 [
-
-	^ self notYetImplemented
+"count all "
+|tot |
+tot := 0.
+self inputLines do:[:line |
+tot := tot + (self countDifference2: line).
+].
+^ tot
 ]
