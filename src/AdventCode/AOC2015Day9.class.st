@@ -122,6 +122,79 @@ AOC2015Day9 >> puzzlePart2 [
 ]
 
 { #category : 'as yet unclassified' }
+AOC2015Day9 >> recurse2: set at: here dist: d [
+	| choices |
+	"curtail search if exceed best found so far"
+	d > best ifTrue: [ ^ #toofar ].
+
+"	Transcript		show: 'set=>';		show: set;		cr."
+	set isEmpty
+		ifTrue: [ 
+		  "not a salesman problem just a one way trip"
+			"tot := d + ((distances at: here) at: 1)."			
+			d < best
+				ifTrue: [ best := d.
+					Transcript
+						show: 'new best found ';
+						show: best;
+						cr ] ].	"otherwise pick one from set and keep recurse"
+	choices := set asOrderedCollection.
+	choices
+		do: [ :choice | 
+			| extra newSet |
+			newSet := set copy.
+			newSet remove: choice.
+			extra := (distances at: here) at: choice.
+			Processor yield.
+			self
+				recurse: newSet
+				at: choice
+				dist: d + extra ]	"
+we start at location 1 .
+if collection size is zero - we have exhausted all our choices
+"
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day9 >> recurse2: set at: here dist: d path: aCollection [
+	| choices |
+	"curtail search if exceed best found so far"
+	d > best ifTrue: [ ^ #toofar ].
+
+"	Transcript		show: 'set=>';		show: set;		cr."
+	set isEmpty
+		ifTrue: [ 
+		  "not a salesman problem just a one way trip"
+			"tot := d + ((distances at: here) at: 1)."			
+			d <= best
+				ifTrue: [ best := d.
+					Transcript
+						show: 'new or equal best found ';
+						show: best;
+						show: aCollection ;
+						cr ] ].	"otherwise pick one from set and keep recurse"
+	choices := set asOrderedCollection.
+	choices
+		do: [ :choice | 
+			| extra newSet |
+			newSet := set copy.
+			newSet remove: choice.
+			extra := (distances at: here) at: choice.
+			Processor yield.
+			self
+				recurse2: newSet
+				at: choice
+				dist: d + extra
+				path: [| p | 
+				   p := aCollection copy.
+				   p add: { choice . (towns at: choice) . d . extra . (d + extra)} ] value].	
+				  "
+we start at location 1 .
+if collection size is zero - we have exhausted all our choices
+"
+]
+
+{ #category : 'as yet unclassified' }
 AOC2015Day9 >> recurse: set at: here dist: d [
 	| choices |
 	"curtail search if exceed best found so far"
@@ -166,6 +239,32 @@ AOC2015Day9 >> run [
 	].
 	Transcript
 		show: 'finished now .....'; cr
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day9 >> run2 [
+	| ntowns |
+	Transcript clear.
+	Transcript show: 'starting run ....';	cr.
+	ntowns := (1 to: towns size).
+	ntowns do:[ :i | 
+	   self 
+	   recurse2: ((ntowns reject: [:e | e = i]) asSet) 
+	   at: i 
+	   dist: 0 
+	   path: ([| p | 
+	         p := OrderedCollection new.
+	         p add: { i . (towns at: i) . 0 . 0 . 0 } ] value).
+	].
+	Transcript
+		show: 'finished now .....'; cr
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day9 >> run2Comment [
+" 
+want record towns so we need to print path 
+"
 ]
 
 { #category : 'as yet unclassified' }
