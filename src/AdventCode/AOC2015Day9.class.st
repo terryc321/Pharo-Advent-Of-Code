@@ -127,15 +127,13 @@ AOC2015Day9 >> recurse: set at: here dist: d [
 	"curtail search if exceed best found so far"
 	d > best ifTrue: [ ^ #toofar ].
 
-	Transcript
-		show: 'set=>';
-		show: set;
-		cr.
+"	Transcript		show: 'set=>';		show: set;		cr."
 	set isEmpty
-		ifTrue: [ | tot |
-			tot := d + ((distances at: here) at: 1).
-			tot < best
-				ifTrue: [ best := tot.
+		ifTrue: [ 
+		  "not a salesman problem just a one way trip"
+			"tot := d + ((distances at: here) at: 1)."			
+			d < best
+				ifTrue: [ best := d.
 					Transcript
 						show: 'new best found ';
 						show: best;
@@ -159,9 +157,28 @@ if collection size is zero - we have exhausted all our choices
 
 { #category : 'as yet unclassified' }
 AOC2015Day9 >> run [
-Transcript show: 'starting run ....' ; cr.
-self recurse: ((2 to: towns size) asSet) at: 1 dist: 0.
-Transcript show: 'finished now .....' ; cr.
+	| ntowns |
+	Transcript clear.
+	Transcript show: 'starting run ....';	cr.
+	ntowns := (1 to: towns size).
+	ntowns do:[ :i | 
+	   self recurse: ((ntowns reject: [:e | e = i]) asSet) at: i dist: 0.
+	].
+	Transcript
+		show: 'finished now .....'; cr
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day9 >> runComment [
+" 
+really tricky to get this run method to work , 
+got stuck on pharo langauge - expected a boolean on reject - probably missing
+closing bracket before asSet?
+	ntowns do:[ :i | 
+	   self recurse: ((ntowns reject: [:e | e = i]) asSet) at: i dist: 0.
+	].
+	originally only used location 1 as starting point - but needed to use all the locations as the starting point - can we decipher what the winning towns choice was ?
+"
 ]
 
 { #category : 'as yet unclassified' }
