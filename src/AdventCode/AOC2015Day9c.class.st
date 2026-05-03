@@ -96,28 +96,13 @@ AOC2015Day9c >> makeTownTriples [
 { #category : 'as yet unclassified' }
 AOC2015Day9c >> recurse: set at: here dist: d path: path [
 	| choices |
-	 " simlpe change"
-	"curtail search if exceed best found so far"
-	d > best ifTrue: [ ^ #toofar ].
-
-"	Transcript		show: 'set=>';		show: set;		cr."
-	set isEmpty
-		ifTrue: [ 
-		  "not a salesman problem just a one way trip"
-			"tot := d + ((distances at: here) at: 1)."			
-			(d < best) ifTrue: [
-			paths := OrderedCollection new.
-			].
-			(d <= best)
-				ifTrue: [ best := d.
-					Transcript
-						show: 'equal best found ';
-						show: best;
-						show: path ;
-						cr.
-
-						paths add: path  ].
-						 ].	"otherwise pick one from set and keep recurse"
+	set isEmpty	ifTrue: [ 
+	(d > best) ifTrue: [ paths := OrderedCollection new].
+	(d >= best) ifTrue: [ best := d.
+					        Transcript show: 'equal best found ';show: best;show: path ;cr.
+						      paths add: path  ].
+	].
+	"choices still to be made"	
 	choices := set asOrderedCollection.
 	choices
 		do: [ :choice | 
@@ -137,6 +122,7 @@ AOC2015Day9c >> recurse: set at: here dist: d path: path [
 AOC2015Day9c >> run [
 "this is first entryt point"
 	| ntowns |
+	best := 0 .
 	Transcript clear.
 	Transcript show: 'starting run ....';	cr.
 	ntowns := (1 to: towns size).
