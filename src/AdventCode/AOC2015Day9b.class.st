@@ -121,24 +121,16 @@ AOC2015Day9b >> recurse: set at: here dist: d path: path [
 	choices := set asOrderedCollection.
 	choices
 		do: [ :choice | 
-			| extra newSet |
+			| extra newSet p |
 			newSet := set copy.
 			newSet remove: choice.
-			extra := (distances at: here) at: choice.
+			extra := (distances at: here) at: choice.			
 			Processor yield.
-			self
-				recurse: newSet
-				at: choice
-				dist: d + extra
-				path: [| p | 
-				   p := path copy.		
-				
-				   p add: { choice . (towns at: choice) . d . extra . (d + extra)}.
-				   p ] value].	
-				  "
-we start at location 1 .
-if collection size is zero - we have exhausted all our choices
-"
+			p := path copy.
+			p add: { choice . (towns at: choice) . d . extra . (d + extra) }.
+			self recurse: newSet at: choice dist: d + extra	path: p].
+			
+
 ]
 
 { #category : 'as yet unclassified' }
@@ -149,16 +141,11 @@ AOC2015Day9b >> run [
 	Transcript show: 'starting run ....';	cr.
 	ntowns := (1 to: towns size).
 	ntowns do:[ :i | 
-	   self 
-	   recurse: ((ntowns reject: [:e | e = i]) asSet) 
-	   at: i 
-	   dist: 0 
-	   path: ([| p | 
-	         p := OrderedCollection new.
-	         p add: { i . (towns at: i) . 0 . 0 . 0 } ] value).
-	].
-	Transcript
-		show: 'finished now .....'; cr
+		| p |
+		p := OrderedCollection new.
+      p add: { i . (towns at: i) . 0 . 0 . 0 }.	         
+	   self recurse: ((ntowns reject: [:e | e = i]) asSet) at: i dist: 0 path: p ].
+	Transcript show: 'finished now .....'; cr.
 ]
 
 { #category : 'as yet unclassified' }
