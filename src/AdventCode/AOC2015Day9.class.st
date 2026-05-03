@@ -179,7 +179,8 @@ AOC2015Day9 >> recurse2: set at: here dist: d path: aCollection [
 						show: best;
 						show: aCollection ;
 						cr.
-						paths add: aCollection. ].
+
+						paths add: { aCollection } ].
 						 ].	"otherwise pick one from set and keep recurse"
 	choices := set asOrderedCollection.
 	choices
@@ -194,7 +195,7 @@ AOC2015Day9 >> recurse2: set at: here dist: d path: aCollection [
 				at: choice
 				dist: d + extra
 				path: [| p | 
-				   p := aCollection copy.
+				   p := (aCollection copy) asCollection.
 				   p add: { choice . (towns at: choice) . d . extra . (d + extra)} ] value].	
 				  "
 we start at location 1 .
