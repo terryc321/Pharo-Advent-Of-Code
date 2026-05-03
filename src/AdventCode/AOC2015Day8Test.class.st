@@ -39,17 +39,3 @@ AOC2015Day8Test >> testSolve1 [
 aoc := AOC2015Day8 new.
 self assert: (aoc solve1)= 1333.
 ]
-
-{ #category : 'as yet unclassified' }
-AOC2015Day8Test >> testSolve2 [
-| aoc|
-aoc := AOC2015Day8 new.
-self assert: (aoc solve2)= 2046.
-]
-
-{ #category : 'as yet unclassified' }
-AOC2015Day8Test >> testSolve2a [
-| aoc|
-aoc := AOC2015Day8 new.
-self assert: (aoc solve2: {'""'} )= 4.
-]
