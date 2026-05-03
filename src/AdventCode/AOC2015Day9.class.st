@@ -2,6 +2,7 @@ Class {
 	#name : 'AOC2015Day9',
 	#superclass : 'Object',
 	#instVars : [
+		'paths',
 		'best',
 		'towns',
 		'distances',
@@ -20,8 +21,10 @@ AOC2015Day9 >> distances [
 { #category : 'as yet unclassified' }
 AOC2015Day9 >> initialize [
 best := 999999999999999999. "some arbitrarily large value"
+paths := OrderedCollection new.
 self makeTownTriples.
 self makeDistances.
+
 
 ]
 
@@ -166,13 +169,18 @@ AOC2015Day9 >> recurse2: set at: here dist: d path: aCollection [
 		ifTrue: [ 
 		  "not a salesman problem just a one way trip"
 			"tot := d + ((distances at: here) at: 1)."			
+			d < best ifTrue: [
+			paths := OrderedCollection new.
+			].
 			d <= best
 				ifTrue: [ best := d.
 					Transcript
-						show: 'new or equal best found ';
+						show: 'equal best found ';
 						show: best;
 						show: aCollection ;
-						cr ] ].	"otherwise pick one from set and keep recurse"
+						cr.
+						paths add: aCollection. ].
+						 ].	"otherwise pick one from set and keep recurse"
 	choices := set asOrderedCollection.
 	choices
 		do: [ :choice | 
