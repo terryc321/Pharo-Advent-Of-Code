@@ -195,8 +195,9 @@ AOC2015Day9a >> recurse2: set at: here dist: d path: aCollection [
 				at: choice
 				dist: d + extra
 				path: [| p | 
-				   p := (aCollection copy) asCollection.
-				   p add: { choice . (towns at: choice) . d . extra . (d + extra)} ] value].	
+				   p := aCollection copy.
+				   p add: { choice . (towns at: choice) . d . extra . (d + extra)}.
+				   p ] value].	
 				  "
 we start at location 1 .
 if collection size is zero - we have exhausted all our choices
