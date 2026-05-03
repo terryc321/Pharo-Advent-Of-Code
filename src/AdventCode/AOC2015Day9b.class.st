@@ -101,10 +101,10 @@ AOC2015Day9b >> recurse: set at: here dist: d path: path [
 		ifTrue: [ 
 		  "not a salesman problem just a one way trip"
 			"tot := d + ((distances at: here) at: 1)."			
-			d < best ifTrue: [
+			(d < best) ifTrue: [
 			paths := OrderedCollection new.
 			].
-			d <= best
+			(d <= best)
 				ifTrue: [ best := d.
 					Transcript
 						show: 'equal best found ';
@@ -128,7 +128,7 @@ AOC2015Day9b >> recurse: set at: here dist: d path: path [
 				dist: d + extra
 				path: [| p | 
 				   p := path copy.		
-				   self halt.
+				
 				   p add: { choice . (towns at: choice) . d . extra . (d + extra)}.
 				   p ] value].	
 				  "
