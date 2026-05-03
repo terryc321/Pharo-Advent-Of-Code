@@ -91,7 +91,7 @@ AOC2015Day9b >> makeTownTriples [
 ]
 
 { #category : 'as yet unclassified' }
-AOC2015Day9b >> recurse: set at: here dist: d path: aCollection [
+AOC2015Day9b >> recurse: set at: here dist: d path: path [
 	| choices |
 	"curtail search if exceed best found so far"
 	d > best ifTrue: [ ^ #toofar ].
@@ -109,10 +109,10 @@ AOC2015Day9b >> recurse: set at: here dist: d path: aCollection [
 					Transcript
 						show: 'equal best found ';
 						show: best;
-						show: aCollection ;
+						show: path ;
 						cr.
 
-						paths add: { aCollection } ].
+						paths add: path  ].
 						 ].	"otherwise pick one from set and keep recurse"
 	choices := set asOrderedCollection.
 	choices
@@ -127,8 +127,10 @@ AOC2015Day9b >> recurse: set at: here dist: d path: aCollection [
 				at: choice
 				dist: d + extra
 				path: [| p | 
-				   p := aCollection copy.
-				   p add: { choice . (towns at: choice) . d . extra . (d + extra)} ] value].	
+				   p := path copy.		
+				   self halt.
+				   p add: { choice . (towns at: choice) . d . extra . (d + extra)}.
+				   p ] value].	
 				  "
 we start at location 1 .
 if collection size is zero - we have exhausted all our choices
