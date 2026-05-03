@@ -15,6 +15,7 @@ Class {
 
 { #category : 'as yet unclassified' }
 AOC2015Day9b >> initialize [
+"make a new"
 best := 999999999999999999. "some arbitrarily large value"
 paths := OrderedCollection new.
 self makeTownTriples.
@@ -25,18 +26,19 @@ self makeDistances.
 
 { #category : 'accessing' }
 AOC2015Day9b >> inputFile [
+"get input file"
 ^ (AdventRepository repoDir / '2015' / 'day9'  / 'input.txt') readStreamDo: [:stream | stream contents].
 ]
 
 { #category : 'accessing' }
 AOC2015Day9b >> inputLines [
+"the lines of input split on linefeed"
 ^ self inputFile splitOn: (String lf)
 ]
 
 { #category : 'accessing' }
 AOC2015Day9b >> makeDistances [
-	"
-assign a unique integer to each town
+	"assign a unique integer to each town
 make a two dimensional collection
 iterate over triples - retrieve index town A , index town B , distance insert into 2d collection
 triple is a / b / distance-a-to-b
@@ -67,6 +69,7 @@ triple is a / b / distance-a-to-b
 { #category : 'accessing' }
 AOC2015Day9b >> makeTownTriples [
 	| lines lines2 lines3 |
+	"a triple townA townB and distance between them"
 	towns := Set new.
 	lines := self inputLines.
 	lines2 := lines reject: [ :line | line = '' ].
@@ -93,6 +96,7 @@ AOC2015Day9b >> makeTownTriples [
 { #category : 'as yet unclassified' }
 AOC2015Day9b >> recurse: set at: here dist: d path: path [
 	| choices |
+	 " simlpe change"
 	"curtail search if exceed best found so far"
 	d > best ifTrue: [ ^ #toofar ].
 
@@ -139,6 +143,7 @@ if collection size is zero - we have exhausted all our choices
 
 { #category : 'as yet unclassified' }
 AOC2015Day9b >> run [
+"this is first entryt point"
 	| ntowns |
 	Transcript clear.
 	Transcript show: 'starting run ....';	cr.
@@ -158,5 +163,6 @@ AOC2015Day9b >> run [
 
 { #category : 'as yet unclassified' }
 AOC2015Day9b >> towns [
+"a selector we cannot delete for some reason"
 ^ towns
 ]
