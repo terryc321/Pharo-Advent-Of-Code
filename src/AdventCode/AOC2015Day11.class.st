@@ -70,6 +70,11 @@ AOC2015Day11 >> part1 [
 ]
 
 { #category : 'as yet unclassified' }
+AOC2015Day11 >> part2 [
+^ self run: self part1
+]
+
+{ #category : 'as yet unclassified' }
 AOC2015Day11 >> run: s [
 | snext | 
 snext := self count:s .

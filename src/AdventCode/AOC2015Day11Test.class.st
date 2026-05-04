@@ -12,6 +12,13 @@ aoc := AOC2015Day11 new.
 self assert: (aoc part1) = 'cqjxxyzz'.
 ]
 
+{ #category : 'as yet unclassified' }
+AOC2015Day11Test >> testPart2 [
+| aoc |
+aoc := AOC2015Day11 new.
+self assert: (aoc part2) = 'cqkaabcc'.
+]
+
 { #category : 'accessing' }
 AOC2015Day11Test >> testPassword [
 | aoc |
