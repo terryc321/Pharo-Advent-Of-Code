@@ -6,13 +6,6 @@ Class {
 }
 
 { #category : 'accessing' }
-AOC2015Day11Test class >> testPassword2 [
-| aoc |
-aoc := AOC2015Day11 new.
-self assert: (aoc run: 'ghijklmn') = 'ghjaabcc'.
-]
-
-{ #category : 'accessing' }
 AOC2015Day11Test >> testPassword [
 | aoc |
 aoc := AOC2015Day11 new.
@@ -23,5 +16,5 @@ self assert: (aoc run: 'abcdefgh') = 'abcdffaa'.
 AOC2015Day11Test >> testPassword2 [
 | aoc |
 aoc := AOC2015Day11 new.
-self assert: (aoc run: 'ghijklmn') = 'ghjaabcc'.
+self assert: (aoc run: 'ghijklmn') = 'ghjjaabc'.
 ]
