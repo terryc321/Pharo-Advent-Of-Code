@@ -23,5 +23,5 @@ self assert: (aoc run: 'abcdefgh') = 'abcdffaa'.
 AOC2015Day11Test >> testPassword2 [
 | aoc |
 aoc := AOC2015Day11 new.
-self assert: (aoc run: 'ghijklmn') = 'ghjjaabc'.
+self assert: (aoc run: 'ghijklmn') = 'ghjaabcc'.
 ]

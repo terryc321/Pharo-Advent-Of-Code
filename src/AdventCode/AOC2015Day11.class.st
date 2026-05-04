@@ -53,13 +53,15 @@ i > (s size - 1) ifTrue:[ ^ false ].
 AOC2015Day11 >> pairs: s [
 | pairs | 
 pairs := Set new.
-1 to: 8 by: 2 do:[ :i |  
+1 to: 8 do:[ :i |  
  |pr|
  pr := (self pair: s at: i).
- pr isCharacter ifTrue:[ pairs add: pr ]].
-^ pairs size.
-	
-
+ (pr isCharacter) ifTrue: [
+        (i + 2) to: 8 do: [ :j |
+        |pr2|
+         pr2 := (self pair: s at: j).
+         ((pr2 isCharacter) and: [ (pr = pr2) not]) ifTrue:[ ^ true ]]]].
+^ false.
 ]
 
 { #category : 'as yet unclassified' }
@@ -81,8 +83,8 @@ snext := self count:s .
 AOC2015Day11 >> satisfy: s [
 (self containsIOL: s) ifTrue:[ ^ false ].
 (self threeChars: s) ifFalse:[^ false].
-((self pairs: s) < 2) ifTrue:[^ false].
-^ true.
+(self pairs: s)  ifFalse:[^ false].
+^ true
 
 ]
 
