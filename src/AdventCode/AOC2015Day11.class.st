@@ -66,7 +66,7 @@ pairs := Set new.
 AOC2015Day11 >> run: s [
 | snext | 
 snext := self count:s .
-(self satisfy: snext) whileFalse:[
+[self satisfy: snext] whileFalse:[
   snext := self count: snext ].
 ^ snext.  
   
@@ -75,8 +75,8 @@ snext := self count:s .
 { #category : 'as yet unclassified' }
 AOC2015Day11 >> satisfy: s [
 (self containsIOL: s) ifTrue:[ ^ false ].
-(self threeChars s) ifFalse:[^ false].
-((self pairs s) < 2) ifTrue:[^ false].
+(self threeChars: s) ifFalse:[^ false].
+((self pairs: s) < 2) ifTrue:[^ false].
 ^ true.
 
 ]
