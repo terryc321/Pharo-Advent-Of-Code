@@ -67,7 +67,8 @@ AOC2015Day11 >> run: s [
 | snext | 
 snext := self count:s .
 (self satisfy: snext) whileFalse:[
-  snext := self count: snext ]
+  snext := self count: snext ].
+^ snext.  
   
 ]
 
