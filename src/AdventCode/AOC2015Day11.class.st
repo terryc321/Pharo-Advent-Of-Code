@@ -63,6 +63,11 @@ pairs := Set new.
 ]
 
 { #category : 'as yet unclassified' }
+AOC2015Day11 >> part1 [
+^ (self run: 'cqjxjnds')
+]
+
+{ #category : 'as yet unclassified' }
 AOC2015Day11 >> run: s [
 | snext | 
 snext := self count:s .
@@ -86,11 +91,11 @@ AOC2015Day11 >> threeChars: s [
 | a b c result|
 "three characters of ascending ascii value - abc / def / ghi "
 result := false.
-1 to: 5 do:[:i |
+1 to: 6 do:[:i |
  | ai bi ci |
- ai := 1 + i.
- bi := 2 + i.
- ci := 3 + i.  
+ ai := i.
+ bi := 1 + i.
+ ci := 2 + i.  
  a := (s at: ai) asciiValue. 
  b := (s at: bi) asciiValue. 
  c := (s at: ci) asciiValue.

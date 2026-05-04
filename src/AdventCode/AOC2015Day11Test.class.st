@@ -5,6 +5,13 @@ Class {
 	#package : 'AdventCode'
 }
 
+{ #category : 'as yet unclassified' }
+AOC2015Day11Test >> testPart1 [
+| aoc |
+aoc := AOC2015Day11 new.
+self assert: (aoc part1) = 'cqjxxyzz'.
+]
+
 { #category : 'accessing' }
 AOC2015Day11Test >> testPassword [
 | aoc |
