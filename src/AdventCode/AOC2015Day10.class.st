@@ -7,13 +7,19 @@ Class {
 
 { #category : 'as yet unclassified' }
 AOC2015Day10 >> iterSay: aString alimit: theLimit [
-| s out |
-s := aString.
-1 to: theLimit do: [ :n |
- out := (self say: s).
- s := out].
-^ s
 
+	| s out |
+	s := aString.
+	1 to: theLimit do: [ :n |
+			out := self say: s.
+			Processor yield.
+			Transcript
+				show: 'at limit ';
+				show: n;
+				cr.
+			Processor yield.
+			s := out ].
+	^ s
 ]
 
 { #category : 'as yet unclassified' }
