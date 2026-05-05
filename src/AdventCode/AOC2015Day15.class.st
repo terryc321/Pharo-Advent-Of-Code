@@ -14,6 +14,7 @@ AOC2015Day15 >> brute [
 |in |
 in := self input.
 best := 0.
+bestCol := OrderedCollection new.
 [0 to: 100 do:[:a | 
  0 to: 100 do: [:b |
  0 to: 100 do: [:c |
