@@ -43,8 +43,7 @@ AOC2015Day14 >> part1 [
 AOC2015Day14 >> part2 [
 	| deer frontRunners |
 	deer := (self split: self input)
-			collect: [ :desc | (AOC2015Day14Reindeer newReindeer: desc) ].
-			self halt.
+			collect: [ :desc | (AOC2015Day14Reindeer newReindeer: desc) ].			
 		deer do: [:d | d reset ].
  1 to: 2503 do: [ :n | 					
 	deer do: [ :d | d tick ].	
@@ -53,7 +52,6 @@ AOC2015Day14 >> part2 [
 	frontRunners do: [:d | d award: (d award + 1)].
 	].	
 	deer sort: [ :a :b | a award > b award ].
-	self halt.
 	^ deer
 		collect: [ :d | 
 			{d name.
@@ -65,7 +63,7 @@ AOC2015Day14 >> part2 [
 { #category : 'as yet unclassified' }
 AOC2015Day14 >> split: s [
 	| r1 r2 res |
-	r1 := s splitOn: Character lf.
+	r1 := s splitOn: Character cr.
 	res := OrderedCollection new.
 	r1
 		do: [ :line | 
