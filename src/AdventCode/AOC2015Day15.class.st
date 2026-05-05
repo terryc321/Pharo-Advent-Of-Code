@@ -60,12 +60,14 @@ proc := [ :n :d :s | (n * (d at: s))].
 				n3 * (d3 at: #texture).
 				n4 * (d4 at: #texture)}}.
 	prod := num collect: [ :pr | (pr at: 1) + (pr at: 2) + (pr at: 3) + (pr at: 4) ].
-	tot := prod inject: 1 into: [ :acc :each | acc * each ].
+	tot := prod inject: 1 into: [ :acc :each | each < 0 ifTrue:[ 0 ]
+	                                                    ifFalse: [ acc * each ]].
 	tot < 0 ifTrue: [ tot := 0 ]. 
  out := {d1.
 		d2.
 		d3.
 		d4.
+		anArray .
 		num.
 		prod.
 		tot}.
