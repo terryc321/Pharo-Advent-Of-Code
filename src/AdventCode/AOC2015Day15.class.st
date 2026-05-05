@@ -33,6 +33,24 @@ bestCol := OrderedCollection new.
 ]
 
 { #category : 'accessing' }
+AOC2015Day15 >> brute2 [
+|in |
+in := self input.
+best := 0.
+bestCol := OrderedCollection new.
+[0 to: 100 do:[:a | 
+ 0 to: 100 do: [:b |
+ 0 to: 100 do: [:c |
+ 0 to: 100 do: [:d |
+  | sum | 
+  sum := a.
+  sum := sum + b.
+  sum := sum + c.
+  sum := sum + d.
+  sum = 100 ifTrue: [  self bruteHelper2: in with: {a . b . c . d }. ]]]]]] fork.
+]
+
+{ #category : 'accessing' }
 AOC2015Day15 >> brute: aBlock [
 |in |
 in := self input.
@@ -51,6 +69,67 @@ bestCol := OrderedCollection new.
   "try to execute a test after brute has run"
   aBlock value.
   ] fork.
+]
+
+{ #category : 'accessing' }
+AOC2015Day15 >> bruteHelper2: ex with: anArray [
+	"44 teaspoons (d1)butterscotch and 56 teaspoons for (d2)cinnamon"
+
+	| d1 d2 d3 d4 n1 n2 n3 n4 num prod tot proc out calories |
+	d1 := (ex at: 1) at: 2.
+	d2 := (ex at: 2) at: 2.
+	d3 := (ex at: 3) at: 2.
+	d4 := (ex at: 4) at: 2.
+	n1 := anArray at: 1.
+	n2 := anArray at: 2.
+	n3 := anArray at: 3.
+	n4 := anArray at: 4.	"num := OrderedCollection new.
+proc := [ :n :d :s | (n * (d at: s))].
+"
+
+	num := {{n1 * (d1 at: #capacity).
+				n2 * (d2 at: #capacity).
+				n3 * (d3 at: #capacity).
+				n4 * (d4 at: #capacity)}.
+			{n1 * (d1 at: #durability).
+				n2 * (d2 at: #durability).
+				n3 * (d3 at: #durability).
+				n4 * (d4 at: #durability)}.
+			{n1 * (d1 at: #flavor).
+				n2 * (d2 at: #flavor).
+				n3 * (d3 at: #flavor).
+				n4 * (d4 at: #flavor)}.
+			{n1 * (d1 at: #texture).
+				n2 * (d2 at: #texture).
+				n3 * (d3 at: #texture).
+				n4 * (d4 at: #texture)} . 
+			{n1 * (d1 at: #calories).
+				n2 * (d2 at: #calories).
+				n3 * (d3 at: #calories).
+				n4 * (d4 at: #calories)} . 
+				}.
+	calories := [ :pr | (pr at: 1) + (pr at: 2) + (pr at: 3) + (pr at: 4) ] value: (num at: 5).
+  calories = 500 ifTrue: [				
+	prod := num collect: [ :pr | (pr at: 1) + (pr at: 2) + (pr at: 3) + (pr at: 4) ].
+	tot := prod inject: 1 into: [ :acc :each | each < 0 ifTrue:[ 0 ]
+	                                                    ifFalse: [ acc * each ]].
+	tot < 0 ifTrue: [ tot := 0 ]. 
+ out := {d1.
+		d2.
+		d3.
+		d4.
+		anArray .
+		num.
+		prod.
+		tot}.
+ tot = best ifTrue: [ bestCol add: out. 
+                      best printString traceCr. ].		
+tot > best ifTrue: [ best := tot. 
+                     bestCol := OrderedCollection new.
+                     bestCol add: out.
+                     best printString traceCr. ].
+^ out
+].
 ]
 
 { #category : 'accessing' }
