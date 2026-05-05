@@ -19,6 +19,7 @@ pairs do: [:aPair |
  whoA := aPair at: 1 .
  whoB := aPair at: 2 .
  cost := cost + (((aDict at: #connections) at: whoA) at: whoB).
+ cost := cost + (((aDict at: #connections) at: whoB) at: whoA).
  ].
 ^ { pairs . cost }
 
@@ -73,11 +74,9 @@ lines do: [:line |
  connections at: whoB ifAbsent: [ connections at: whoB put: (Dictionary new) ].
  val := (split at: 4) asInteger.
  gL := (split at: 3).
- gL = 'gain' ifTrue:[ (connections at: whoA ) at: whoB put: val .
-	                    (connections at: whoB ) at: whoA put: val .
+ gL = 'gain' ifTrue:[ (connections at: whoA ) at: whoB put: val .	                    
                      ] 
-             ifFalse: [ (connections at: whoA) at: whoB put: (0 - val).
-                        (connections at: whoB) at: whoA put: (0 - val).
+             ifFalse: [ (connections at: whoA) at: whoB put: (0 - val).                       
                        ].
 ].
 result at: #people put: people.
@@ -88,7 +87,7 @@ result at: #connections put: connections.
 { #category : 'as yet unclassified' }
 AOC2015Day13 >> tryCombinations: dict [
 | people |
-best := 9999999999999.
+best := 0.
 people := OrderedCollection new.
 (dict at: #people) do: [: each | people add: each].
 self tryRecur: dict avail: people chosen: (OrderedCollection new).
@@ -99,11 +98,13 @@ self tryRecur: dict avail: people chosen: (OrderedCollection new).
 AOC2015Day13 >> tryRecur: dict avail: aColl chosen: aColl2 [
 aColl isEmpty ifTrue:[ 
 | cost |
- cost := self cost: dict order: aColl2.
- (cost at: 2) < best ifTrue: [ 
+ cost := self cost: dict order: aColl2. 
+ Transcript show: 'cost => ' ; show: (cost at: 2) ; show: '<=' ; show: aColl2 ; cr .
+ 
+ (cost at: 2) > best ifTrue: [ 
      best := cost at: 2.
      Transcript show: 'best so far => ' ; show: best ; show: '<=' ; show: aColl2 ; cr .
-     Transcript show: 'cost => ' ; show: cost ; cr.
+     "Transcript show: 'cost => ' ; show: cost ; cr."
   ].
  ]
  ifFalse: [ 
