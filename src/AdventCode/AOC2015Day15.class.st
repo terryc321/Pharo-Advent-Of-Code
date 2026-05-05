@@ -110,7 +110,8 @@ proc := [ :n :d :s | (n * (d at: s))].
 				}.
 	calories := [ :pr | (pr at: 1) + (pr at: 2) + (pr at: 3) + (pr at: 4) ] value: (num at: 5).
   calories = 500 ifTrue: [				
-	prod := num collect: [ :pr | (pr at: 1) + (pr at: 2) + (pr at: 3) + (pr at: 4) ].
+  "we do not want to add calories to returned best cookie score -- hence allButLast"
+	prod := num allButLast collect: [ :pr | (pr at: 1) + (pr at: 2) + (pr at: 3) + (pr at: 4) ].
 	tot := prod inject: 1 into: [ :acc :each | each < 0 ifTrue:[ 0 ]
 	                                                    ifFalse: [ acc * each ]].
 	tot < 0 ifTrue: [ tot := 0 ]. 
@@ -219,6 +220,16 @@ Frosting: capacity 0, durability -1, flavor 4, texture 0, calories 6
 Sugar: capacity -1, durability 0, flavor 0, texture 2, calories 8'.
 ^ self split: s.
     
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day15 >> part1 [
+self brute
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day15 >> part2 [
+self brute2
 ]
 
 { #category : 'parsing' }
