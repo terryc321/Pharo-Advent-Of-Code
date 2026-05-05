@@ -10,6 +10,11 @@ Class {
 }
 
 { #category : 'accessing' }
+AOC2015Day15 >> bestCol [
+^ bestCol 
+]
+
+{ #category : 'accessing' }
 AOC2015Day15 >> brute [
 |in |
 in := self input.
@@ -25,6 +30,27 @@ bestCol := OrderedCollection new.
   sum := sum + c.
   sum := sum + d.
   sum = 100 ifTrue: [  self bruteHelper: in with: {a . b . c . d }. ]]]]]] fork.
+]
+
+{ #category : 'accessing' }
+AOC2015Day15 >> brute: aBlock [
+|in |
+in := self input.
+best := 0.
+bestCol := OrderedCollection new.
+[0 to: 100 do:[:a | 
+ 0 to: 100 do: [:b |
+ 0 to: 100 do: [:c |
+ 0 to: 100 do: [:d |
+  | sum | 
+  sum := a.
+  sum := sum + b.
+  sum := sum + c.
+  sum := sum + d.
+  sum = 100 ifTrue: [  self bruteHelper: in with: {a . b . c . d }. ]]]]].
+  "try to execute a test after brute has run"
+  aBlock value.
+  ] fork.
 ]
 
 { #category : 'accessing' }
@@ -72,11 +98,11 @@ proc := [ :n :d :s | (n * (d at: s))].
 		prod.
 		tot}.
  tot = best ifTrue: [ bestCol add: out. 
-                      out printString traceCr. ].		
+                      best printString traceCr. ].		
 tot > best ifTrue: [ best := tot. 
                      bestCol := OrderedCollection new.
                      bestCol add: out.
-                     out printString traceCr. ].
+                     best printString traceCr. ].
 ^ out.
 ]
 
