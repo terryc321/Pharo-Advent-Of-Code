@@ -32,6 +32,7 @@ aoc := AOC2015Day13 new.
 dict := aoc parse: (aoc input2).
 aoc tryCombinations: dict.
 self assert: (aoc best) = 601.
+"passed part2 test"
 
 ]
 
