@@ -41,7 +41,7 @@ AOC2015Day14 >> part1 [
 
 { #category : 'as yet unclassified' }
 AOC2015Day14 >> part2 [
-	| deer aoc frontRunners |
+	| deer frontRunners |
 	deer := (self split: self input)
 			collect: [ :desc | AOC2015Day14Reindeer newReindeer: desc ].
 		deer do: [:d | d reset ].
