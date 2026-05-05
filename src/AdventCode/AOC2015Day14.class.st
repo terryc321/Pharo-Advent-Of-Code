@@ -40,6 +40,27 @@ AOC2015Day14 >> part1 [
 ]
 
 { #category : 'as yet unclassified' }
+AOC2015Day14 >> part2 [
+	| deer aoc frontRunners |
+	deer := (self split: self input)
+			collect: [ :desc | AOC2015Day14Reindeer newReindeer: desc ].
+		deer do: [:d | d reset ].
+ 1 to: 2503 do: [ :n | 					
+	deer do: [ :d | d tick ].	
+	deer sort: [ :a :b | a distance > b distance ].
+	frontRunners := deer reject: [ :d | (d distance) < ((deer at: 1) distance) ].
+	frontRunners do: [:d | d award: (d award + 1)].
+	].	
+	deer sort: [ :a :b | a award > b award ].
+	^ deer
+		collect: [ :d | 
+			{d name.
+				d distance.
+				d status . 
+				d award} ]
+]
+
+{ #category : 'as yet unclassified' }
 AOC2015Day14 >> split: s [
 	| r1 r2 res |
 	r1 := s splitOn: Character lf.

@@ -9,7 +9,8 @@ Class {
 		'distance',
 		'status',
 		'activeCount',
-		'restCount'
+		'restCount',
+		'award'
 	],
 	#category : 'AdventCode',
 	#package : 'AdventCode'
@@ -21,6 +22,17 @@ AOC2015Day14Reindeer class >> newReindeer: anArray [
 r := AOC2015Day14Reindeer new.
 r name: (anArray at: 1) ; speed: (anArray at: 2) ; duration: (anArray at: 3) ; restsFor: (anArray at: 4).
 ^ r.
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day14Reindeer >> award [
+^ award
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day14Reindeer >> award: n [
+award := n.
+self
 ]
 
 { #category : 'as yet unclassified' }
@@ -55,6 +67,15 @@ AOC2015Day14Reindeer >> newReindeer: aDict [
 ]
 
 { #category : 'as yet unclassified' }
+AOC2015Day14Reindeer >> reset [
+status := #active.
+activeCount := 0.
+restCount := 0.
+distance := 0.
+award := 0.
+]
+
+{ #category : 'as yet unclassified' }
 AOC2015Day14Reindeer >> restsFor [
 ^ restsFor
 ]
@@ -68,9 +89,7 @@ self
 { #category : 'as yet unclassified' }
 AOC2015Day14Reindeer >> simulate: aLimit [
 "simulate the reindeer for n seconds --- how does it do this best?"
-status := #active.
-activeCount := 0.
-distance := 0.
+self reset.
 1 to: aLimit do: [:n |
  self tick.
 ].
