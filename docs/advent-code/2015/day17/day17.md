@@ -4,6 +4,8 @@ line 1
 
 line 2
 
+Here is a link : [Advent Code 2015 Day 7](../day7.md)
+
 ![Pharologo](logo.png size=80&anchor=figLogo.)
 
 line 3
