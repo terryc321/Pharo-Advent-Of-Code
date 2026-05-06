@@ -321,3 +321,26 @@ h := grid height.
 
 
 ]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day18 >> view: grid [
+| container w h |
+container := (BlElement new)
+	size: 1000 @ 1000;
+	background: Color blue.
+w := grid width.
+h := grid height.
+1 to: h do: [:y |
+ 1 to: w do: [:x |
+ 	| val | 	
+ 	val := grid atColumn: x atRow: y.
+ 	val = 1 ifTrue: [
+ 	container	addChild:
+		((BlElement new)
+			background: Color yellow;
+			size: 10 @ 10;
+			relocate: (10*x) @ (10*y)).
+ 	]]].
+container asScalableElement.
+^ container.
+]
