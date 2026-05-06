@@ -5,6 +5,15 @@ smalltalk playground
 
 Here we can create a playground with specific contents
 
+
+```
+| p file | 
+p := StPlayground new.
+file := (FileLocator localDirectory / 'iceberg' / 'terryc321' / 'Pharo-Advent-Of-Code' / 'docs' / 'Containers-Array2D' / 'page1.st').
+p contents: (file contents).
+p open.
+```
+
 ```
 p := StPlayground new.
 p contents: '"this is the contents of the new playground" '.
