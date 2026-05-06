@@ -4,7 +4,7 @@ line 1
 
 line 2
 
-![Pharologo](https://files.pharo.org/media/logo/logo.png size=80&anchor=figLogo.)
+![Pharologo](logo.png size=80&anchor=figLogo.)
 
 line 3
 
@@ -28,7 +28,7 @@ line 7
 
 line 8
 
-![Pharologo](https://files.pharo.org/media/logo/logo.png size=80&anchor=figLogo.)
+![Pharologo](logo.png size=80&anchor=figLogo.)
 
 line 9
 
