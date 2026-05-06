@@ -16,6 +16,29 @@ AOC2015Day18 >> example [
 ]
 
 { #category : 'as yet unclassified' }
+AOC2015Day18 >> exampleGrid [
+^ self gridFromLines: (self example)
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day18 >> gridFromLines: lines [
+| grid width height|
+height := lines size.
+width := (lines at: 1) size.
+grid := (CTArray2D width: width height: height).
+1 to: height do:[:y |
+  | line |
+  line := lines at: y.
+  1 to: width do: [:x |
+   | ch | 
+   ch := line at: x.
+   ch = $. ifTrue:[ grid atColumn: x atRow: y put: 0 ].
+   ch = $# ifTrue:[ grid atColumn: x atRow: y put: 1 ].
+  ]].
+^grid  
+]
+
+{ #category : 'as yet unclassified' }
 AOC2015Day18 >> input [
 ^'###.##..##.#..#.##...#..#.####..#.##.##.##..###...#....#...###..#..###..###.#.#.#..#.##..#...##.#..#
 .#...##.#####..##.......#..####.###.##.#..###.###.....#.#.####.##.###..##...###....#.##.....#.#.#.##
@@ -122,5 +145,71 @@ AOC2015Day18 >> input [
 { #category : 'as yet unclassified' }
 AOC2015Day18 >> input2 [
 ^ self input splitOn: Character lf.
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day18 >> inputGrid [
+^ self gridFromLines: (self input2)
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day18 >> neighbours: aPoint grid: g [ 
+| x y w h r valid |
+r := OrderedCollection new.
+x := aPoint x.
+y := aPoint y.
+w := g width.
+h := g height.
+
+r add: (x+1)@(y+1).
+r add: (x-0)@(y+1).
+r add: (x-1)@(y+1).
+
+r add: (x+1)@(y+0).
+"r add: (x-0)@(y+0). - the square itself" 
+r add: (x-1)@(y+0).
+
+r add: (x+1)@(y-1).
+r add: (x-0)@(y-1).
+r add: (x-1)@(y-1).
+
+"select squares that are on the grid and not the square itself"
+valid := r select: [:aPt | 
+  | px py |
+  px := aPt x.
+  py := aPt y.
+  px >= 1 and:[ px <= w and: [ py >= 1 and: [py <= h]]]].
+
+^ valid collect: [:aPt | 
+   | px py | 
+   px := aPt x.
+   py := aPt y.
+   {px . py . g atColumn: px atRow: py}].
+  
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day18 >> tick: grid [
+| w h g2 |
+g2 := grid copy.
+w := grid width.
+h := grid height.
+1 to: h do: [:y |
+ 1 to: w do: [:x |
+ 	| val ng |
+ 	ng := self neighbours: x@y grid: grid.
+ 	val := grid atColumn: x atRow: y.
+ 	val = 1 ifTrue: [
+ 	   (ng = 2 or: [ng = 3]) ifTrue:[ g2 atColumn: x atRow: y put: 1 ] 
+ 	                         ifFalse: [ g2 atColumn: x atRow: y put: 0  ].
+ 	       ] 
+ 	       ifFalse: [
+ 	       (ng = 3) ifTrue: [ g2 atColumn: x atRow: y put: 1 ]
+ 	                ifFalse:[ g2 atColumn: x atRow: y put: 0 ]
+ 	]]].
+^g2. 	
+
 
 ]
