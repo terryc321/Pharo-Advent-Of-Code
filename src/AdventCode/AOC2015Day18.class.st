@@ -6,6 +6,36 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
+AOC2015Day18 >> afterHundred2: grid [
+| out |
+out := grid copy.
+1 to: 100 do: [ :i | out := self tick2: out.].
+^ self countOn: out.
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day18 >> afterHundred: grid [
+| out |
+out := grid copy.
+1 to: 100 do: [ :i | out := self tick: out.].
+^ self countOn: out.
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day18 >> countOn: grid [
+| w h tot |
+tot := 0.
+w := grid width.
+h := grid height.
+(1 to: h) do: [:y |
+ (1 to: w) do: [:x |
+ 	| val ng | 	
+ 	val := grid atColumn: x atRow: y.
+ 	val = 1 ifTrue: [tot := tot + 1 ]]].
+ 	^ tot
+]
+
+{ #category : 'as yet unclassified' }
 AOC2015Day18 >> example [
 ^ '.#.#.#
 ...##.
@@ -18,6 +48,21 @@ AOC2015Day18 >> example [
 { #category : 'as yet unclassified' }
 AOC2015Day18 >> exampleGrid [
 ^ self gridFromLines: (self example)
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day18 >> exampleGrid2 [
+"corner lights stuck on"
+|g w h|
+g := self gridFromLines: (self example).
+w := g width.
+h := g height.
+g atColumn: 1 atRow: 1 put: 1. 	                
+g atColumn: w atRow: 1 put: 1. 	                
+g atColumn: 1 atRow: h put: 1. 	               
+g atColumn: w atRow: h put: 1. 	                 
+^ g
+
 ]
 
 { #category : 'as yet unclassified' }
@@ -154,6 +199,21 @@ AOC2015Day18 >> inputGrid [
 ]
 
 { #category : 'as yet unclassified' }
+AOC2015Day18 >> inputGrid2 [
+"corner lights stuck on"
+|g w h|
+g := self gridFromLines: (self input2).
+w := g width.
+h := g height.
+g atColumn: 1 atRow: 1 put: 1. 	                
+g atColumn: w atRow: 1 put: 1. 	                
+g atColumn: 1 atRow: h put: 1. 	               
+g atColumn: w atRow: h put: 1. 	                 
+^ g
+
+]
+
+{ #category : 'as yet unclassified' }
 AOC2015Day18 >> neighbours: aPoint grid: g [ 
 | x y w h r valid |
 r := OrderedCollection new.
@@ -198,6 +258,45 @@ AOC2015Day18 >> neighboursOn: aPoint grid: g [
 pts := self neighbours: aPoint grid:g .
 onPts := pts select:[ :e | e = 1 ].
 ^ onPts size.
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day18 >> part1 [
+^ self afterHundred: (self inputGrid).
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day18 >> part2 [
+^ self afterHundred2: (self inputGrid2).
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day18 >> tick2: grid [
+| w h g2 |
+"corner lights stay on"
+g2 := grid copy.
+w := grid width.
+h := grid height.
+(1 to: h) do: [:y |
+ (1 to: w) do: [:x |
+ 	| val ng |
+ 	ng := self neighboursOn: (x@y) grid: grid .
+ 	val := grid atColumn: x atRow: y.
+   "what does ng mean ? "
+ 	(val = 1) ifTrue: [
+ 	   (ng = 2 or: [ng = 3]) ifTrue:[ g2 atColumn: x atRow: y put: 1 ] 
+ 	                         ifFalse: [ g2 atColumn: x atRow: y put: 0  ]] 	        
+ 	       ifFalse: [
+ 	       (ng = 3) ifTrue: [ g2 atColumn: x atRow: y put: 1 ]
+ 	                ifFalse:[ g2 atColumn: x atRow: y put: 0 ]]]].
+"corner lights stay on" 	                
+g2 atColumn: 1 atRow: 1 put: 1. 	                
+g2 atColumn: w atRow: 1 put: 1. 	                
+g2 atColumn: 1 atRow: h put: 1. 	               
+g2 atColumn: w atRow: h put: 1. 	                 
+^g2. 	
+
+
 ]
 
 { #category : 'as yet unclassified' }
