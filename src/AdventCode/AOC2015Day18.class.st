@@ -185,9 +185,19 @@ valid := r select: [:aPt |
    | px py | 
    px := aPt x.
    py := aPt y.
-   {px . py . g atColumn: px atRow: py}].
-  
+   "{px . py . g atColumn: px atRow: py}"
+   g atColumn: px atRow: py
+   ]. 
 
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day18 >> neighboursOn: aPoint grid: g [ 
+| pts onPts | 
+"just get a count of number 1's on grid around aPoint"
+pts := self neighbours: aPoint grid:g .
+onPts := pts select:[ :e | e = 1 ].
+^ onPts size.
 ]
 
 { #category : 'as yet unclassified' }
@@ -196,19 +206,18 @@ AOC2015Day18 >> tick: grid [
 g2 := grid copy.
 w := grid width.
 h := grid height.
-1 to: h do: [:y |
- 1 to: w do: [:x |
+(1 to: h) do: [:y |
+ (1 to: w) do: [:x |
  	| val ng |
- 	ng := self neighbours: x@y grid: grid.
+ 	ng := self neighboursOn: (x@y) grid: grid .
  	val := grid atColumn: x atRow: y.
- 	val = 1 ifTrue: [
+   "what does ng mean ? "
+ 	(val = 1) ifTrue: [
  	   (ng = 2 or: [ng = 3]) ifTrue:[ g2 atColumn: x atRow: y put: 1 ] 
- 	                         ifFalse: [ g2 atColumn: x atRow: y put: 0  ].
- 	       ] 
+ 	                         ifFalse: [ g2 atColumn: x atRow: y put: 0  ]] 	        
  	       ifFalse: [
  	       (ng = 3) ifTrue: [ g2 atColumn: x atRow: y put: 1 ]
- 	                ifFalse:[ g2 atColumn: x atRow: y put: 0 ]
- 	]]].
+ 	                ifFalse:[ g2 atColumn: x atRow: y put: 0 ]]]].
 ^g2. 	
 
 
