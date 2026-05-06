@@ -25,8 +25,9 @@ codeString doIt. "Or use: codeString inspect."
 ```
 FileSystem disk workingDirectory
 FileSystem disk homeDirectory
-FileLocator localDirectory / 'iceberg' / 'terryc321' / 'Pharo-Advent-Of-Code' / 'docs' 
+FileLocator localDirectory / 'iceberg' / 'terryc321' / 'Pharo-Advent-Of-Code' / 'docs' / 'Containers-Array2D' / 'page1.st'.
 ```
+
 
 
 
