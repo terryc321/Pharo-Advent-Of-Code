@@ -574,7 +574,7 @@ data10 := self
 AOC2015Day16 >> split: s [
 " weakness Character lf versus Character cr "
 | lines |
-lines := s splitOn: Character lf. 
+lines := s splitOn: Character cr. 
 ^ lines collect: [ :line | 
  |ig in props p1 p2 dict|   
    ig := line splitOn: Character space .

@@ -6,8 +6,10 @@ Class {
 }
 
 { #category : 'accessing' }
-AOC2015Day16Test class >> testPart1 [
-| aoc |
+AOC2015Day16Test >> testPart1 [
+| aoc d |
 aoc := AOC2015Day16 new.
-self assert: (((aoc part1) at: 1) at: #sue) = 373
+d := ((aoc part1) at: 1) at: 1 .
+self assert: d isDictionary.
+self assert: ((d at: #sue) = 373)
 ]
