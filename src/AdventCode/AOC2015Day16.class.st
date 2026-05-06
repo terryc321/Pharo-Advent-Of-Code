@@ -5,6 +5,14 @@ Class {
 	#package : 'AdventCode'
 }
 
+{ #category : 'as yet unclassified' }
+AOC2015Day16 >> filter: aSeq with: aBlock [
+^ aSeq select:[:c |
+  |dict|
+  dict := c at: 1.
+  aBlock value: dict  ]
+]
+
 { #category : 'accessing' }
 AOC2015Day16 >> input [
 ^ 'Sue 1: cars: 9, akitas: 3, goldfish: 0
@@ -512,6 +520,54 @@ Sue 500: pomeranians: 10, cats: 3, vizslas: 5'
 { #category : 'as yet unclassified' }
 AOC2015Day16 >> input2 [
 ^ self split:(self input)
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day16 >> part1 [
+"children: 3  -- 1
+cats: 7       -- 2
+samoyeds: 2   -- 3
+pomeranians: 3 -- 4
+akitas: 0  ------ 5
+vizslas: 0  ----- 6
+goldfish: 5 ----- 7
+trees: 3 -------- 8
+cars: 2 --------- 9
+perfumes: 1   --- 10"
+|data data1 data2 data3 data4 data5 data6 data7 data8 data9 data10|
+data := self input2.
+data1 := self 
+ filter: data with: [:dict | | s n | s:= #children. n := 3 .
+     dict at: s ifPresent:[ | k | k := dict at: s. n = k] ifAbsent: [ true ]] .
+data2 := self   
+ filter: data1 with: [:dict | | s n | s:= #cats. n := 7 .
+     dict at: s ifPresent:[ | k | k := dict at: s. n = k] ifAbsent: [ true ]] .
+data3 := self     
+ filter: data2 with: [:dict | | s n | s:= #samoyeds. n := 2 .
+     dict at: s ifPresent:[ | k | k := dict at: s. n = k] ifAbsent: [ true ]] .
+data4 := self     
+ filter: data3 with: [:dict | | s n | s:= #pomeranians. n := 3 .
+     dict at: s ifPresent:[ | k | k := dict at: s. n = k] ifAbsent: [ true ]] .
+data5 := self     
+ filter: data4 with: [:dict | | s n | s:= #akitas. n := 0 .
+     dict at: s ifPresent:[ | k | k := dict at: s. n = k] ifAbsent: [ true ]] .
+data6 := self    
+ filter: data5 with: [:dict | | s n | s:= #vizslas. n := 0 .
+     dict at: s ifPresent:[ | k | k := dict at: s. n = k] ifAbsent: [ true ]] .     
+data7 := self     
+ filter: data6 with: [:dict | | s n | s:= #goldfish. n := 5 .
+     dict at: s ifPresent:[ | k | k := dict at: s. n = k] ifAbsent: [ true ]] .     
+data8 := self     
+ filter: data7 with: [:dict | | s n | s:= #trees. n := 3 .
+     dict at: s ifPresent:[ | k | k := dict at: s. n = k] ifAbsent: [ true ]] .     
+data9 := self     
+ filter: data8 with: [:dict | | s n | s:= #cars. n := 2 .
+     dict at: s ifPresent:[ | k | k := dict at: s. n = k] ifAbsent: [ true ]] .     
+data10 := self     
+ filter: data8 with: [:dict | | s n | s:= #perfumes.  n := 1 .
+     dict at: s ifPresent:[ | k | k := dict at: s. n = k] ifAbsent: [ true ]] .    
+^ data10          
+          
 ]
 
 { #category : 'as yet unclassified' }
