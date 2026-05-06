@@ -84,6 +84,22 @@ lesson:
 ProfStef next.'
 ]
 
+{ #category : 'lessons' }
+HowToDebug >> example [
+<sampleInstance>
+<demo>
+| p file | 
+p := StPlayground new.
+file := (FileLocator localDirectory / 'iceberg' / 'terryc321' / 'Pharo-Advent-Of-Code' / 'docs' / 'Containers-Array2D' / 'page1.st').
+p contents: (file contents).
+p open.
+^ p.
+
+ 
+
+
+]
+
 { #category : 'tutorial' }
 HowToDebug >> tutorial [
 "return a list of lessons as array"
