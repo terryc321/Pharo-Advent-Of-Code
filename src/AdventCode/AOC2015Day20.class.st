@@ -31,6 +31,15 @@ limit := 10000000.
 ]
 
 { #category : 'as yet unclassified' }
+AOC2015Day20 >> part1 [
+| puzzleInput |
+puzzleInput := 34000000.
+1 to: 10000000 do: [ :house | (houses at: house) >= puzzleInput ifTrue: [ ^ house ] ].
+
+
+]
+
+{ #category : 'as yet unclassified' }
 AOC2015Day20 >> runElves [
 |promise|
 promise := [ self elves] asAsyncFuture awaitWithUserBackgroundPriority.
