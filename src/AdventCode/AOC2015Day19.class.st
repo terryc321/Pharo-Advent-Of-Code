@@ -1,3 +1,7 @@
+"
+Part2  - need to make replacement in fewest possible moves
+
+"
 Class {
 	#name : 'AOC2015Day19',
 	#superclass : 'Object',
@@ -19,6 +23,65 @@ rules := OrderedCollection new.
 		add: {'O'.
 				'HH'}.
 ^rules.				
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day19 >> part1 [
+^ self replace: (self puzzleInput) with: (self puzzleRules)
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day19 >> puzzleInput [
+^'CRnCaCaCaSiRnBPTiMgArSiRnSiRnMgArSiRnCaFArTiTiBSiThFYCaFArCaCaSiThCaPBSiThSiThCaCaPTiRnPBSiThRnFArArCaCaSiThCaSiThSiRnMgArCaPTiBPRnFArSiThCaSiRnFArBCaSiRnCaPRnFArPMgYCaFArCaPTiTiTiBPBSiThCaPTiBPBSiRnFArBPBSiRnCaFArBPRnSiRnFArRnSiRnBFArCaFArCaCaCaSiThSiThCaCaPBPTiTiRnFArCaPTiBSiAlArPBCaCaCaCaCaSiRnMgArCaSiThFArThCaSiThCaSiRnCaFYCaSiRnFYFArFArCaSiRnFYFArCaSiRnBPMgArSiThPRnFArCaSiRnFArTiRnSiRnFYFArCaSiRnBFArCaSiRnTiMgArSiThCaSiThCaFArPRnFArSiRnFArTiTiTiTiBCaCaSiRnCaCaFYFArSiThCaPTiBPTiBCaSiThSiRnMgArCaF'
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day19 >> puzzleRules [
+^{{'Al'.'ThF'}.
+{'Al'.'ThRnFAr'}.
+{'B'.'BCa'}.
+{'B'.'TiB'}.
+{'B'.'TiRnFAr'}.
+{'Ca'.'CaCa'}.
+{'Ca'.'PB'}.
+{'Ca'.'PRnFAr'}.
+{'Ca'.'SiRnFYFAr'}.
+{'Ca'.'SiRnMgAr'}.
+{'Ca'.'SiTh'}.
+{'F'.'CaF'}.
+{'F'.'PMg'}.
+{'F'.'SiAl'}.
+{'H'.'CRnAlAr'}.
+{'H'.'CRnFYFYFAr'}.
+{'H'.'CRnFYMgAr'}.
+{'H'.'CRnMgYFAr'}.
+{'H'.'HCa'}.
+{'H'.'NRnFYFAr'}.
+{'H'.'NRnMgAr'}.
+{'H'.'NTh'}.
+{'H'.'OB'}.
+{'H'.'ORnFAr'}.
+{'Mg'.'BF'}.
+{'Mg'.'TiMg'}.
+{'N'.'CRnFAr'}.
+{'N'.'HSi'}.
+{'O'.'CRnFYFAr'}.
+{'O'.'CRnMgAr'}.
+{'O'.'HP'}.
+{'O'.'NRnFAr'}.
+{'O'.'OTi'}.
+{'P'.'CaP'}.
+{'P'.'PTi'}.
+{'P'.'SiRnFAr'}.
+{'Si'.'CaSi'}.
+{'Th'.'ThCa'}.
+{'Ti'.'BP'}.
+{'Ti'.'TiTi'}.
+{'e'.'HF'}.
+{'e'.'NAl'}.
+{'e'.'OMg'}}.
+
+
 ]
 
 { #category : 'accessing' }
