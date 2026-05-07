@@ -1,0 +1,43 @@
+
+
+# Morphic
+
+windowing system is absolute 
+
+0,0 is top left of screen . 
+
+screen is so wide ? how wide - lets use smalltalk to tell us .
+
+green rectangle top left at 0 ,0 . width rectange is 100 pixel , hight is 100 pixel 
+
+Morph << TestMorph
+ 
+```
+TestMorph >> drawOn: aCanvas
+  | position rect1 rect2 |
+ position := self position.
+ rect1 := (position corner: (position + (200@200))).
+ rect2 := ((position + (200@200)) corner: (position + (200@200) + (200@200))).
+ aCanvas fillRectangle: (position corner:(position + (400@400)))color: (Color black).
+ aCanvas fillRectangle: rect1 color: (Color green).
+ aCanvas fillRectangle: rect2 color: (Color red).
+```
+
+
+ ```
+ containsPoint: aPoint 
+^ (((0@0) corner:(200@200)) containsPoint: aPoint) 
+or: [ ((200@200) corner:(400@400)) containsPoint: aPoint ] .
+```
+
+this means when TestMorph is dragged about when its dropped , cannot interact with it 
+because as far as computer is concerned the points contained are back up on the top left of the 
+screen 
+
+```
+containsPoint: aPoint 
+^ (((0@0) corner:(200@200)) containsPoint: aPoint) 
+or: [ ((200@200) corner:(400@400)) containsPoint: aPoint ] .
+```
+
+

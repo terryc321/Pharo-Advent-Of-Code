@@ -1,0 +1,21 @@
+
+The link for Enterprise Pharo was 2016-10-06 - YYMMDD format??
+so its almost ten years out of date ?
+
+(https://files.pharo.org/books-pdfs/entreprise-pharo/2016-10-06-EnterprisePharo.pdf)
+
+what about OAuth ,
+why HTTP ? surely in enterprise ??
+
+```code
+Gofer it
+url: 'http://smalltalkhub.com/mc/Pharo/Fuel/main';
+package: 'ConfigurationOfFuel';
+load.
+
+(ConfigurationOfFuel project version: #stable)
+load: 'FuelProgressUpdate'.
+```
+
+
+
