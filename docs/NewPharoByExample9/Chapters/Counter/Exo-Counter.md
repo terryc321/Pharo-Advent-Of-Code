@@ -148,7 +148,7 @@ Pharo works with git through the tool **Iceberg**. This section will show you ho
 #### Open Iceberg
 
 Open Iceberg through the **Sources** menu, or by hitting `Cmd-O,I`.
-![Iceberg _Repositories_ browser on a fresh image indicates that if you want to version modifications to Pharo itself you will have to tell Iceberg where the Pharo clone is located. But you do not care.](figures/Save1-EmptyIceberg.png width=75&label=EmptyIceberg)
+![Iceberg _Repositories_ browser on a fresh image indicates that if you want to version modifications to Pharo itself you will have to tell Iceberg where the Pharo clone is located. But you do not care.](figures/Save1-EmptyIceberg.png &label=EmptyIceberg)
 You should now see something similar to Figure *@EmptyIceberg@* which shows the top-level Iceberg pane. It shows the Pharo project, and a few other projects that also come with your image, and indicates that it could not find a local repository for them by showing 'Local repository missing'. You do not have to worry about the Pharo project or having a local repository if you do not want to contribute to Pharo.
 We're going to create a new project of our own.
 #### Add and configure a project

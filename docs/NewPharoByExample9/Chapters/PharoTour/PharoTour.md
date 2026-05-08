@@ -15,7 +15,7 @@ _Note:_ Most of the introductory material in this book will work with any Pharo 
 
 Once Pharo is running, you should see a single large window, possibly containing some open playground windows (see Figure *@fig:worldMenu@*). You might notice a menu bar, but Pharo also makes use of context-dependent pop-up menus.
 
-![World menu (left click) brings the world menu. %width=60&anchor=fig:worldMenu](figures/worldMenu.png)
+![World menu (left click) brings the world menu. %&anchor=fig:worldMenu](figures/worldMenu.png)
 
 Clicking anywhere on the background of the Pharo window will display the **World Menu**, which contains many of the Pharo tools, utilities, and settings.
 
@@ -32,9 +32,9 @@ Pharo offers three ways to interact with the system using a mouse or other point
 
 **meta-click**: Finally, you may meta-click on any object displayed in the image to activate the "Morphic halo", an array of handles that are used to perform operations on the on-screen objects themselves, such as inspecting or resizing them (see Figure *@fig:halos@*). If you let the mouse linger over a handle, a help balloon will explain its function. In Pharo, how you meta-click depends on your operating system: either you must hold `Ctrl-Shift` or `Alt-Shift` (on Windows or Linux) or `Option-Shift-Cmd` (on macOS) while clicking.
 
-![Action Click (right click) brings the contextual menu. %width=60&anchor=fig:operating](figures/operating.png )
+![Action Click (right click) brings the contextual menu. %&anchor=fig:operating](figures/operating.png )
 
-![Meta-Clicking on a window opens the Halos. % width=70&anchor=fig:halos](figures/addHalo.png)
+![Meta-Clicking on a window opens the Halos. % &anchor=fig:halos](figures/addHalo.png)
 
 #### About vocabulary
 
@@ -74,7 +74,7 @@ Try double-clicking at various points on the text you have just typed. Notice ho
 
 Select the text you have typed, right click and select **Do it**. Notice how the text `hello world` appears in the Transcript window (See Figure *@fig:HelloWorld@*). Do it again!
 
-![Executing an expression: displaying a string in the Transcript. % width=90&anchor=fig:HelloWorld](figures/HelloWorld_new.png)
+![Executing an expression: displaying a string in the Transcript. % &anchor=fig:HelloWorld](figures/HelloWorld_new.png)
 
 ### Keyboard shortcuts
 
@@ -103,7 +103,7 @@ Select `3 + 4` and **Print it** (`Cmd-P`). This time we see the result we expect
 
 We use the notation `>>>` as a convention in this book to indicate that a particular Pharo expression yields a given result when you **Print it**.
 
-![Inspecting a simple number using `Inspect`. % width=80&anchor=fig:inspector](figures/inspector.png)
+![Inspecting a simple number using `Inspect`. % &anchor=fig:inspector](figures/inspector.png)
 
 ### Inspect
 
@@ -114,7 +114,7 @@ Now you should see a new window titled "Inspector on 7" as shown in Figure *@fig
 
 The inspector presents specific tabs that show different information and views on an object depending on the kind of object you are inspecting. Inspect `Morph new openInWorld` you should get something similar to Figure *@fig:inspectorMorph@*.
 
-![Inspecting a Morph using `Inspect`.](figures/inspectMorph.png width=80&label=fig:inspectorMorph)
+![Inspecting a Morph using `Inspect`.](figures/inspectMorph.png &label=fig:inspectorMorph)
 
 ### Other operations
 
@@ -144,7 +144,7 @@ The **System Browser**, also known as the "Class Browser", is one of the key too
 #### Opening the System Browser on a given method
 
 
-![The System Browser shows the `slowFactorial` method of the class `Integer`. %width=100&anchor=fig:systemBrowser](figures/system-browser-annotated.pdf)
+![The System Browser shows the `slowFactorial` method of the class `Integer`. %&anchor=fig:systemBrowser](figures/system-browser-annotated.pdf)
 
 This is not the usual way that we open a browser on a method: we can use much more advanced tools! But for the sake of this exercise, please execute the following code snippet:
 
@@ -158,7 +158,7 @@ It will open a System Browser on the method `slowFactorial`, showing something l
 
 In Pharo, the default System Browser is Calypso. However, as we have mentioned, it is possible to have other System Browsers installed in the Pharo environment. Each System Browser may have its own GUI that may be very different from the Calypso GUI. From now on, we will use the terms 'Browser', 'System Browser' and 'Calypso' interchangeably.
 
-![The System Browser showing the `printString` method of class `Object`. %width=100&anchor=fig:systemBrowser2](figures/browsingprintString.png )
+![The System Browser showing the `printString` method of class `Object`. %&anchor=fig:systemBrowser2](figures/browsingprintString.png )
 
 ### Chapter summary
 

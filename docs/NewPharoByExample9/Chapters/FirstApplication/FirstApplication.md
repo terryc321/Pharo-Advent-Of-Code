@@ -3,7 +3,7 @@
 
 In this chapter we will develop a simple game: Lights Out ([http://en.wikipedia.org/wiki/Lights\_Out\_(game)](http://en.wikipedia.org/wiki/Lights_Out_(game))). In doing so, we will increase our familiarity with the Browser, the Inspector, the Debugger, and versioning code with Iceberg. It's important to become proficient with these core tools. Once again, we will encourage you to take a test-first approach to developing this game by using Test-Driven Development.
 
-![The Lights Out game board. % width=30&anchor=fig:gameLO](figures/gameLO.png)
+![The Lights Out game board. % &anchor=fig:gameLO](figures/gameLO.png)
 
 A word of warning: this chapter contains a few deliberate mistakes in order for us to demonstrate how to handle errors and find bugs. Sorry if you find this a bit frustrating, but do try and follow along, as these are also important techniques that we need to see in action.
 
@@ -16,11 +16,11 @@ The game board consists of a rectangular array of light yellow cells. When you c
 @fstApp:Packages
 
 We'll need to define a package, which we'll do once again in the Browser. If you need a reminder of how to do this, consult Chapter *@cha:tour@* and Chapter *@cha:counter@*.
-% +Create a Package and class %template.>file://figures/createPackageFull.png|width=90|label=fig:createPackage+
+% +Create a Package and class %template.>file://figures/createPackageFull.png||label=fig:createPackage+
 
 We'll call this package `PBE-LightsOut`. It might be a good idea to filter the package list once you've created the new package: just type `PBE` into the filter and you should only see our package.
 
-![Filtering our package to work more efficiently.](figures/createPackageFullFiltered.png width=90&label=fig:createPackageFiltered)
+![Filtering our package to work more efficiently.](figures/createPackageFullFiltered.png &label=fig:createPackageFiltered)
 
 ### Defining the class `LOCell`
 
@@ -43,7 +43,7 @@ So why are we subclassing `SimpleSwitchMorph` rather than `Object`? We'll see th
 
 To send the message, accept the code either through the menu or the `Cmd-S` shortcut. The message is sent, the new class compiles, and we get something like *@fig:pannelAtNewClass@*.
 
-![The newly-created class LOCell. %width=100&anchor=fig:pannelAtNewClass](figures/pannelAtNewClass.png)
+![The newly-created class LOCell. %&anchor=fig:pannelAtNewClass](figures/pannelAtNewClass.png)
 
 The new class appears in the class pane of the browser, and the editing pane now shows the class definition. At the bottom of the window you'll get the Quality Assistant's feedback: it automatically runs some quality checks on your code and reports them. Don't worry about it too much for now.
 ### About comments
@@ -75,7 +75,7 @@ LOCell >> initialize
 
 Recall from previous chapters that we use the syntax `ClassName >> methodName` to explicitly show which class the method is defined in.
 Note that the characters ` on line 3 are two separate single quotes with nothing between them, not a double quote! ` is the empty string. Another way to create an empty string is `String new.` Do not forget to compile the method!
-![The newly-created method `initialize`.](figures/initialize.png width=100&label=fig:initialize)
+![The newly-created method `initialize`.](figures/initialize.png &label=fig:initialize)
 There's a lot going on in this method, let's go through it all.
 ##### Initialize methods
 
@@ -95,11 +95,11 @@ Notice that there is a little green arrow next to your method (see Figure *@fig:
 ### Inspecting an object
 
 You can immediately test the effect of the code you have written by creating a new `LOCell` object and inspecting it: Open a Playground, type the expression `LOCell new`, and inspect it.
-![The inspector used to examine a `LOCell` object.](figures/inspectLOCell.png width=80&label=fig:inspectLOCell)
+![The inspector used to examine a `LOCell` object.](figures/inspectLOCell.png &label=fig:inspectLOCell)
 In the **Raw** tab of the Inspector The left-hand column shows a list of instance variables, and the value of the instance variable is shown in the right column (see Figure *@fig:inspectLOCell@*). Other tabs show other aspects of the `LOCell`, take a look at them and experiment.
-![When we click on an instance variable, we inspect its value (another object).](figures/inspectBounds.png width=80&label=fig:inspectBounds)
+![When we click on an instance variable, we inspect its value (another object).](figures/inspectBounds.png &label=fig:inspectBounds)
 If you click on an instance variable, the Inspector will open a new pane with the details of the instance variable (see Figure *@fig:inspectBounds@*).
-% +A ==LOCell== opened in the ""World"".>file://figures/LOCellOpenInWorld.png|width=80|label=fig:LOCellOpenInWorld+
+% +A ==LOCell== opened in the ""World"".>file://figures/LOCellOpenInWorld.png||label=fig:LOCellOpenInWorld+
 ##### Executing expressions
 
 The bottom pane of the Inspector acts as a mini-playground. It's useful because in this playground the pseudo-variable `self` is bound to the object selected.
@@ -139,15 +139,15 @@ LOGame >> initialize
         tabulate: [ :i :j | self newCellAt: i at: j ]
 ```
 
-![Declaring `cells` as a new instance variable.](figures/doesntKnowCell.png width=60&label=fig:doesntKnowCell)
+![Declaring `cells` as a new instance variable.](figures/doesntKnowCell.png &label=fig:doesntKnowCell)
 That's a lot, but don't worry about it for now. We're going to fill in the details as we go on.
 Pharo will complain that it doesn't know the meaning of `cells` (see Figure *@fig:doesntKnowCell@*). It will offer you a number of ways to fix this. Choose **Declare new instance variable**, because we want `cells` to be an instance variable.
 ### Taking advantage of the Debugger
 
 At this stage if you open a `Playground`, type `LOGame new`, and **Do it**, Pharo will complain that it doesn't know the meaning of some of the terms in the method (see Figure *@fig:doesntKnowCellsPerSide@*). It will tell you that `LOGame` doesn't understand the message `cellsPerSide`, it will open a Debugger. But `cellsPerSide` is not a mistake; it is just a method that we haven't yet defined. We will do so.
-![Pharo detecting an unknown selector.](figures/doesntKnowCellsPerSide.png width=100&label=fig:doesntKnowCellsPerSide)
+![Pharo detecting an unknown selector.](figures/doesntKnowCellsPerSide.png &label=fig:doesntKnowCellsPerSide)
 Do not close the Debugger. Click on the button `Create` in the Debugger and, when prompted, select `LOGame`, the class which will contain the method. Click on **Ok**, then when prompted for a method protocol enter `accessing`. The Debugger will create the method `cellsPerSide` on the fly and invoke it immediately. The default implementation of a method generated this way is to with a body of `self shouldBeImplemented`. This is then evaluated, which raises an exception and opens the Debugger again on the method definition (Figure *@fig:cellsPerSideShould@*).
-![The system created a new method with a body to be defined.](figures/cellsPerSideShould.png width=100&label=fig:cellsPerSideShould)
+![The system created a new method with a body to be defined.](figures/cellsPerSideShould.png &label=fig:cellsPerSideShould)
 Here you can write your new method's definition. This method could hardly be simpler: it always returns the number `10`. One advantage of representing constants as methods is that, if the program evolves so that the constant then depends on some other features, the method can be changed to calculate this value.
 
 ```
@@ -156,7 +156,7 @@ LOGame >> cellsPerSide
 	^ 10
 ```
 
-![Defining `cellsPerSide` in the debugger.](figures/cellPerSideInDebugger.png width=80&label=fig:cellPerSideInDebugger)
+![Defining `cellsPerSide` in the debugger.](figures/cellPerSideInDebugger.png &label=fig:cellPerSideInDebugger)
 Do not forget to compile the method definition by using **Accept** when you've written it. You should end up with something looking like Figure *@fig:cellPerSideInDebugger@*. If you press the button **Proceed** the program will continue its execution, and it will stop again as we haven't defined the method `newCellAt:at:`.
 We could use the same process but for now we'll stop to explain what we've done so far. Close the Debugger, and look at the class definition once again (which you can do by clicking on **LOGame** on the second pane of the **System Browser**). You will see that the browser has modified it to include the instance variable `cells`.
 ### Studying the initialize method
@@ -238,7 +238,7 @@ LOGame >> toggleNeighboursOfCellAt: i at: j
 
 The method `toggleNeighboursOfCellAt:at:` toggles the state of the four cells to the north, south, west and east of cell _(i, j)_. The only complication is that the board is finite, so we have to make sure that a neighboring cell exists before we toggle its state.
 % Place this method in a new protocol called ==game logic==. (Right-click in the protocol pane to add a new protocol). To move (re-classify) a method, you can simply click on its name and drag it to the newly-created protocol (see Figure *@fig:dropProtocol*).
-% +Drag a method to a protocol.>file://figures/dropProtocol.png|width=80|label=fig:dropProtocol+
+% +Drag a method to a protocol.>file://figures/dropProtocol.png||label=fig:dropProtocol+
 ### Final `LOCell` methods
 
 To complete the Lights Out game, we need to define two more methods in class
@@ -265,7 +265,7 @@ First, this method toggles the state of the current cell. Then it sends the mess
 That's it: the Lights Out game is complete! If you have followed all of the steps, you should be able to play the game, consisting of just two classes and seven methods. In a Playground, type `LOGame new openInHand` and **Do it** .
 The game will open, and you should be able to click on the cells and see how it works. Well, so much for theory... When you click on a cell, a Debugger will appear. In the upper part of the debugger window you can see the execution stack, showing all the active methods. Selecting any one of them will show, in the middle pane, the code being executed in that method, with the part that triggered the error highlighted.
 Click on the line labeled `LOGame >> toggleNeighboursOfCellAt: at:` (near the top). The Debugger will show you the execution context within this method where the error occurred (see Figure *@fig:debuggerHighlight@*).
-![The Debugger, with the method `toggleNeighboursOfCell:at:` selected.](figures/debuggerHighlight.png width=85&label=fig:debuggerHighlight)
+![The Debugger, with the method `toggleNeighboursOfCell:at:` selected.](figures/debuggerHighlight.png &label=fig:debuggerHighlight)
 At the bottom of the Debugger is an area for all the variables in scope. You can inspect the object that is the receiver of the message that caused the selected method to execute, so you see here the values of the instance variables. You can also see the values of the method arguments, as well as intermediate values that have been calculated during execution.
 Using the Debugger, you can evaluate the code step by step, inspect objects in parameters and local variables, evaluate code just as you can in a playground, and, most surprisingly to those used to other debuggers, actually change the code while it is being debugged. Some Pharoers program in the Debugger rather than the Browser almost all the time. The advantage of this is that you see the method that you are writing as it will be executed, with real parameters in the actual execution context.
 In this case we can see in the first line of the top panel that the `toggleState` message has been sent to an instance of `LOGame`, while it should clearly have been an instance of `LOCell`. The problem is most likely with the initialization of the cells matrix. Browsing the code of `LOGame >> initialize` shows that `cells` is filled with the return values of `newCellAt:at:`, but when we look at that method, we see that there is no return statement there! By default, a method returns `self`, which in the case of `newCellAt:at:` is indeed an instance of `LOGame`. The syntax to return a value from a method in Pharo is `^`.
@@ -315,9 +315,9 @@ When developing the counter example in the previous chapter, we showed you the b
 
 While saving your code with Git is the best way to do it, Pharo also offers a way to write code to files on your disc.  It is rudimentary and does not actually version the code but it can be handy on certain occasions.
 You can also save the code of your package by writing it to a file, an action commonly called "filing out" by all Pharoers and related communities. The right-click menu in the Package pane will give you the option to select **Extra > File Out** the whole of the `PBE-LightsOut` package. The resulting file is more or less human readable. You can email this file to your friends, and they can "file it in" with their own image.
-![File out the `PBE-LightsOut` package.](figures/fileOut.png width=85&label=fig:fileOut)
+![File out the `PBE-LightsOut` package.](figures/fileOut.png &label=fig:fileOut)
 File out the `PBE-LightsOut` package (see Figure *@fig:fileOut@*). You should now find a file named `PBE-LightsOut.st` in the same folder on disk where your image is saved. Have a look at this file with a text editor to get a feel for what the code looks like when it's in a file. If you don't want to leave Pharo to look at the file, try inspecting `'PBE-LightsOut.st' asFileReference'` in a Playground.
-![Import your code with the file browser.](figures/fileBrowser.png width=100&label=fig:fileBrowser)
+![Import your code with the file browser.](figures/fileBrowser.png &label=fig:fileBrowser)
 You can import this file using the **File Browser** tool (**System > File Browser**) (see Figure *@fig:fileBrowser@*). Now better use Git!
 ### Chapter summary
 

@@ -257,7 +257,7 @@ Morph >> openInWorld
      "Add this morph to the world."
      self openInWorld: self currentWorld
 ```
-![Method lookup follows the inheritance hierarchy. %width=80&anchor=fig:openInWorldLookup](figures/openInWorldLookup.png )
+![Method lookup follows the inheritance hierarchy. %&anchor=fig:openInWorldLookup](figures/openInWorldLookup.png )
 
 ### Method execution
 We mentioned that sending a message is a two-step process:
@@ -284,7 +284,7 @@ This is why there are two different steps during a message send: looking up the 
 What happens if the method we are looking for is not found?
 Suppose we send the message `foo` to our ellipse. First the normal method lookup will go through the inheritance chain all the way up to `Object` \(or rather `ProtoObject`\) looking for this method. When this method is not found, the virtual machine will cause the object to send `self doesNotUnderstand: #foo` \(See Figure *@fig:fooNotFound@*\).
 
-![Message `foo` is not understood. %anchor=fig:fooNotFound&width=95](figures/fooNotFound.png)
+![Message `foo` is not understood. %anchor=fig:fooNotFound&](figures/fooNotFound.png)
 
 Now, this is a perfectly ordinary, dynamic message send, so the lookup starts again from the class `EllipseMorph`, but this time searching for the method `doesNotUnderstand:`. As it turns out, `Object` implements `doesNotUnderstand:`. This method will create a new `MessageNotUnderstood` object which is capable of starting a Debugger in the current execution context.
 Why do we take this convoluted path to handle such an obvious error?
@@ -376,7 +376,7 @@ How exactly is this result obtained through a combination of `self` and
 `super` sends? 
 First, `anEllipse constructorString` will cause the method `constructorString` to be found in the class `Morph`, as shown in Figure *@fig:constructorStringLookup@*.
 
-![`self` and `super` sends. % anchor=fig:constructorStringLookup&width=95](figures/constructorStringLookup.png)
+![`self` and `super` sends. % anchor=fig:constructorStringLookup&](figures/constructorStringLookup.png)
 
 The method `constructorString` of `Morph` performs a `self` send of `fullPrintOn:`.
 The method `fullPrintOn:` is looked up starting in the class `EllipseMorph`, and the method `fullPrintOn:` `BorderedMorph` is found in `BorderedMorph` \(see Figure *@fig:constructorStringLookup@*\). 
@@ -404,7 +404,7 @@ Similarly, class instance variables are just instance variables defined by a met
 - _Class methods_ are just methods defined by a metaclass and that will be executed on classes. Sending the message `now` to the class `Time` is defined on the \(meta\)class `Time class`. This method is executed with the class `Time` as receiver.
 A class and its metaclass are two separate classes, even though the former is an instance of the latter. However, this is largely irrelevant to you as a programmer: you are concerned with defining the behavior of your objects and the classes that create them.
 
-![Browsing a class and its metaclass.%anchor=fig:colorInstanceClassSide&width=90](figures/colorInstanceClassSide.png )
+![Browsing a class and its metaclass.%anchor=fig:colorInstanceClassSide&](figures/colorInstanceClassSide.png )
 For this reason, the browser helps you to browse both class and metaclass as if they were a single thing with two "sides": the _instance side_ and the _class side_, as shown in Figure *@fig:colorInstanceClassSide@*. 
 
 - By default, when you select a class in the browser, you're browsing the _instance side_ i.e., the methods that are executed when messages are sent to an _instance_ of `Color`. 
@@ -615,7 +615,7 @@ Sometimes we need to share some data amongst all the instances of a class and th
 
 Indeed, a better name would have been _shared variables_ since this expresses more clearly their role, and also warns of the danger of using them, particularly if they are modified.
 
-![Instance and class methods accessing different variables. %anchor=fig:privateSharedVar&width=80](figures/privateSharedVarColor.png )
+![Instance and class methods accessing different variables. %anchor=fig:privateSharedVar&](figures/privateSharedVarColor.png )
 
 In Figure *@fig:privateSharedVar@* we see that `rgb` and `cachedDepth` are
 instance variables of `Color`, hence only accessible to instances of `Color`. 

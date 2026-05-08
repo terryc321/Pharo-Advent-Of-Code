@@ -108,7 +108,7 @@ Most collections will hold any kind of element. A `String`, `CharacterArray` or 
 
 @sec:implementation
 
-![Some collection classes categorized by implementation technique.](figures/CollectionsByImpl.png width=100&label=fig:collsByImpl)
+![Some collection classes categorized by implementation technique.](figures/CollectionsByImpl.png &label=fig:collsByImpl)
 
 These categorizations by functionality are not our only concern; we must also consider how the collection classes are implemented. As shown in Figure *@fig:collsByImpl@*, five main implementation techniques are employed.
 
