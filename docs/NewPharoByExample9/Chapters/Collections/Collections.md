@@ -46,20 +46,22 @@ The table below summarizes the standard protocols supported by most of the class
 
 
 
-	| Protocol | Methods |  |
-	| --- | --- | --- |
-	| `accessing` | `size`, `capacity`, `at:`, `at:put:` |  |
-	|`testing` | `isEmpty`, `includes:`, `contains:`, `occurrencesOf:` |  |
-	| `adding` | `add:`, `addAll:` | |
-	| `removing` | `remove:`, `remove:ifAbsent:`, `removeAll:` ||
-	| `enumerating` | `do:`, `collect:`, `select:`, `reject:` ||
-	|  | `detect:`, `detect:ifNone:`, `inject:into:` ||
-	| `converting` | `asBag`, `asSet`, `asOrderedCollection`, `asSortedCollection`, ||
-	| '' | `asArray`, `asSortedCollection:` ||
-	| `creation` | `with:`, `with:with:`, `with:with:with:`, ||
-	| '' | `with:with:with:with:`, `withAll:` ||
+| Protocol      | Methods                                                        |     |
+| ---           | ---                                                            | --- |
+| `accessing`   | `size`, `capacity`, `at:`, `at:put:`                           |     |
+| `testing`     | `isEmpty`, `includes:`, `contains:`, `occurrencesOf:`          |     |
+| `adding`      | `add:`, `addAll:`                                              |     |
+| `removing`    | `remove:`, `remove:ifAbsent:`, `removeAll:`                    |     |
+| `enumerating` | `do:`, `collect:`, `select:`, `reject:`                        |     |
+|               | `detect:`, `detect:ifNone:`, `inject:into:`                    |     |
+| `converting`  | `asBag`, `asSet`, `asOrderedCollection`, `asSortedCollection`, |     |
+|               | `asArray`, `asSortedCollection:`                               |     |
+| `creation`    | `with:`, `with:with:`, `with:with:with:`,                      |     |
+|               | `with:with:with:with:`, `withAll:`                             |     |
 
 ### A little aside
+
+in emacs if get a dirty ascii table - enable org mode - move into table itself and C-c C-c 
 
 | Header 1 | Header 2 | Header 3 |
 |----------|----------|----------|
