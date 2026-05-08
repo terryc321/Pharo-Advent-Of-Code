@@ -1,0 +1,8 @@
+
+# ClyEditCommentSwitchMorph
+
+has '#checkbox' variable
+
+
+
+
