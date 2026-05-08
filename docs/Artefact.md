@@ -68,7 +68,7 @@ PDFDemos demoPath . "'pdf/'"
    ![alignmentsTest](docs/pdf/alignmentsTest-1.png &width=400)
    
 ## lineTest
-    ![lineTest](pdf/lineTest-1.png &width=300)
+    ![lineTest](pdf/lineTest-1.png)
 ## mosaiqueTest
     ![mosaiqueTest](pdf/mosaiqueTest-1.png &width=200)
 ## polygonsTest
