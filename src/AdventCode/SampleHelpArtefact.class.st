@@ -91,11 +91,11 @@ PDFDemos demoPath . "''pdf/''"
 ## mosaiqueTest
     ![mosaiqueTest](/home/terry/code/smalltalk/Pharo-Advent-Of-Code/docs/pdf/mosaiqueTest-1.png &width=500)
 ## polygonsTest
-    ![polygonsTest](./pdf/polygonsTest-1.png &width=150) 
+    ![polygonsTest](iceberg/terryc321/Pharo-Advent-Of-Code/docs/pdf/polygonsTest-1.png &width=150) 
 ## thicknessTest
    ![thicknesstest](./pdf/thicknessTest-1.png &width=100)
 ## widthTest
-   ![widthTest](./pdf/widthTest-1.png &width=300)
+   ![widthTest](./docs/pdf/widthTest-1.png &width=300)
 
 ### aside - generate demo images from PDFs
 
