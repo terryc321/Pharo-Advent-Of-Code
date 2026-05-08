@@ -1,0 +1,1311 @@
+
+%=================================================================
+\ifx\wholebook\relax\else
+% --------------------------------------------
+% Lulu:
+	\documentclass[a4paper,10pt,twoside]{book}
+	\usepackage[
+		papersize={6.13in,9.21in},
+		hmargin={.75in,.75in},
+		vmargin={.75in,1in},
+		ignoreheadfoot
+	]{geometry}
+	\input{../common.tex}
+	\setboolean{lulu}{true}
+% --------------------------------------------
+% A4:
+%	\documentclass[a4paper,11pt,twoside]{book}
+%	\input{../common.tex}
+%	\usepackage{a4wide}
+% --------------------------------------------
+    \graphicspath{{figures/} {../figures/}}
+    \DeclareGraphicsExtensions{.png,.jpg,.pdf,.eps,.gif}
+	\newcommand{\fig}[4]{
+		\begin{figure}[#1]
+			\centering
+			\includegraphics[width=#2\textwidth]{#3}
+			\caption{\label{fig:#3}#4}
+		\end{figure}}
+
+	\newcommand{\largefig}[4]{
+		\begin{figure*}[#1]
+			\centering
+			\includegraphics[width=#2\textwidth]{#3}
+			\caption{\label{fig:#3}#4}
+		\end{figure*}}
+		
+	\newcommand{\asdf}[4]{
+		\begin{subfigure}[\label{fig:#3}]
+                \centering
+                \includegraphics[width=\textwidth]{#3}
+                \caption{\label{fig:#3}#4}                
+        \end{subfigure}}
+
+\begin{document}
+\fi
+%=================================================================
+%\renewcommand{\nnbb}[2]{} % Disable editorial comments
+\sloppy
+%=================================================================
+\chapter{Agile Visualization with Roassal}
+\chalabel{roassal}
+
+
+\chapterauthor{\authorvanessa}
+
+Attaching a meaning to a large amount of data is challenging without adequate tools. Textual outputs are known to be limited in their expressiveness and support for interaction. 
+
+Roassal is an agile visualization engine made to visualize and interact with arbitrary data, defined in terms of objects and their relationships. Roassal is commonly employed to produce interactive visualizations and its range of applications is diverse. For example, the Moose community uses Roassal to visualize software. 
+
+This chapter introduces Roassal's principles and describes its expressive API to quickly render your data. At the end of the chapter, you will be able to create interactive and visual representations. 
+
+The development of Roassal has been sponsored by ESUG.org. For more information, please visit the Roassal website: \\\noindent \url{http://objectprofile.com/\#/pages/products/roassal/overview.html}
+
+
+
+%=====================
+\section{Installation and first visualization}
+Roassal is part of the Moose distribution\footnote{\url{http://www.moosetechnology.org/}}. Nothing has to be installed and you can directly proceed to your first visualization.
+
+Installing Roassal in a fresh Pharo image is easy, thanks to Gofer and Metacello. Just open a workspace and execute:
+
+\begin{code}{}
+Gofer new smalltalkhubUser: 'ObjectProfile'
+	project: 'Roassal';
+	package: 'ConfigurationOfRoassal';
+	load.
+(Smalltalk at: #ConfigurationOfRoassal) load
+\end{code}
+
+Roassal is known to work with the versions 1.4, 2.0, 3.0, and 4.0 of Pharo.
+
+\subsection{A first visualization.}
+%\alex{We need to pick a better visualization. This one is too trivial and it is rather adapter to Mondrian, not really to Roassal}
+
+The first visualization we will show represents the \ct{Collection} class hierarchy. It defines each class as a box connected with its subclasses. Each box displays the number of methods and number of instance variables of the  represented class.
+
+\begin{figure}[H]
+      \begin{minipage}[t]{0.55\textwidth}
+      \vspace{0pt}
+\begin{code}{}
+view := ROView new.
+classElements := ROElement forCollection: Collection withAllSubclasses.
+
+classElements 
+	do: [ :c | 
+		c width: c model instVarNames size.
+		c height: c model methods size.
+		c + ROBorder. 
+		c @ RODraggable ].
+view addAll: classElements.
+
+associations := classElements 
+	collect: [:c | 
+		(c model superclass = Object)
+			ifFalse: [ (view elementFromModel: c model superclass) -> c]] 
+	 thenSelect: [ :assoc | assoc isNil not ].
+edges := ROEdge linesFor: associations.
+view addAll: edges.
+
+ROTreeLayout new on: view elements.
+view open
+\end{code}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\textwidth}
+\vspace{0pt} \raggedright
+\centering
+\includegraphics[width=0.8\textwidth]{collectionHierarchy}
+\end{minipage}
+\label{fig:firstVisualization}
+\caption{First visualization using the Roassal framework}
+\end{figure}
+
+How to achieve this visualization will be explained in this chapter. 
+The next chapter details how to create it using the Mondrian domain-specific language (DSL) by using the Mondrian builder, which is part of Roassal.
+
+%=====================
+\subsection{Roassal Easel}
+
+The Roassal easel is a tool to interactively script visualizations. The metaphor used with the easel is to turn the programmer into a painter carrying out the work on an easel: creating, adjusting, erasing are just a few (key) strokes away.
+
+The Roassal easel is accessible from the Pharo World menu. Just look for the {\color{red} $\mathcal{R}$} icon\footnote{Note that a Glamour-based easel is also provided, under the Moose section of the World menu. The Glamour-based Roassal easel is similar to the easel presented here. A dedicated presentation of this version may be found in the moose book, \url{http://themoosebook.org}.}.
+
+The easel is made of two independent windows, the one on the left-hand side renders the script written in the textual window on the right-hand side. By accepting (Cmd-s, Alt-s / right-clicking and pressing accept) in the editor, the visualization will be updated. This is the same keystroke used for accepting a method in the system browser. The advantage of this is to have a short feedback loop. With this, the meaning of your script is always one keystroke away.
+
+The visualization window contains many examples of visualizations, including a step-by-step tutorial. Examples are separated in two categories: \ct{ROExample} and \ct{ROMondrianExample}, and are accessible by clicking in the \textit{examples} button in the upper part of the visualization window.
+
+\fig{H}{0.8}{ROEasel}{Roassal Easel examples separated by the \ct{ROMondrianViewBuilder} and \ct{ROExample} categories}
+
+
+The \ct{ROMondrianExample} category includes examples created with Mondrian, a domain specific language built at on top of Roassal. These examples primarily use the \ct{ROMondrianViewBuilder} class to make a visualization. The  \ct{ROExample} category directly illustrates Roassal.
+
+%=====================
+%=====================
+
+\section{Roassal core model}
+
+The root of each visualization is an instance of the class \ct{ROView}, which is the container for all the graphical components to be rendered.
+Such components are instances of a subclass of \ct{ROAbstractComponent}, typically instances of \ct{ROElement} and \ct{ROEdge}. Usually, a graphical component holds a reference to a \emph{domain object}. Some visual properties (such as the size or color) may be directly deduced from the domain object. We will shortly come back to that point. For now, we will illustrate the basic and fundamental operations.
+
+\paragraph{Adding an element.} The very first step in seeing graphical components, is to add them to a view, and then open the view. This is exactly what the following code snippet does.
+
+\begin{figure}[H]
+      \begin{minipage}[t]{0.5\textwidth}
+      \vspace{0pt}
+\begin{code}{}
+view := ROView new.
+element := ROElement new size: 100.
+view add: element.
+view open.
+\end{code}
+   \end{minipage}
+   \hfill
+   \begin{minipage}[t]{0.6\textwidth}
+      \vspace{0pt} \raggedright
+       \centering
+		\includegraphics[width=0.6\textwidth]{ex1}
+   \end{minipage}
+\label{fig:ex1}
+\end{figure}
+
+It creates and opens a visualization with a single element of a square size of 100 pixels. However, by executing this code nothing appears in the visualization. The element has effectively been added to the view, but we have not told the element how it should be rendered. 
+
+\paragraph{Adding a Shape.} The visual aspect of an element is given by shapes, instances of subclasses of \ct{ROShape}. By default, every element has no shape\footnote{An element always has a shape, instance of \ct{RONullShape}. The null object design pattern is here employed.}. Let's add some shape (a border) to our element: 
+
+\begin{figure}[H]
+      \begin{minipage}[t]{0.5\textwidth}
+      \vspace{0pt}
+\begin{code}{}
+view := ROView new.
+element := ROElement new size: 100.
+element addShape: ROBorder. "added line"
+view add: element.
+view open.
+\end{code}
+   \end{minipage}
+   \hfill
+   \begin{minipage}[t]{0.6\textwidth}
+      \vspace{0pt} \raggedright
+       \centering
+		\includegraphics[width=0.6\textwidth]{ex2}
+   \end{minipage}
+\label{fig:ex2}
+\end{figure}
+
+Unsurprisingly, adding a shape to an element is simply carried out by sending the \ct{addShape:} message with the shape we want to add. Since this is a frequent operation, one can use the \ct{+} message to achieve the same effect. We could have instead written \ct{element + ROBorder}. 
+
+In this example we added the \ct{ROBorder} shape. As its name suggests, \ct{ROBorder} adds a squared border to the \ct{ROElement}. By default, the color for a \ct{ROBorder} is black. Many other shapes are available, including customizable labels, circles or filled rectangles. Such shapes may also be composed to create sophisticated visual aspects. The notion of shapes will be detailed in \secref{shapes}.
+
+\paragraph{Reacting to events.}
+Currently, our lonely element cannot do much. To make our element aware of user actions, such as clicking, drag-and-drop, keystroking, we need to specify event callbacks. 
+
+As in most user interface and graphical frameworks, each action a user may perform generates an event. Such an event is an instance of a subclass of an \ct{ROEvent}. To make the graphical element responsive with an event, a block has to be associated to an event class and attached to the graphical element.
+
+For example, to make our square responsive to user clicks, we need to add an event handler, \ie the block that will be executed when the event occurs:
+
+\begin{code}{}
+view := ROView new.
+element := ROElement new size: 100.
+element + ROBorder. 
+"Open an inspector when clicking"
+element on: ROMouseClick do: [ :event | event inspect ]. 
+view add: element.
+view open.
+\end{code}
+
+Clicking on the square will now open an inspector. In the meantime, we favor the message \ct{+} over \ct{addShape:} since it is shorter and just as informative.
+
+\paragraph{Interaction for complex response.}
+Although widely used in common graphical frameworks, directly answering to user actions is often too simple for handling complex situations. Consider dragging-and-dropping, which happens by moving the mouse while maintaining a mouse button pressed. Although a common operation, drag-and-drop is quite complex. For example, the mouse movement in pixels needs to be projected in the plan of the element and the visualization needs to be refreshed. Since this is a common operation, we will save the programmer from using a construct like \ct{element on: ROMouseDrag do: [ ... ]}. Instead, we provide \emph{interactions}, a lightweight mechanism to reuse and compose event handlers. Making our non-movable element draggable is simply done with \ct{element @ RODraggable}. The \ct{@} method is a shortcut for \ct{addInteraction:}. We will detail other interactions in \secref{interactions}.
+
+\ct{RODraggable} is a subclass of \ct{ROInteraction}, the root of all the interactions in Roassal. \ct{RODraggable} allows an element to react to a mouse drag. Our small example is refined as:
+
+\begin{code}{}
+view := ROView new.
+element := ROElement new size: 100.
+element 
+	+ ROBorder "-> add shape"
+	@ RODraggable. "-> add interaction"
+view add: element.
+view open.
+\end{code}
+
+
+\paragraph{More Elements.}
+Interesting visualizations are likely to contain a large number of elements. Elements may be added either with successive invocations of \ct{add:} on a \ct{ROView}, or in one shot by sending \ct{addAll:}. Consider:
+
+\begin{figure}[H]
+      \begin{minipage}[t]{0.6\textwidth}
+      \vspace{0pt}
+\begin{code}{}
+view := ROView new.
+element1 := ROElement new size: 100.
+element2 := ROElement new size: 50.
+elements := Array with: element1 with: element2.
+elements do: [ :el | el + ROBorder @ RODraggable ].
+view addAll: elements.
+view open.
+\end{code}
+   \end{minipage}
+   \hfill
+   \begin{minipage}[t]{0.5\textwidth}
+      \vspace{0pt} \raggedright
+       \centering
+		\includegraphics[width=0.6\textwidth]{ex3}
+   \end{minipage}
+\label{fig:ex3}
+\end{figure}
+
+The code above opens a window with two square elements, with the origin at the top left corner. We first create two elements of size 50 and 100, respectively, and add them to the view using the \ct{addAll:} message. We make the two elements with borders and both are draggable. Note that in our example the shape and the interaction are added before opening the view. It can be done afterwards. Even once added and rendered, graphical components are free to be modified.
+
+An element may be translated by sending \ct{translateBy:} or \ct{translateTo:} with a point as parameter. The parameter representing the step or the position in pixels. The axes are defined as shown in \figref{ex4}, the x-axis increases from left to right and the y-axis from top to bottom.
+
+
+\begin{figure}[H]
+      \begin{minipage}[t]{0.5\textwidth}
+      \vspace{0pt}
+\begin{code}{}
+view := ROView new.
+element1 := ROElement new size: 100.
+element2 := ROElement new size: 50.
+elements := Array with: element1 with: element2.
+elements do: [ :el | el + ROBorder @ RODraggable ].
+view addAll: elements.
+element2 translateBy: 150@150.
+view open.
+\end{code}
+   \end{minipage}
+   \hfill
+   \begin{minipage}[t]{0.6\textwidth}
+      \vspace{0pt} \raggedright
+       \centering
+		\includegraphics[width=0.6\textwidth]{ex4}
+   \end{minipage}
+\label{fig:ex4}
+\end{figure}
+
+
+When a visualization contains more than one element it is better to have an algorithm to automatically position each element. Such an algorithm is called a layout. Roassal provides many layouts to arrange elements by positioning them in the space. A layout in Roassal is a subclass of \ct{ROLayout}. Layouts are described in \secref{layouts}.
+
+\paragraph{Nesting Elements.}
+A \ct{ROElement} object can also contain other \ct{ROElement} objects. We refer to this containment relationship as \emph{nesting}. Nesting enables elements to be structured as a tree. In addition, as shown by the following example, the location of children is relative to that of the parent. This means that when we translate the parent, the children will be translated as well. %A translation is relative to the parent coordinates.
+
+
+\begin{figure}[H]
+      \begin{minipage}[t]{0.5\textwidth}
+      \vspace{0pt}
+\begin{code}{}
+view := ROView new.
+parent := ROElement new 
+				size: 100;
+				+ ROBorder.
+children := ROElement new 
+				size: 50;
+				+ ROBorder red.
+parent add: children.
+view add: parent.
+"Translate the parent"
+parent translateTo: 50@100.
+view open.
+\end{code}
+   \end{minipage}
+   \hfill
+   \begin{minipage}[t]{0.6\textwidth}
+      \vspace{0pt} \raggedright
+       \centering
+		\includegraphics[width=0.6\textwidth]{ex5}
+   \end{minipage}
+\label{fig:ex5}
+\end{figure}
+
+Nesting elements are stretchable per default: when translating a child node, its parent's bounds will be extended to contain this element in its new position. 
+
+\begin{figure}[H]
+      \begin{minipage}[t]{0.5\textwidth}
+      \vspace{0pt}
+\begin{code}{}
+view := ROView new.
+parent := ROElement new 
+				size: 100;
+				+ ROBorder.
+children := ROElement new 
+				size: 50;
+				+ ROBorder red.
+parent add: children.
+view add: parent.
+"Translate the children"
+children translateTo: 50@100.
+view open.
+\end{code}
+   \end{minipage}
+   \hfill
+   \begin{minipage}[t]{0.6\textwidth}
+      \vspace{0pt} \raggedright
+       \centering
+		\includegraphics[width=0.6\textwidth]{ex6}
+   \end{minipage}
+\label{fig:ex6}
+\end{figure}
+
+Each element has a resize strategy stored as \ct{resizeStrategy} instance variable.
+By default, the resize strategy is an instance of \ct{ROExtensibleParent}, which means a parent will extend its bounds to fit all its child elements. A number of resize strategies are available; just look for the subclasses of \ct{ROAbstractResizeStrategy} class, as its subclasses each define a strategy to be used by elements.
+
+So far, we have introduced the interactions, the shapes, the child elements, and briefly mentioned the possibility to have an object domain. Schematically, an element representation looks like \figref{ROElementModel}.
+
+\fig{H}{0.5}{ROElementModel}{ROElement representation}
+
+%\vp{not sure if the camera should be explained here. What can be added here about the camera that helps you to build a visualization?}
+\paragraph{Translating the view's camera.}
+A view also answers to the \ct{translateBy:} and \ct{translateTo:} messages. Even if it looks like it, it is not the view that changes its position but its camera. The camera component of a view, represented by an instance of \ct{ROCamera}, is the point of view from which a visualization object is actually viewed. More about the camera can be found in \secref{camera}
+
+\subsubsection{The Collection hierarchy example}
+
+As an example we will create the Collection hierarchy visualization seen earlier in this chapter. We will build it by executing the following steps:
+\begin{enumerate}
+\item Add all data with no particular shape. In this case data is the Collection class with all its subclasses;
+\item render each class according to its characteristics;
+\item add a link between a class and its superclass;
+\item arrange the elements as an hierarchy with a layout.
+\end{enumerate}
+
+In this section, we start with the first step: adding all elements representing each class of the hierarchy. 
+
+We can do this easily by sending the \ct{forCollection:} message to the \ct{ROElement} class, which is a helper to build \ct{ROElements} from a collection. 
+Each \ct{ROElement} from the returning value of this message is a representation of each element from the parameter. 
+We add a border shape to each of them and make them draggable for easier manipulation.
+Finally, we apply a default layout to see all the elements in the view. 
+More explanation of how layouts work will follow later.
+
+
+\begin{figure}[H]
+\begin{code}{}
+view := ROView new.
+classElements := ROElement forCollection: Collection withAllSubclasses.
+classElements 
+	do: [ :c | c + ROBorder.
+			c @RODraggable ].
+view addAll: classElements.
+ROHorizontalLineLayout new on: view elements.
+view open.
+\end{code}
+\end{figure}
+
+\fig{H}{0.6}{hier1}{Adding the elements representing classes}
+
+
+%=====================
+\section{Detailing shapes} \seclabel{shapes}
+
+A graphical component (instance of \ct{ROElement} or \ct{ROEdge}) is given a shape by sending the \ct{+} (or \ct{addShape:}) message with an argument that is either a subclass of \ct{ROShape}, or an instance of such a class.
+
+Similarly, the \ct{@} message may take as argument either a class or an instance, in order to override default values.
+
+When the parameter of \ct{+} is a shape, attributes such as the color to be filled or the border color may be individually set. When the class is sent as parameter, the element will be shaped with an instance of that class with default values for each of its attributes.
+
+Some of the shapes available are label (\ct{ROLabel}), border (\ct{ROBorder}), box (\ct{ROBox}) and circle (\ct{ROEllipse}). By default, \ct{ROLabel} will display the \ct{printString} value of the model (\ie object domain) of the element. It is also possible to change it by setting a custom text as shown in \figref{label}. When applying \ct{ROBorder}, \ct{ROBox} and \ct{ROEllipse} to a \ct{ROElement}, the shape will be adapted to the bounds of the element. It is also possible to set attributes as color, border color or border width to a shape. This is shown in \figref{border}, \figref{box} and \figref{circle}.
+
+\begin{figure}[H]
+      \begin{minipage}[t]{0.5\textwidth}
+      \vspace{0pt}
+	     \begin{code}{}[!]
+	ROElement new
+		model: 'foo';
+		size: 100; 
+		+ ROLabel.	\end{code}
+   \end{minipage}
+   \hfill
+   \begin{minipage}[t]{0.4\textwidth}
+      \vspace{0pt} \raggedright
+       \centering
+		\includegraphics[width=0.4\textwidth]{label}
+   \end{minipage}
+\caption{ROLabel with default values}
+\label{fig:label}
+\end{figure}
+
+\begin{figure}[H]
+      \begin{minipage}[t]{0.5\textwidth}
+      \vspace{0pt}
+     \begin{code}{}
+	ROElement new 
+		size: 100; 
+		+ ROBorder.	\end{code}
+   \end{minipage}
+   \hfill
+   \begin{minipage}[t]{0.4\textwidth}
+      \vspace{0pt} \raggedright
+       \centering
+		\includegraphics[width=0.25\textwidth]{border}
+   \end{minipage}
+\caption{ROBorder with default values}
+\label{fig:border}
+\end{figure}  
+
+\begin{figure}[H]
+      \begin{minipage}[t]{0.5\textwidth}
+      \vspace{0pt}
+     \begin{code}{}
+ROElement new 
+	size: 200; 
+	+ (ROBox new 
+				color: Color green; 
+				borderColor: Color red; 
+				borderWidth: 4 ).	\end{code}
+   \end{minipage}
+   \hfill
+   \begin{minipage}[t]{0.4\textwidth}
+      \vspace{0pt} \raggedright
+       \centering
+		\includegraphics[width=0.5\textwidth]{box}
+   \end{minipage}
+\caption{Customized ROBox}
+\label{fig:box}
+\end{figure} 
+
+\begin{figure}[H]
+      \begin{minipage}[t]{0.6\textwidth}
+      \vspace{0pt}
+     \begin{code}{}
+element := ROElement new size: 100.
+shape := ROEllipse new 
+			color: Color yellow; 
+			borderColor: Color blue; 
+			borderWidth: 2.
+element + shape.	\end{code}
+   \end{minipage}
+   \hfill
+   \begin{minipage}[t]{0.4\textwidth}
+      \vspace{0pt} \raggedright
+       \centering
+		\includegraphics[width=0.25\textwidth]{circle}     
+   \end{minipage}
+\caption{Customized ROEllipse}
+\label{fig:circle}
+\end{figure}
+
+
+
+\paragraph{Composing Shapes.}
+To create more elaborated visual aspects, shapes may be composed. To have an element shaped with more than one \ct{ROShape}, we send the \ct{+} message several times with the desired shapes (\figref{composed}). 
+
+This builds a chain of shapes associated to the element, of which the first component is the latest shape added and its last component is an instance of the empty shape (\ct{RONullShape}).
+
+\begin{figure}[H]
+      \begin{minipage}[t]{0.6\textwidth}
+      \vspace{0pt}
+     \begin{code}{}
+| element label border circle | 
+element := ROElement new size: 180.				
+label := ROLabel new text: 'composed shape'.
+border := ROBorder new color: Color red. 
+circle := ROEllipse new 
+			color: Color yellow.
+			borderWidth: 0.			
+element + label.
+element + border.
+element + circle.\end{code}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.4\textwidth}
+      \vspace{0pt} \raggedright
+       \centering
+		\includegraphics[width=0.4\textwidth]{composed}
+   \end{minipage}
+\caption{Composing shapes}
+\label{fig:composed}
+\end{figure} 
+
+\subsubsection{The Collection hierarchy example}
+We now will add some shapes to the classes in the \ct{Collection} hierarchy example. Each class representation will have a width representing the number of instance variables of the class and a height representing the number of its methods. 
+
+\begin{code}{}
+view := ROView new.
+classElements := ROElement forCollection: Collection withAllSubclasses.
+classElements do: [ :c | 
+	c width: c model instVarNames size.
+	c height: c model methods size.
+	c + ROBorder. 
+	c @ RODraggable ].
+view addAll: classElements.
+ROHorizontalLineLayout new on: view elements.
+view open.
+\end{code}
+
+\fig{H}{0.5}{hier2}{Adding some shape for each class}
+
+
+%=====================
+\section{Edges: linking elements} \seclabel{edges}
+
+With Roassal it is possible to build links between elements to represent relationships between them. A link between two elements is an instance of the class \ct{ROEdge}. 
+By default, an edge is shaped with an instance of \ct{RONullShape}, which is the empty shape. Because of this, for an edge to be rendered it needs to be shaped with a line shape, which can be any subclass of \ct{ROAbstractLine}.
+The following code illustrates the creation of an edge between two elements. We first create the two elements. We then create the edge using them as parameters and shape it with a line (instance of \ct{ROLine}) shape. We finally add the two elements and the edge to the view.
+
+\begin{figure}[H]
+ \begin{code}{}
+view := ROView new.
+start := (ROElement on: 1) size: 20; + ROBorder red.
+end := (ROElement on: 2)  size: 20; + ROBorder red.
+end translateBy: 50@50.
+edge := ROEdge from: start to: end.
+edge + ROLine. 
+view 
+	add: start; 
+	add: end; 
+	add: edge. 
+view open.
+\end{code}   
+\caption{Simple edge}
+\label{fig:simpleEdge}
+\end{figure} 
+
+\paragraph{Adding shape to an edge.}
+There are several kinds of line shapes to use besides the standard one, like \ct{ROOrthoHorizontalLineShape}. All of them are subclasses of the \ct{ROAbstractLine} class, including \ct{ROLine}. 
+Some examples are shown in \figref{line} and \figref{orthoEdge}.
+
+\begin{figure}[H]
+      \begin{minipage}[t]{0.5\textwidth}
+      \vspace{0pt}
+     \begin{code}{}
+edge + ROLine. \end{code}
+   \end{minipage}
+   \hfill
+   \begin{minipage}[t]{0.4\textwidth}
+      \vspace{0pt} \raggedright
+       \centering
+		\includegraphics[width=0.4\textwidth]{line}
+   \end{minipage}
+\caption{Simple edge}
+\label{fig:line}
+\end{figure} 
+
+
+\begin{figure}[H]
+      \begin{minipage}[t]{0.5\textwidth}
+      \vspace{0pt}
+     \begin{code}{}
+edge + ROOrthoHorizontalLineShape. \end{code}
+   \end{minipage}
+   \hfill
+   \begin{minipage}[t]{0.4\textwidth}
+      \vspace{0pt} \raggedright
+       \centering
+		\includegraphics[width=0.4\textwidth]{orthoEdge}
+   \end{minipage}
+\caption{Horizontally oriented orthogonal edge}
+\label{fig:orthoEdge}
+\end{figure} 
+
+\paragraph{Adding an arrow to a line.}
+A line can also contain one or more arrows. An arrow is an instance of a subclass of \ct{ROAbstractArrow}, like \ct{ROArrow} or \ct{ROHorizontalArrow}. To add an arrow to a line shape we use the \ct{add:} message, as in \figref{arrowEdge} and \figref{orthoEdgeArrow}.
+
+\begin{figure}[H]
+      \begin{minipage}[t]{0.5\textwidth}
+      \vspace{0pt}
+     \begin{code}{}
+edge + (ROLine new add: ROArrow new). \end{code}
+   \end{minipage}
+   \hfill
+   \begin{minipage}[t]{0.4\textwidth}
+      \vspace{0pt} \raggedright
+       \centering
+		\includegraphics[width=0.4\textwidth]{arrowEdge}
+   \end{minipage}
+\caption{Arrowed edge}
+\label{fig:arrowEdge}
+\end{figure} 
+
+\begin{figure}[H]
+      \begin{minipage}[t]{0.5\textwidth}
+      \vspace{0pt}
+     \begin{code}{}
+edge + (ROOrthoHorizontalLineShape new add: ROHorizontalArrow new)\end{code}
+   \end{minipage}
+   \hfill
+   \begin{minipage}[t]{0.4\textwidth}
+      \vspace{0pt} \raggedright
+       \centering
+		\includegraphics[width=0.4\textwidth]{orthoEdgeArrow}
+   \end{minipage}
+\caption{Orthogonal edge with horizontal oriented arrow}
+\label{fig:orthoEdgeArrow}
+\end{figure} 
+
+By default the arrow will be located at the end of the edge, but we can customize this position using the \ct{add:offset:}. The offset parameter must be a number between 0 and 1. It indicates in which percent of the line length the arrow will be. For example, if the offset is 0.5, the arrow will be set at the middle of the line, as shown in \figref{arrowMiddleEdge}.
+
+\begin{figure}[H]
+\begin{minipage}[t]{0.5\textwidth}
+\vspace{0pt}
+\begin{code}{}
+edge + (ROLine new add: ROArrow new offset: 0.5).\end{code}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.38\textwidth}
+\vspace{0pt} \raggedright
+\centering
+\includegraphics[width=0.4\textwidth]{arrowMiddleEdge}
+\end{minipage}
+\caption{Edge with an arrow in the middle}
+\label{fig:arrowMiddleEdge}
+\end{figure} 
+
+When a line contains more than one arrow we can setup different offsets for each arrow:
+
+\begin{figure}[H]
+      \begin{minipage}[t]{0.5\textwidth}
+      \vspace{0pt}
+     \begin{code}{}
+line := ROLine new.
+line add: ROArrow new offset: 0.1.
+line add: ROArrow new offset: 0.5.
+edge + line. \end{code}
+   \end{minipage}
+   \hfill
+   \begin{minipage}[t]{0.4\textwidth}
+      \vspace{0pt} \raggedright
+       \centering
+		\includegraphics[width=0.4\textwidth]{twoArrowEdge}
+   \end{minipage}
+\caption{Edge with two arrows}
+\label{fig:twoArrowEdge}
+\end{figure} 
+
+\subsubsection{The Collection hierarchy example}
+Now we know how to make links between elements. With the following code we can create edges between each class to its superclass. 
+To do so, we first need to create a collection of associations to build edges with them. Each association represents a starting point as the association key and an ending point as the association value. For this example each association goes from a \ct{ROElement} representing a class to the \ct{ROElement} that represents its superclass. 
+
+Once we have the associations, we create the instances of \ct{ROEdge} by using the \ct{linesFor:} message. This message takes as parameter a collection of associations and returns a collection of edges.
+
+
+\begin{code}{}
+view := ROView new.
+classElements := ROElement forCollection: Collection withAllSubclasses.
+view addAll: classElements.
+associations := OrderedCollection new.
+classElements do: [ :c | 
+	c width: c model instVarNames size.
+	c height: c model methods size.
+	c + ROBorder. 
+	c @ RODraggable.	
+	(c model superclass = Object)
+		ifFalse: [ associations add: ((view elementFromModel: c model superclass) -> c)]	
+	 ].
+edges := ROEdge linesFor: associations.
+view addAll: edges.
+ROHorizontalLineLayout new on: view elements.
+view open
+\end{code}
+
+\fig{H}{0.5}{hier3}{Adding links between each class and its superclass}
+
+Now we have each class in the \ct{Collection} hierarchy with the shape we want and connected with each superclass. However we do not see a real hierarchy. This is because we need an appropriate layout to arrange all the elements of the view. The next section covers how to apply layouts to elements.
+
+
+%=====================
+\section{Layouts} \seclabel{layouts}
+A layout defines how a collection of elements is automatically arranged. To apply a layout, use the \ct{on:} message with a collection of \ct{ROElement}s as parameter. In the example shown in in \figref{primerLayout} we use the \ct{spriteOn:} convenience message to create a collection of \ct{ROElements}, each one with size 50, shaped with a red border and draggable. We then apply a layout to arrange the elements on a grid.
+
+
+\begin{figure}[H]
+\begin{minipage}[t]{0.55\textwidth}
+\vspace{0pt}
+\begin{code}{}
+view := ROView new.
+view addAll: (ROElement spritesOn: (1 to: 4)).
+ROGridLayout on: view elements.
+view open.
+\end{code}
+   \end{minipage}
+   \hfill
+   \begin{minipage}[t]{0.6\textwidth}
+      \vspace{0pt} \raggedright
+       \centering
+		\includegraphics[width=0.3\textwidth]{ROGrid2} %layout1?
+   \end{minipage}
+
+\caption{ROGridLayout applied to a group of ROElements}
+\label{fig:primerLayout}
+\end{figure} 
+
+\figref{roLayouts} illustrates some of the layouts available in Roassal. These layouts, in addition to those not presented here, can be found as subclasses of \ct{ROLayout}.
+
+\begin{figure}[h]
+        \centering
+		\subfigure[ROGridLayout]{\includegraphics[width=0.15\textwidth]{ROGrid}} \hfill
+		\subfigure[ROCircleLayout]{\includegraphics[width=0.15\textwidth]{ROCircle}}\hfill
+		\subfigure[ROTreeLayout]{\includegraphics[width=0.11\textwidth]{ROTree}} \\ 
+		\subfigure[ROTreeMapLayout]{\includegraphics[width=0.2\textwidth]{ROMapTree}} \hfill
+		\subfigure[ROVerticalLineLayout]{\includegraphics[width=0.06\textwidth]{ROVertical}}\hfill
+		\subfigure[ROHorizontalLineLayout]{\includegraphics[width=0.25\textwidth]{ROHorizontal}}
+        \caption{Some of the layouts available applied to a group of elements}\label{fig:roLayouts}
+\end{figure}
+
+As a layout is applied to a collection of elements, different sets of elements can have different layouts. In the following example two collections of elements are arranged with two layouts. The first one aligns elements along a vertical line and the second along a horizontal line. 
+We first create elements for the vertical line, apply the \ct{ROVerticalLineLayout} and shape them with a label. We then do the same for the second group, using the \ct{ROHorizontalLineLayout} and spacing them to avoid overlapping.
+
+\begin{figure}[H]
+\label{fig:differentLayouts}
+\vspace{0pt}
+\begin{minipage}[t]{1\textwidth}
+\begin{code}{}
+| view verticalElements horizontalElements |
+view := ROView new.
+verticalElements := ROElement spritesOn: (1 to: 3).
+ROVerticalLineLayout on: verticalElements.
+verticalElements do: [ :el | el + ROLabel ].
+horizontalElements := ROElement spritesOn: (4 to: 6).
+ROHorizontalLineLayout on: horizontalElements.
+horizontalElements do: [ :el |
+	el + ROLabel.
+	el translateBy: (60@ 0) ].	  "spacing"
+view 
+	addAll: horizontalElements; 
+	addAll: verticalElements.
+view open.
+\end{code}
+\end{minipage}  
+\hfill
+\begin{minipage}[t]{1\textwidth}
+\vspace{0pt} \raggedright
+\centering
+\includegraphics[width=0.3\textwidth]{differentLayouts} 
+\end{minipage}
+\caption{Applying different layouts to different sets of elements}
+\end{figure} 
+
+
+
+\paragraph{Layouts in nested structures.}
+Layout of nested elements is relative to each element's containers. In the following example, two elements are created, each one with three child elements arranged as a grid. We finally arrange the parent elements using a horizontal line layout.
+
+\begin{figure}[H]
+      \begin{minipage}[t]{0.61\textwidth}
+      \vspace{0pt}
+     \begin{code}{}
+view := ROView new.
+elements := (ROElement spritesOn: (1 to: 2)).
+elements 
+   do: [ :el | el addAll: (ROElement spritesOn: (1 to: 3)). 
+	           "arranging the children nodes"
+			   ROGridLayout on: el elements.].			   
+view addAll: elements.
+ROHorizontalLineLayout on: view elements.
+view open.
+  \end{code}
+   \end{minipage}
+   \hfill
+   \begin{minipage}[t]{0.45\textwidth}
+      \vspace{0pt}\raggedright
+       \centering
+		\includegraphics[width=0.6\textwidth]{nestedLayout}
+   \end{minipage}
+\label{fig:nestedLayout}
+\caption{Nested elements with different layouts }
+\end{figure} 
+
+
+\paragraph{Creating a new layout.}
+
+Roassal offers a number of layouts (over 23 at the time this chapter is being written). It may happen that one needs a new layout to accommodate a particular representation. This section is about dedicate layouts.
+Before jumping into the creation a new layout, we first need to understand how layouts are structured.
+
+All layout classes inherit from \ct{ROLayout}. 
+This class defines the most commonly used method to apply a layout, \ct{on:}, from the instance or from the class side. The method \ct{on:} calls to \ct{executeOnElements:}, which is the main method to apply a layout. This method is shown in the following code:
+
+\begin{code}{}
+ROLayout >> executeOnElements: elements 
+	"Execute the layout, myself, on the elements"	
+	maxInterations := elements size.
+	self doInitialize: elements.
+	self doExecute: elements asOrderedCollection.
+	self doPost: elements.
+\end{code}
+
+The \ct{executeOnElements:} method invokes three hook methods:
+
+\begin{enumerate}
+\item \ct{doInitialize:} Method executed before beginning the layout. Useful when the graph to be ordered needs to be prepared;
+\item \ct{doExecute:} Apply the layout algorithm. Elements are relocated accordingly;
+\item \ct{doPost:} Method executed after having performed the layout. 
+\end{enumerate}
+
+A pre- and post-processing may be defined. This is useful for example if the layout is multi-staged or if appropriate events have to be emitted. These actions are set as callbacks using the \ct{ROLayoutBegin} and \ct{ROLayoutEnd} events.
+\ct{ROLayoutBegin} and \ct{ROLayoutEnd} are announced by \ct{doInitialize:} and \ct{doPost:}, respectively. An example of its use is shown in the following code:
+
+\begin{code}{}
+| layout t |
+t := 0.
+layout := ROHorizontalLineLayout new.
+layout on: ROLayoutBegin do: [ :event | t := t + 1 ].
+layout on: ROLayoutEnd do: [ :event | t := t + 1 ].
+layout applyOn: (ROElement forCollection: (1 to: 3)).
+self assert: (t = 2).
+\end{code}
+
+The \ct{doExecute:} method arranges elements using a particular algorithm. This method takes as parameter the collection of elements to lay out.
+
+Now we know the structure of the \ct{ROLayout} class, we will define a new layout, called \ct{RODiagonalLineLayout}, to position elements along a diagonal line.
+Creating a subclass of \ct{ROLayout} is the first step. 
+
+\begin{code}{}
+ROLayout subclass: #RODiagonalLineLayout
+	instanceVariableNames: 'initialPosition'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Roassal-Layout'
+\end{code}
+
+The instance variable \ct{initialPosition} defines where the virtual line starts, which means, where the first element of the line will be located. This variable is set in an \ct{initialize} method:
+
+\begin{code}{}
+RODiagonalLineLayout >> initialize
+	super initialize.
+	initialPosition := 0@0.
+	
+RODiagonalLineLayout >> initialPosition: aPoint
+	initialPosition := aPoint
+	
+RODiagonalLineLayout >> initialPosition
+	^ initialPosition
+\end{code}
+
+If the layout needed to execute special actions before or after it is applied, we would overwrite the \ct{doInitialize:} or \ct{doPost:} methods. However, this is not the case. 
+The method we need to overwrite is \ct{doExecute:} which actually does the job: translating all the elements along the virtual diagonal line:
+
+\begin{figure}[H]
+\begin{code}{}
+RODiagonalLineLayout >> doExecute: elements
+	| position |	
+	position := initialPosition.
+	elements do: [ :el | 
+		el translateTo: position.
+		position := position + el extent ] 
+\end{code}
+\end{figure}
+
+We can test our layout with the following code:
+
+\begin{figure}[H]
+      \begin{minipage}[t]{0.61\textwidth}
+      \vspace{0pt}
+\begin{code}{}
+| view elements |
+view := ROView new.
+elements := ROElement spritesOn: (1 to: 3).
+view addAll: elements.
+RODiagonalLineLayout on: view elements.
+view open.
+\end{code}
+   \end{minipage}
+   \hfill
+   \begin{minipage}[t]{0.5\textwidth}
+      \vspace{0pt}\raggedright
+       \centering
+		\includegraphics[width=0.5\textwidth]{diagonalLineLayout}
+   \end{minipage}
+\label{fig:diagonalLineLayout}
+\caption{Diagonal Line layout applied to a collection of elements}
+\end{figure} 
+
+One key point of the layouts in Roassal is to consider the size of the elements to layout. When defining a new layout, remember to make your algorithm use the element size.
+
+\subsubsection{The Collection hierarchy example}
+
+As we need a hierarchy for the \ct{Collection} example, the \ct{ROTreeLayout} is useful in obtaining an adequate visualization.
+
+\begin{code}{}
+"Create the elements to be displayed"
+view := ROView new.
+classElements := ROElement forCollection: Collection withAllSubclasses.
+view addAll: classElements.
+associations := OrderedCollection new.
+\end{code}
+
+\begin{code}{}
+classElements do: [:c | 
+		"Make each element reflect their model characteristics"
+	c width: c model instVarNames size.
+	c height: c model methods size.
+		"Add shape for the element to be seen"
+	c + ROBorder. 
+		"Make it draggable by the mouse"
+	c @ RODraggable.
+		"Create associations to build edges"
+	(c model superclass = Object)
+		ifFalse: [ associations add: ((view elementFromModel: c model superclass) -> c)]	
+	 ].
+\end{code}
+
+\begin{code}{}	 
+	"Add edges between each class and its superclass"
+edges := ROEdge linesFor: associations.
+view addAll: edges.
+	"Arrange all the elements as a hierarchy"
+ROTreeLayout new on: view elements.
+view open
+\end{code}
+
+
+The resulting visualization can be seen in \figref{collectionHierarchy}.
+
+\fig{H}{0.35}{collectionHierarchy}{Collection class hierarchy with width representing the number of instance variables and height the number of methods.}
+
+%=====================
+
+\section{Events and Callbacks}
+
+Roassal allows any visible component in a visualization, including the view itself, to emit and react to events. There are two kinds of events defined in Roassal. The first kind of event is low level and represents user actions, which includes clicking or moving the mouse or pressing a key. The second kind of event includes those triggered by the view itself, which typically includes movements of the camera, applying a layout, or refreshing the view. All events inherit from the \ct{ROEvent} class.
+
+To see how events work, we will show an example of a visualization that reacts to mouse clicks, translating an element to where the click was made. 
+There are several event classes to deal with mouse events: \ct{ROMouseClick}, \ct{ROMouseMove}, \ct{ROMouseEnter} and \ct{ROMouseLeave}, among others; and to deal with key pressing, the \ct{ROKeyDown} class.
+
+We will make the visualization react to mouse left click using the \ct{ROLeftMouseClick} event. The reaction will create an animation to translate the element to the event's position.
+
+We use the \ct{on:do:} message to set a Roassal object to react to an event, as shown in the following code. The first parameter must be the class of the expected event and the second one a block, that defines the action to be executed when the event is received.
+
+\begin{code}{}
+view := ROView new.
+el := ROElement sprite.
+view add: el.
+view 
+	on: ROMouseLeftClick 
+	do: [ :event | ROLinearMove new for: el to: event position ].
+view open. 
+\end{code}
+
+
+\ct{ROLinearMove} is one of the Roassal interactions. As its name suggests, it creates an animation for an element to be translated in a linear move. More about interactions is explained in the following section.
+
+%=====================
+\section{The interaction hierarchy} \seclabel{interactions}
+A graphical element responds to events by setting callbacks or interactions. We have already presented how to set callbacks. In this section we will detail the interactions. 
+
+The root class of all Roassal interactions is \ct{ROInteraction}. An interaction is set to an element by sending the \ct{@} message with a subclass of \ct{ROInteraction} or an instance of such a class as parameter. There are diverse interactions that can be applied to an element such as  \ct{RODraggable}  or \ct{ROGrowable}.
+\ct{RODraggable} allows an element to be dragged by the mouse and \ct{ROGrowable} makes an element increase its size when clicked. 
+
+An element may have more than one interaction. For example, we can apply both \ct{RODraggable}  or \ct{ROGrowable} to an element.
+The following code illustrates this. Click the element to make it bigger or drag it on the view.
+
+\begin{code}{}
+| view element |
+view := ROView new.
+element := ROElement new size: 10.
+element 
+	+ ROBox;
+	@ RODraggable; 
+	@ ROGrowable.
+view add: element.
+view open.
+\end{code}
+
+
+Some interactions are more complex to set up, like popup elements which are displayed when the mouse is over an element. 
+
+From the available interactions in Roassal, only a few examples are presented here.
+
+\subsubsection{ROAbstractPopup}
+
+\ct{ROAbstractPopup} allows elements to react to mouse over events by displaying a popup. There are two kinds of popups, (i) \ct{ROPopup}, which by default displays a box with the \ct{printString} value of the element model; and (ii) \ct{ROPopupView} which displays a custom view.
+
+To add a popup to an element just send the \ct{@} message with the \ct{ROPopup} class as argument. It is also possible to set up a custom text using the \ct{text:} message with a string as parameter. 
+
+In the following example, we create an element by sending the \ct{spriteOn:} message to the \ct{ROElement} class, with an arbitrary string as its model. The resulting element has size 50, a red border and is draggable by the mouse. We finally add the \ct{ROPopup} to the element.
+
+
+\begin{figure}[H]
+      \begin{minipage}[t]{1\textwidth}
+      \vspace{0pt}
+     \begin{code}{}
+view := ROView new.
+el := ROElement spriteOn: 'baz'.
+el @ ROPopup. "Or with custom text -> (ROPopup text: 'this is custom text')"
+view add: el.
+view open.
+\end{code}
+   \end{minipage}
+   \hfill
+   \begin{minipage}[t]{1\textwidth}
+	 \vspace{0pt} \raggedright
+       \centering
+		\includegraphics[width=0.7\textwidth]{popup}
+   \end{minipage}
+\label{fig:popup}
+\caption{ROPopup}
+\end{figure} 
+
+\ct{ROPopupView} is slightly more complex as it needs the definition of the view to popup. This interaction can be created by sending the \ct{view:} message to the \ct{ROPopupView} class with the new view to be displayed. 
+The parameter can also be a block that defines a view. When the mouse is over an element, the block is evaluated using the same element as parameter, allowing the view to be dynamically created.
+
+The following example creates a view with five elements. Each one reacts when the mouse is placed over it by displaying a popup. The popup view is defined as a block that creates a view with the same number of nodes as the element model where the mouse is. For example, and as \figref{popupView} shows, when passing the mouse over the node ``3'', a popup with \textit{three} gray boxes appears.
+
+\begin{figure}[H]
+      \begin{minipage}[t]{1\textwidth}
+      \vspace{0pt}
+     \begin{code}{}
+view := ROView new.
+elements := ROElement spritesOn: (1 to: 5).
+"create the view to popup"
+viewToPopup := [ :el | | v | 
+	              	              v := ROView new.
+	              	              "Add as many elements as the value represented"
+	              	              v addAll: (ROElement forCollection: (1 to: el model)).
+	              	              v elementsDo: [ :e | e size: 20; + ROBox ].
+	              	              ROGridLayout on: v elements.
+	              	              v ].
+elements do: [ :e | e + ROLabel;  @ (ROPopupView view: viewToPopup)].
+view addAll: elements.
+ROHorizontalLineLayout on: view elements.
+view open.
+\end{code}
+\end{minipage}\hfill\begin{minipage}[t]{1\textwidth}
+	 \vspace{0pt} \raggedright
+       \centering
+		\includegraphics[width=0.4\textwidth]{popupView3}
+   \end{minipage}
+\label{fig:popupView}
+\caption{\ct{ROPopupView} that creates a view with the same number of elements as the model of the element the mouse is over.}
+\end{figure} 
+
+
+%first example
+%view := ROView new.
+%el := ROElement spriteOn: 'Roassal'.
+%
+%"create the view to popup"
+%viewToPopup := ROView new.
+%viewToPopup 
+%	addAll: (ROElement forCollection: (1 to: 4 )).
+%viewToPopup 
+%	elementsDo: [:e | e size: 20. e + ROBox  ].
+%ROGridLayout 
+%	on: viewToPopup elements.
+%	
+%el := ROElement spriteOn: 'Roassal'.
+%el @ (ROPopupView view: viewToPopup).
+%view add: el.
+%view open.
+
+
+%
+%\vp{not sure if present this one}
+%\subsubsection*{ROMenuActivable}
+%
+%\begin{figure}[H]
+%      \begin{minipage}[t]{1\textwidth}
+%      \vspace{0pt}
+%     \begin{code}{}
+%view := ROView new.
+%el := ROElement sprite.
+%el @ (ROMenuActivable new item: 'inspect' action: #inspect).
+%view add: el.
+%view open.
+%  \end{code}
+%   \end{minipage}
+%   \hfill
+%   \begin{minipage}[t]{1\textwidth}
+%	 \vspace{0pt} \raggedright
+%       \centering
+%		\includegraphics[width=0.7\textwidth]{menuActivable}
+%   \end{minipage}
+%\label{fig:menuActivable}
+%\caption{ROMenuActivable applied to a ROElement}
+%\end{figure} 
+
+\subsubsection{RODynamicEdge} A recurrent need when visualizing data elements and their relations is showing outgoing edges when the mouse points to an element. Instead of trying to get the right mixture of callbacks when entering or leaving the element, the interaction \ct{RODynamicEdge} considerably eases the task.
+
+The following example makes some lines appear when the mouse hovers over some elements:
+
+\begin{lstlisting}
+| rawView el1 el2 el3 |
+rawView := ROView new.
+rawView add: (el1 := ROBox element size: 20).
+rawView add: (el2 := ROBox element size: 20).
+rawView add: (el3 := ROBox element size: 20).
+ROCircleLayout on: (Array with: el1 with: el2 with: el3).
+el1 @ RODraggable.
+el2 @ RODraggable.
+el3 @ RODraggable.
+el1 @ (RODynamicEdge toAll: (Array with: el2 with: el3) using: (ROLine arrowed color: Color red)).
+rawView open
+\end{lstlisting}
+
+\subsubsection{ROAnimation}
+%:Oscar: There is not enough to understand how animation work here
+Animations are also interactions in Roassal (\ie \ct{ROAnimation} is a subclass of \ct{ROInteraction}). All animations are subclasses of \ct{ROAnimation}.
+ Some animations allow elements to be translated either linearly at a constant speed (\ct{ROLinearMove}), with an acceleration (\ct{ROMotionMove}), or following a mathematical function (\ct{ROFunctionMove}). \ct{ROZoomInMove} and \ct{ROZoomOutMove} perform an animation zooming in or out. 
+ 
+Each animation has a number of cycles to complete, executing each one by sending the \ct{doStep} message.
+A \ct{ROAnimation} also allows one to set a block to be executed after the animation is finished, using the \ct{after:} message. It is important to notice that any action to be carried out after the animation is finished must be set before the animation is triggered, otherwise it will not be executed. 
+
+%:Oscar:Not clear what's going on here.
+\begin{figure}[H]
+\begin{code}{}
+view := ROView new.
+element := ROElement new.
+element size: 10.
+element + (ROEllipse color: Color green).
+view add: element.
+element translateBy: 30@20.
+ROFunctionMove new
+	nbCycles: 360;
+	blockY: [ :x | (x * 3.1415 / 180) sin * 80 + 50 ];
+	on: element.
+view open.
+\end{code}
+\caption{Animating function}\label{fig:animationCode}
+\end{figure}
+
+\figref{animationCode} presents \ct{ROLinearMove}. The following code allows an element to follow a sinus curve using the \ct{ROFunctionMove}.
+
+
+%\alex{Present the hierarchy of the interaction}
+
+%\alex{Give some examples with buttons and animations}
+
+
+%=====================
+\section{Understanding a View's Camera} \seclabel{camera}
+
+A view's camera represents the point of view from which the space is actually viewed. 
+
+When \ct{translateBy:} or \ct{translateTo:} messages are sent to a view, what actually happens is that its camera moves instead of the view itself. The position of the camera is given by the \ct{position} message. The camera's position is set manually sending the same messages to the camera, \ct{translateBy:} or \ct{translateTo:}, but using negated values as parameters. This means that if the view has to be translated by 10 pixels horizontally and vertically, we can do it like this:
+
+\begin{code}{}
+view translateBy: 10@10
+\end{code}
+
+Or translate the view's camera by hand:
+
+\begin{code}{}
+view camera translateBy: (-10)@(-10)
+\end{code}
+
+%:Oscar: Not clear what are the extent and real extent ...
+A camera has an extent, which is what we are seeing, and a real extent, which represents the far extent.  The extent of the view's camera affects the way a view is drawn in a canvas. When rendering a view, each point, rectangle or other shape that needs to be drawn will be plotted according to the camera's extent. This is done by transforming each absolute position in \emph{virtual} points relative to the camera's vision.
+For example, when zooming in on a view, the content on the extent is ``stretched'' to fill the real extent, which makes objects bigger.
+The extent and the real extent of the camera are modified using \ct{extent:} and \ct{realExtent:} accessors, respectively. The camera also stores the window size of the visualization.
+
+The camera has an altitude from the view, which is computed using the extent. The smaller the extent is, the lower the camera is located, and vice-versa. The altitude of the camera can be set by sending the \ct{altitude:} message using a number as parameter.
+A camera cannot be rotated, only translated. This also means that the camera is always perpendicularly looking at the view.
+
+\figref{cameraDiagram} illustrates what we have just mentioned. It indicates all of the  information regarding the view for which it is associated.We also see that the visible part of the visualization is given by the camera's extent.
+
+
+\begin{figure}[H]
+\centering
+\subfigure[Camera diagram]{\includegraphics[width=1\textwidth]{cameraDiagram}} \hfill
+\subfigure[Camera extent, showing what it is actually seen]{\includegraphics[width=0.3\textwidth]{cameraExtent}}\hfill
+\caption{Components of a view's camera}\label{fig:cameraDiagram}
+%:Oscar: This diagram also does not make clear what the "real extent" is or why it is needed
+\end{figure}
+
+The \ct{ROZoomMove} interaction affects the extent of the camera. This interaction modifies the camera's position and extends it to fit a desired rectangle. For example, when zooming in to focus on a particular element of the view, the \ct{ROZoomMove}  translates and extends the camera to fit that element's bounds.
+This movement is simulated by changing the camera's altitude.
+
+\paragraph{Using the camera to build a minimap for navigation.}
+The interaction and animation model offered by Roassal support complex behavior. Consider the following code:
+
+\begin{code}{}
+| view eltos |
+view := ROView new.
+view @ RODraggable .
+view on: ROMouseRightClick do: [ :event | 
+		ROZoomInMove new on: view ].
+view on: ROMouseLeftClick do: [ :event | 
+		ROZoomOutMove new on: view ].
+elts := ROElement spritesOn: (1 to: 400).
+elts do:  [ :el | el + ROLabel  ].
+view addAll: elts.
+ROGridLayout new on: view elements.
+	"Mini map opens by pressing m"
+view @ ROMiniMap.
+view open.
+\end{code}
+
+It opens a view with 400 labelled elements and elements are ordered using a grid layout. Pressing the left mouse button zooms in the view. The right mouse button zooms out. Pressing the \ct{m} key will open a minimap. This feature is enabled using the \ct{ROMiniMap} interaction.
+
+The \ct{ROMiniMap} opens a new window that gives a complete vision of a visualization. It also eases the navigation by using the original view's camera.
+
+The minimap is composed of a smaller version of the visualization and a \emph{lupa} (magnifying glass), which represents the current visible part of the main view's window. 
+
+%\alex{The minimap should be better described. In particular, how to make the movement of the main window from the small window. Zooming...}
+
+Coming back to our main example, the interaction is simply added by sending the \ct{@ROMiniMap} message to a view and pressing ``m'' to open it (\figref{miniMap}). %\sd{how the communication between the MiniMap and the other view is done?}
+
+\fig{H}{0.9}{miniMap}{\ct{ROMiniMap} applied to the Collection Hierarchy example}
+
+The smaller version of the view is displayed using \ct{ROMiniMapDisplayer}, a particular shape, subclass of \ct{ROViewDisplayer}.  \ct{ROViewDisplayer} is a shape that displays a view on an element (it is essentially used for the popup view). The difference between both is that \ct{ROMiniMapDisplayer} uses its own camera, which has a different extent than the view's camera. This allows one to see the same view with different sizes. 
+
+The magnifier size represents the visible part of the window and its position is related to the view's camera position. When the view is translated to a point, the magnifier follows it by changing its position: the point representing the camera position is translated to a point on the \ct{ROMiniMapDisplayer} camera extent. And when the view is zoomed in or zoomed out the extent of the camera is changed, increasing or decreasing the magnifier's size.
+
+
+\section{Beyond Pharo}
+
+Roassal has been designed to be easily ported to other Smalltalk dialects. Currently it has been ported to VisualWorks.
+
+%As \figref{structure} shows, 
+Roassal consists of three main components:
+
+\begin{itemize}
+\item  The Roassal Core, a set of packages that define all the main classes, like \ct{ROView}, \ct{ROElement}, \ct{ROShape} and \ct{ROCamera}. It also contains all the tests.
+\item The Mondrian DSL, composed of the Roassal-Builder and Roassal-Builder-Tests packages.
+\item The platform-dependent packages, which are dedicated to each Smalltalk dialect Roassal is ported to.
+\end{itemize} 
+
+%On top of these components, your application can be built.
+
+In the platform-dependent packages several classes must be implemented. The main ones are a native canvas class, where a view can be rendered, and a widget factory class, which can return an object to contain the canvas and receive and delegate all the external events.
+The first must be a subclass of \ct{ROAbstractCanvas} and the second must be subclass of \ct{RONativeWidgetFactory}.
+
+The \ct{ROPlatform} class defines how the bridge between the core and the dependent packages must be implemented. This class defines instance variables, like \ct{canvasClass} and \ct{widgetFactory}, which store the corresponding classes to use according to their name. Each platform-dependent package must implement its own platform class as subclass of \ct{ROPlatform} and reference all the implemented platform dependent classes.
+Internally, every time one of these classes is needed, the core relies on the current instance of \ct{ROPlatform} to return the needed class.
+
+%\fig{H}{0.3}{structure}{Roassal structure}
+
+%=====================
+
+\section{Chapter summary}
+
+Roassal enables any graph of objects to be visualized. This chapter has reviewed the main features of Roassal:
+
+\begin{itemize}
+\item Create graphical elements and shape them to look as desired.
+\item Create edges to represent relationships between graphical elements.
+\item Apply layouts to arrange collections of elements automatically.
+\item Make elements react to events by setting callbacks and defined interactions.
+\item Move the visualization point of view, by interacting with its camera.
+\end{itemize}
+
+Screenshots, online example, screencast about Roassal may be found online: \url{http://objectprofile.com}.
+
+\paragraph{Acknowledgment.}
+We thank Chris Thorgrimsson and ESUG for supporting the development of Roassal.
+
+We are very grateful to Nicolas Rosselot Urrejola and St\'ephane Ducasse for their reviews. We also thank Emmanuel Pietriga and Tudor Girba for the multiple discussions we had about the design of Roassal. 
+
+%Mondrian is a perpetual evolving application. This chapter intents to cover the features frequently used. If there is a topic you wish to see discussed here, send an email to alexandre@bergel.eu.
+%
+%We hope you have enjoyed it!
+%
+%=====================
+
+
+%=============================================================
+\ifx\wholebook\relax\else
+   \bibliographystyle{jurabib}
+   \nobibliography{scg}
+   \end{document}
+\fi
+%=============================================================
+
+
+%-----------------------------------------------------------------
+
+%%% Local Variables:
+%%% coding: utf-8
+%%% mode: latex
+%%% TeX-master: t
+%%% TeX-PDF-mode: t
+%%% ispell-local-dictionary: "english"
+%%% End:
