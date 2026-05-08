@@ -3,13 +3,19 @@
 
 
 ```
-"Create the space"
 space := BlSpace new.
-
-"Add a child element to the root"
 space root addChild: (BlElement new background: Color blue).
-
-"Display the window"
 space show.
 ```
+
+Now lets add another BlElement
+
+```
+space := BlSpace new.
+space root addChild: (BlElement new background: Color blue ; position: 200@200; extent: 50@50).
+space root addChild: (BlElement new background: Color red ; position: 100@100 ; extent: 50@50).
+space show.
+```
+
+
 
