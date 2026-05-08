@@ -65,7 +65,7 @@ PDFDemos demoPath . "'pdf/'"
 
 
 ## alignmentsTest
-   ![alignmentsTest](pdf/alignmentsTest-1.png &width=400)
+   ![alignmentsTest](docs/pdf/alignmentsTest-1.png &width=400)
    
 ## lineTest
     ![lineTest](pdf/lineTest-1.png &width=300)
