@@ -63,17 +63,17 @@ PDFDemos demoPath . "'pdf/'"
 
 ### the demos
 
-![alignmentsTest](pdf/alignmentsTest-1.png)
+![alignmentsTest](pdf/alignmentsTest-1.png &width=500)
 
-![lineTest](pdf/lineTest-1.png)
+![lineTest](pdf/lineTest-1.png &width=500)
 
-![mosaiqueTest](pdf/mosaiqueTest-1.png)
+![mosaiqueTest](pdf/mosaiqueTest-1.png &width=500)
 
-![polygonsTest](pdf/polygonsTest-1.png)
+![polygonsTest](pdf/polygonsTest-1.png &width=500) 
 
-![thicknesstest](pdf/thicknessTest-1.png)
+![thicknesstest](pdf/thicknessTest-1.png &width=500)
 
-![widthTest](pdf/widthTest-1.png)
+![widthTest](pdf/widthTest-1.png &width=500)
 
 ### aside - generate demo images from PDFs
 
