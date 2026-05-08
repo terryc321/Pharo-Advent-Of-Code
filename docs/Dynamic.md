@@ -105,3 +105,12 @@ this is my list
 '
 ```
 
+## Does a class named Foo exist ?
+
+```
+(Smalltalk hasClassNamed: 'Foo') ifTrue: [ 
+    | cls |
+    cls := Smalltalk at: #Foo.
+    "Do something with cls"
+].
+```
