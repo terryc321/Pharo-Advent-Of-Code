@@ -8,6 +8,9 @@ Metacello new
     load.
 ```
 
+also see class {{AOC2015Day7}}
+
+
 you can also try the gui but need RB .
 
 ```
@@ -25,6 +28,19 @@ Class {
 	#category : 'AdventCode',
 	#package : 'AdventCode'
 }
+
+{ #category : 'as yet unclassified' }
+AOC2015Day23 >> howto [
+"
+day23 := AOC2015Day23 new.
+day23 input.
+day23 jio parse: 'jio a, '.
+day23 jio parse: 'jio a,'.
+day23 plusInt parse:'+123'.
+day23 jio parse: 'jio a, +123'.
+"
+
+]
 
 { #category : 'accessing' }
 AOC2015Day23 >> input [ 
@@ -74,4 +90,21 @@ inc a
 jmp +2
 hlf a
 jmp -7'.
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day23 >> jio [
+"jie a, +123"
+^ ('jio a, ' asPParser , self plusInt) end.
+
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day23 >> plusInt [
+"+123"
+^ $+ asPParser , #digit asPParser star.
+
+
+
 ]
