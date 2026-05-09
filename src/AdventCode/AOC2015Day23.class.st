@@ -106,7 +106,10 @@ jmp -7'.
 AOC2015Day23 >> interpret: aString [
  | s parsers | 
 s := aString.
-parsers := { #incA . #jio . #jmp . #tplA  }
+parsers := { #incA . #jio . #jmp . #tplA  }.
+parsers do: [ :p | 
+	 self p ]
+
 
 
 
