@@ -1,0 +1,5 @@
+initialFileListDirectories=#roots
+autoReplaceNamedCharacters=true
+focusFollowsMouse=true
+saveReleaseOptionsInWorldMenu=false
+defaultFontSize=11
