@@ -157,7 +157,7 @@ parsers do: [ :p |
 			p = #incA ifTrue: [ ^ { #incA } ] .
 			p = #hlfA ifTrue: [ ^ { #hlfA } ] .			
 			p = #incB ifTrue: [ ^ { #incB } ] .
-			p = #jmpNeg ifTrue: [ ^ { #jmpNeg . (r at:2) asInteger } ] .			
+			p = #jmpNeg ifTrue: [ ^ { #jmp . ((r at:2) asInteger) negated } ] .			
 			p = #jieA ifTrue: [ ^ { #jieA . ((r at:2)at:2) asInteger } ] .			
 			p = #jioA ifTrue: [ ^ { #jioA . ((r at:2)at:2) asInteger } ] .
 			p = #jmp ifTrue: [ ^ { #jmp . ((r at:2)at:2) asInteger } ] .
@@ -235,7 +235,7 @@ rI := 1.
 	| in out rI2|
 	in := tape at: rI.
 	"record instructions met along way"
-	hist add: { rA . rB . rI . in }. 
+	"hist add: { rA . rB . rI . in }. "
 	"run one instruction"
 	out := self runInstruction: { in . rA . rB . rI }.
 	"new state now becomes current state"
@@ -247,9 +247,9 @@ rI := 1.
 	rI := rI2.
 	 ].
 
-hist add: { 'final' . rA . rB . rI } .
+"hist add: { 'final' . rA . rB . rI } ."
 self halt.
-^ hist.
+
 
 
 

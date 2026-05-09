@@ -78,7 +78,7 @@ AOC2015Day23Test >> testJmpNeg [
 |aoc p |
 aoc :=AOC2015Day23 new.
 p := aoc interpret: 'jmp -7'.
-self assert: p equals: #( #jmpNeg 7).
+self assert: p equals: #( #jmp -7).
 
 
 
