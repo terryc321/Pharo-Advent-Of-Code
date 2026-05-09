@@ -257,10 +257,13 @@ opcode := in at: 1.
 "jioA jump if one - register A"
 opcode = #jioA ifTrue: [ | dist | dist := in at: 2.  
 	rA = 1 ifTrue: [ ^{ rA . rB . rI + dist } ] ifFalse: [ ^ { rA . rB . rI + 1 } ]].
+opcode = #jieA ifTrue: [ | dist | dist := in at: 2.  
+	rA even ifTrue: [ ^{ rA . rB . rI + dist } ] ifFalse: [ ^ { rA . rB . rI + 1 } ]].
 opcode = #jmp ifTrue: [ | dist | dist := in at: 2.  ^ { rA . rB . rI + dist } ].
 opcode = #incA ifTrue: [  ^  { rA + 1 . rB . rI + 1 } ].
 opcode = #incB ifTrue: [ ^ { rA + 1 . rB . rI + 1 } ].
 opcode = #tplA ifTrue: [ ^ { rA * 3 . rB . rI + 1 } ].
+opcode = #hlfA ifTrue: [ ^ { rA // 2 . rB . rI + 1 } ].
 
 Error signal: 'runInstruction bad opcode ' , opcode.
 
