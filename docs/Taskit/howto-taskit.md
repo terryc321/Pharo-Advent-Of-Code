@@ -1,7 +1,9 @@
 
 # Lets try taskit 
 
-Pharo 130 experiment
+Pharo 130 experiment.
+for ease of quick experiment - replaced all occurrences of logCr with traceCr . 
+
 
 If metacello fails - entire system is in an unknown state, unless we know how to undo everything that it did
 
@@ -59,4 +61,62 @@ baselineForCommon: spec
 			'TaskItProcesses-Tests' 
 			'TaskItDebugger-Tests');
 		group: 'development' with: #('default' 'debug' 'tests')
+```
+
+```
+[ 1 + 1 ] schedule. =>>  "a TKTGenericTask"
+```
+
+All value-ables can be tasks. As long as object understands value message then it can be a task.
+Here is an object task
+
+```
+Object subclass: #MyTask
+	instanceVariableNames: ''
+	classVariableNames: ''
+	package: 'MyPackage'.
+
+MyTask >> value
+    ^ 100 factorial
+
+"we create a task "
+TKTTask valuable: MyTask new.	
+```
+
+## Futures
+
+To get the actual result from a task - use a future
+
+```smalltalk
+aFuture := [ 2 + 2 ] future.
+aFuture onSuccessDo: [ :result | result traceCr ].
+aFuture onFailureDo: [ :error | error sender method selector traceCr ].
+```
+
+
+```smalltalk
+future := [ 2 + 2 ] future.
+future onSuccessDo: [ :v | FileStream stdout nextPutAll: v asString; cr ].
+future onSuccessDo: [ :v | 'Finished' traceCr ].
+future onSuccessDo: [ :v | [ v factorial traceCr ] schedule ].
+future onFailureDo: [ :error | error traceCr ].
+```
+
+Ok already a bit nervous as seeing the word semaphore
+
+```smalltalk
+future := [ 1 second wait. 2 + 2 ] future.
+future onSuccessDo: [ :v | v traceCr ].
+
+2 seconds wait.
+future onSuccessDo: [ :v | v traceCr ].
+```
+
+Here is the major test 11:40 on 09/05/2026 uk time date. 
+a ridiculously large factorial computation on a single core.
+
+```
+aFuture := [ 10000000 factorial ] future.
+aFuture onSuccessDo: [ :result | result traceCr ].
+aFuture onFailureDo: [ :error | error sender method selector traceCr ].
 ```
