@@ -216,7 +216,7 @@ AOC2015Day23 >> jmpNeg [
 { #category : 'as yet unclassified' }
 AOC2015Day23 >> plusInt [
 "+123"
-^ ($+ asPParser , #digit asPParser star) flatten.
+^ ($+ asPParser , (#digit asPParser star flatten)).
 
 
 
@@ -266,31 +266,15 @@ rI := anArray at: 4.
 opcode := in at: 1.
 
 "jioA jump if one - register A"
-opcode = #jioA ifTrue: [ | dist log | 
-	          dist := in at: 2.  
-	rA = 1 ifTrue: [ log :=  { rA . rB . rI + dist }.
-		log traceCr.
-		^ log  ] 
-	       ifFalse: [ log := { rA . rB . rI + 1 }.
-		log traceCr.
-		^log ]]. 
-opcode = #jmp ifTrue: [ | dist log | 
-	 dist := in at: 2.  
-	 log := { rA . rB . rI + dist }.
-	log traceCr.
-	^ log].  "unconditional jump"
-opcode = #incA ifTrue: [  |log| 
-	log := { rA + 1 . rB . rI + 1 }.
-	log traceCr.
-	^ log  ]. "increment register A"
-opcode = #tplA ifTrue: [ |log|
-	log := { rA * 3 . rB . rI + 1 } .
-	log traceCr.
-	^log ]. "triple register A tplA"
+opcode = #jioA ifTrue: [ | dist | dist := in at: 2.  
+	rA = 1 ifTrue: [ ^{ rA . rB . rI + dist } ] ifFalse: [ ^ { rA . rB . rI + 1 } ]].
+opcode = #jmp ifTrue: [ | dist | dist := in at: 2.  ^ { rA . rB . rI + dist } ].
+opcode = #incA ifTrue: [  ^  { rA + 1 . rB . rI + 1 } ].
+opcode = #incB ifTrue: [ ^ { rA + 1 . rB . rI + 1 } ].
+opcode = #tplA ifTrue: [ ^ { rA * 3 . rB . rI + 1 } ].
 
 Error signal: 'runInstruction bad opcode ' , opcode.
 
-^ out.
 ]
 
 { #category : 'as yet unclassified' }
