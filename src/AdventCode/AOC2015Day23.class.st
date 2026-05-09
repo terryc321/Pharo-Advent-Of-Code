@@ -42,6 +42,16 @@ day23 jio parse: 'jio a, +123'.
 
 ]
 
+{ #category : 'as yet unclassified' }
+AOC2015Day23 >> incA [
+"inc a"
+^ 'inc a' asPParser.
+
+
+
+
+]
+
 { #category : 'accessing' }
 AOC2015Day23 >> input [ 
 ^ 'jio a, +16
@@ -93,9 +103,26 @@ jmp -7'.
 ]
 
 { #category : 'as yet unclassified' }
+AOC2015Day23 >> interpret: aString [
+ | s| 
+s := aString.
+
+
+
+]
+
+{ #category : 'as yet unclassified' }
 AOC2015Day23 >> jio [
 "jie a, +123"
-^ ('jio a, ' asPParser , self plusInt) end.
+^ ('jio a, ' asPParser , self plusInt).
+
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day23 >> jmp [
+"jmp +123"
+^ ('jmp ' asPParser , self plusInt).
 
 
 ]
@@ -104,6 +131,16 @@ AOC2015Day23 >> jio [
 AOC2015Day23 >> plusInt [
 "+123"
 ^ $+ asPParser , #digit asPParser star.
+
+
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day23 >> tplA [
+"tpl a"
+^ 'tpl a' asPParser.
+
 
 
 
