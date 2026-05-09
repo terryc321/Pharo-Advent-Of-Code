@@ -1,4 +1,20 @@
 "
+optimised ?
+
+a long sequence of instructions could potentially be squashed into a single formulae
+if know instruction pointer jumps into - say index 3 - 
+lets say all instructions from index 3 to index 25 are , multiply a by 3 , add 1 to a , etc..
+eventually just get a big formula of what happended to a . 
+just compute it once - avoid having to increment - decode - or very least calling 20 odd procedures .
+
+
+
+
+
+
+
+
+
 Petit Parser2
 
 ```
@@ -29,7 +45,10 @@ Class {
 		'rA',
 		'rB',
 		'rI',
-		'history'
+		'history',
+		'parsed',
+		'answer',
+		'err'
 	],
 	#category : 'AdventCode',
 	#package : 'AdventCode'
@@ -86,11 +105,7 @@ AOC2015Day23 >> incB [
 
 { #category : 'initialization' }
 AOC2015Day23 >> initialize [ 
-rA := 0.
-rB := 0.
-rI := 1.
-history := OrderedCollection new.
-
+parsed := (self interpretInput: (self input)).
 
 
 ]
@@ -213,44 +228,18 @@ AOC2015Day23 >> jmpNeg [
 
 ]
 
-{ #category : 'as yet unclassified' }
-AOC2015Day23 >> plusInt [
-"+123"
-^ ($+ asPParser , (#digit asPParser star flatten)).
-
+{ #category : 'initialization' }
+AOC2015Day23 >> parsed [ 
+parsed ifNil: [ ^ (self interpretInput: (self input)) ]
+       ifNotNil: [  ^ parsed ].
 
 
 ]
 
 { #category : 'as yet unclassified' }
-AOC2015Day23 >> runInput [ 
-|tape hist rA rB rI |
-tape := self  interpretInput: (self input).
-hist := OrderedCollection new.
-rA := 0.
-rB := 0.
-rI := 1.
-
-[ rI >= 1 and: [rI <= (tape size) ] ] whileTrue: [ 
-	| in out rI2|
-	in := tape at: rI.
-	"record instructions met along way"
-	"hist add: { rA . rB . rI . in }. "
-	"run one instruction"
-	out := self runInstruction: { in . rA . rB . rI }.
-	"new state now becomes current state"
-	rA := out at: 1.
-	rB := out at: 2.
-	rI2 := out at: 3.
-	"no index advancement"
-	rI = rI2 ifTrue:[ Error signal: 'stalled' ].
-	rI := rI2.
-	 ].
-
-"hist add: { 'final' . rA . rB . rI } ."
-self halt.
-
-
+AOC2015Day23 >> plusInt [
+"+123"
+^ ($+ asPParser , (#digit asPParser star flatten)).
 
 
 
@@ -274,6 +263,50 @@ opcode = #incB ifTrue: [ ^ { rA + 1 . rB . rI + 1 } ].
 opcode = #tplA ifTrue: [ ^ { rA * 3 . rB . rI + 1 } ].
 
 Error signal: 'runInstruction bad opcode ' , opcode.
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day23 >> runMayHang [ 
+|tape rA rB rI |
+tape := self parsed.
+rA := 0.
+rB := 0.
+rI := 1.
+
+[ rI >= 1 and: [rI <= (tape size) ] ] whileTrue: [ 
+	| in out rI2|
+	in := tape at: rI.
+	"record instructions met along way"
+	"hist add: { rA . rB . rI . in }. "
+	"run one instruction"
+	out := self runInstruction: { in . rA . rB . rI }.
+	"new state now becomes current state"
+	rA := out at: 1.
+	rB := out at: 2.
+	rI2 := out at: 3.
+	"no index advancement"
+	rI = rI2 ifTrue:[ Error signal: 'stalled' ].
+	rI := rI2.
+	 ].
+
+^ { 'registerA=>' . rA . 'registerB=>' . rB  }
+"hist add: { 'final' . rA . rB . rI } ."
+"ran out memory if we stored history of all the moves made"
+
+
+
+
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day23 >> runWithTaskit [
+| task | 
+"use Taskit "
+task := [ self runMayHang ] future.
+task onSuccessDo: [ :v | answer := task . Transcript show: 'answer was ' ; show: answer ; cr].
+task onFailureDo: [ :error | err := task .Transcript show: 'failure encountered - inspector launched ' ; cr . err inspect ].
 
 ]
 
