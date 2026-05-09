@@ -237,13 +237,21 @@ rI := 1.
 
 { #category : 'as yet unclassified' }
 AOC2015Day23 >> runInstruction: anArray [
- | in rA rB rI out |
+ | in rA rB rI out opcode |
 in := anArray at: 1.
 rA := anArray at: 2.
 rB := anArray at: 3.
 rI := anArray at: 4.
+opcode := in at: 1.
 
-out := { rA . rB . rI }.
+"jioA jump if one - register A"
+opcode = #jioA ifTrue: [ | dist | dist := in at: 2.  rA = 1 ifTrue: [ ^ { rA . rB . rI + dist }  ] ifFalse: [ ^ { rA . rB . rI + 1 } ]]. 
+opcode = #jmp ifTrue: [ | dist | dist := in at: 2.  ^ { rA . rB . rI + dist }].  "unconditional jump"
+opcode = #incA ifTrue: [  ^ { rA + 1 . rB . rI + 1 }  ]. "increment register A"
+opcode = #tplA ifTrue: [  ^ { rA * 3 . rB . rI + 1 }  ]. "triple register A tplA"
+
+Error signal: 'runInstruction bad opcode ' , opcode.
+
 ^ out.
 ]
 
