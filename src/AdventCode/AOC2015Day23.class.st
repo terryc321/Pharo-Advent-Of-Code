@@ -215,7 +215,7 @@ rB := 0.
 rI := 1.
 
 [ rI >= 1 and: [rI <= (tape size) ] ] whileTrue: [ 
-	| in out |
+	| in out rI2|
 	in := tape at: rI.
 	"record instructions met along way"
 	hist add: { rA . rB . rI . in }. 
@@ -224,7 +224,10 @@ rI := 1.
 	"new state now becomes current state"
 	rA := out at: 1.
 	rB := out at: 2.
-	rI := out at: 3.
+	rI2 := out at: 3.
+	"no index advancement"
+	rI = rI2 ifTrue:[ Error signal: 'stalled' ].
+	rI := rI2.
 	 ].
 
 
