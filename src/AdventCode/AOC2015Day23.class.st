@@ -104,8 +104,9 @@ jmp -7'.
 
 { #category : 'as yet unclassified' }
 AOC2015Day23 >> interpret: aString [
- | s| 
+ | s parsers | 
 s := aString.
+parsers := { #incA . #jio . #jmp . #tplA  }
 
 
 
