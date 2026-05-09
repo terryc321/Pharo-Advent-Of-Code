@@ -25,6 +25,12 @@ Metacello new
 Class {
 	#name : 'AOC2015Day23',
 	#superclass : 'Object',
+	#instVars : [
+		'rA',
+		'rB',
+		'rI',
+		'history'
+	],
 	#category : 'AdventCode',
 	#package : 'AdventCode'
 }
@@ -73,6 +79,17 @@ AOC2015Day23 >> incB [
 "inc b"
 ^ 'inc b' asPParser.
 
+
+
+
+]
+
+{ #category : 'initialization' }
+AOC2015Day23 >> initialize [ 
+rA := 0.
+rB := 0.
+rI := 1.
+history := OrderedCollection new.
 
 
 
@@ -229,6 +246,9 @@ rI := 1.
 	rI = rI2 ifTrue:[ Error signal: 'stalled' ].
 	rI := rI2.
 	 ].
+
+hist add: { 'final' . rA . rB . rI } .
+^ hist.
 
 
 
