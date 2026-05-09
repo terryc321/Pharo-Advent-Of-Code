@@ -207,13 +207,41 @@ AOC2015Day23 >> plusInt [
 
 { #category : 'as yet unclassified' }
 AOC2015Day23 >> runInput [ 
-|input|
-input := self  interpretInput: (self input).
+|tape hist rA rB rI |
+tape := self  interpretInput: (self input).
+hist := OrderedCollection new.
+rA := 0.
+rB := 0.
+rI := 1.
 
-^ input.
+[ rI >= 1 and: [rI <= (tape size) ] ] whileTrue: [ 
+	| in out |
+	in := tape at: rI.
+	"record instructions met along way"
+	hist add: { rA . rB . rI . in }. 
+	"run one instruction"
+	out := self runInstruction: { in . rA . rB . rI }.
+	"new state now becomes current state"
+	rA := out at: 1.
+	rB := out at: 2.
+	rI := out at: 3.
+	 ].
 
 
 
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day23 >> runInstruction: anArray [
+ | in rA rB rI out |
+in := anArray at: 1.
+rA := anArray at: 2.
+rB := anArray at: 3.
+rI := anArray at: 4.
+
+out := { rA . rB . rI }.
+^ out.
 ]
 
 { #category : 'as yet unclassified' }
