@@ -30,14 +30,30 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
+AOC2015Day23 >> hlfA [
+"hlf a"
+^ 'hlf a' asPParser.
+
+
+
+
+]
+
+{ #category : 'as yet unclassified' }
 AOC2015Day23 >> howto [
 "
+|p|
+p := #tplA.
+AOC2015Day23>>p. 
 day23 := AOC2015Day23 new.
+day23 class >> p .  => tplA method of this class
 day23 input.
 day23 jio parse: 'jio a, '.
 day23 jio parse: 'jio a,'.
 day23 plusInt parse:'+123'.
 day23 jio parse: 'jio a, +123'.
+(day23 input) splitOn: Character lf collect: [ :cmd | 
+	 day23 interpret: cmd ].
 "
 
 ]
@@ -46,6 +62,16 @@ day23 jio parse: 'jio a, +123'.
 AOC2015Day23 >> incA [
 "inc a"
 ^ 'inc a' asPParser.
+
+
+
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day23 >> incB [
+"inc b"
+^ 'inc b' asPParser.
 
 
 
@@ -106,9 +132,23 @@ jmp -7'.
 AOC2015Day23 >> interpret: aString [
  | s parsers | 
 s := aString.
-parsers := { #incA . #jio . #jmp . #tplA  }.
+parsers := { #incA . #incB . #jioA . #jieA . #jmp . #jmpNeg . #hlfA . #tplA  }.
 parsers do: [ :p | 
-	 self p ]
+	 | r | 
+	 r := (self perform: p) parse: s.
+	 r isPetit2Success ifTrue:[ 
+			p = #incA ifTrue: [ ^ { #incA } ] .
+			p = #hlfA ifTrue: [ ^ { #hlfA } ] .			
+			p = #incB ifTrue: [ ^ { #incB } ] .
+			p = #jmpNeg ifTrue: [ ^ { #jmpNeg . (r at:2) asInteger } ] .			
+			p = #jieA ifTrue: [ ^ { #jieA . ((r at:2)at:2) asInteger } ] .			
+			p = #jioA ifTrue: [ ^ { #jioA . ((r at:2)at:2) asInteger } ] .
+			p = #jmp ifTrue: [ ^ { #jmp . ((r at:2)at:2) asInteger } ] .
+			p = #tplA ifTrue: [ ^ { #tplA  } ] .
+			Error signal: 'forgot something'.
+ ]].
+Error signal: 'not recognised ' , aString.
+self halt.
 
 
 
@@ -116,8 +156,25 @@ parsers do: [ :p |
 ]
 
 { #category : 'as yet unclassified' }
-AOC2015Day23 >> jio [
+AOC2015Day23 >> interpretInput: aString [
+ |input lines |
+input := aString.
+lines := input splitOn: Character cr.
+^ lines collect: [ :cmd | self interpret: cmd ].
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day23 >> jieA [
 "jie a, +123"
+^ ('jie a, ' asPParser , self plusInt).
+
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day23 >> jioA [
+"jio a, +123"
 ^ ('jio a, ' asPParser , self plusInt).
 
 
@@ -132,9 +189,28 @@ AOC2015Day23 >> jmp [
 ]
 
 { #category : 'as yet unclassified' }
+AOC2015Day23 >> jmpNeg [
+"jmp -123"
+^ ('jmp -' asPParser , (#digit asPParser star flatten)).
+
+
+]
+
+{ #category : 'as yet unclassified' }
 AOC2015Day23 >> plusInt [
 "+123"
-^ $+ asPParser , #digit asPParser star.
+^ ($+ asPParser , #digit asPParser star) flatten.
+
+
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day23 >> runInput [ 
+|input|
+input := self  interpretInput: (self input).
+
+^ input.
 
 
 
