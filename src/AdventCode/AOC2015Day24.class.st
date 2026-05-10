@@ -99,8 +99,9 @@ s = t ifTrue:[ |qtum|
 	             (sz < fewest) ifTrue: [ fewest := sz. 
 		                                   quantum := qtum.
 		                                   winningSet := set.
+															Transcript show: 'winning set ' ; show:set ; show: ' quantum=> ' ; show: qtum ; show: ' size=> ' ; show: sz ; cr. 									
 															 ].	              
-						(qtum <= quantum) ifTrue: [ 
+						(qtum < quantum) ifTrue: [ 
 							 quantum := qtum .
 							Transcript show: 'winning set ' ; show:set ; show: ' quantum=> ' ; show: qtum ; show: ' size=> ' ; show: sz ; cr. 									
 							].									 
