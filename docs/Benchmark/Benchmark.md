@@ -12,6 +12,7 @@ It is composed of four main components: A Suite (which represents the benchmarks
 
 SMark behaves similar to the testing framework SUnit with setUp and tearDown methods. And the runner can do what it wants/needs to reach warmup. For instance, the SMarkCogRunner will make sure that all code is compiled before starting to measure. Both warmup and setup/teardown methods can be specified per-benchmark.
 
+
 Installation
 You can install SMark in Pharo evaluating the following expression:
 
