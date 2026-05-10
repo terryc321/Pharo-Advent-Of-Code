@@ -99,11 +99,13 @@ s = t ifTrue:[ |qtum|
 	             (sz < fewest) ifTrue: [ fewest := sz. 
 		                                   quantum := qtum.
 		                                   winningSet := col3.
-															Transcript show: 'winning set ' ; show: col3 ; show: ' quantum=> ' ; show: qtum ; show: ' size=> ' ; show: sz ; cr. 									
+															Transcript show: (Time now print24) ;
+															           show: 'winning set ' ; show: col3 ; show: ' quantum=> ' ; show: qtum ; show: ' size=> ' ; show: sz ; cr. 									
 															 ].	              
 						(qtum < quantum) ifTrue: [ 
 							 quantum := qtum .
-							Transcript show: 'winning set ' ; show: col3 ; show: ' quantum=> ' ; show: qtum ; show: ' size=> ' ; show: sz ; cr. 									
+							Transcript show: (Time now print24) ;
+							          show: 'winning set ' ; show: col3 ; show: ' quantum=> ' ; show: qtum ; show: ' size=> ' ; show: sz ; cr. 									
 							].									 
 	             ^ #ok ].
 
@@ -142,7 +144,37 @@ athird := tot/3 .
 { #category : 'accessing' }
 AOC2015Day24 >> howTo [ 
 "
+Time now print24
 
+day24 := AOC2015Day24 new.
+day24 experiment.
+day24 addsUpTo: (day24 example).
+
+day24 addsUpTo: (day24 input).
+
+process := [ day24 addsUpTo: (day24 example) ] forkAt: Processor userBackgroundPriority.
+process terminate.
+
+day24 := AOC2015Day24 new.
+process := [ day24 addsUpTo: (day24 input) ] forkAt: Processor userBackgroundPriority.
+day24 
+process suspend.
+process terminate.
+
+#( 1 3 5 11 13 17 19 23 29 31 41 43 47 53 59 61 67 71 73 79 83 89
+	     97 101 103 107 109 113 ) inject: 1 into: [ :acc :each | acc * each ].
+	
+
+v := 61023271506597698432712753458578499021765805.
+v2 := (10**45).
+v2.
+
+
+s := Set new.
+s add: 1.
+s add: 2.
+s add: 3.
+s asOrderedCollection .
 s := Set new.
 s add: 1.
 s add: 2.
