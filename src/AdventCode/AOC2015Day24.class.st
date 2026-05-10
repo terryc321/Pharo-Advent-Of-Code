@@ -61,7 +61,9 @@ day24 threeWays: (day24 example).
 { #category : 'accessing' }
 AOC2015Day24 >> initialize [ 
  bins := OrderedCollection new.
- bin1size := 99999.
+ bin1size := nil.
+
+
 
 
 ]
@@ -86,7 +88,7 @@ AOC2015Day24 >> run: aCollection [
 AOC2015Day24 >> threeWays: aCollection [ 
 "three ways to organise a collection such that all groups have same weight"
 |b1 b2 b3 |
-bin1size := 99999.
+bin1size := nil.
 b1 := Set new.
 b2 := Set new.
 b3 := Set new.
@@ -101,7 +103,7 @@ AOC2015Day24 >> threeWaysRecur: aCollection bin1: b1 bin2: b2 bin3: b3 [
 smallestBin = { b1 size . b2 size . b3 size } min.
 
 "reject if smallest bin size is too large than something already found"
-smallestBin > bin1size ifTrue:[ ^ #nope ]. 
+bin1size ifNotNil: [ (smallestBin > bin1size) ifTrue:[ ^ #nope ]]. 
 
 aCollection isEmpty ifTrue: [
 	| weight1 weight2 weight3 |
