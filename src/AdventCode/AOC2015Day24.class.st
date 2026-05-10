@@ -109,7 +109,7 @@ b2 := anArray at: 2.
 b3 := anArray at: 3.
 w := anArray at: 4 .
 
-lowestWeight ifNil: [ lowestWeight := w ].
+"lowestWeight ifNil: [ lowestWeight := w ].
 w < lowestWeight ifTrue: [
 	bins := OrderedCollection new.
 	bins add: anArray.
@@ -118,6 +118,7 @@ w < lowestWeight ifTrue: [
 	^ #newBest 
 	].
 w > lowestWeight ifTrue:[ ^ #tooHeavy ].
+"
 
 bins do: [:bin |
 	|c1 c2 c3 |
