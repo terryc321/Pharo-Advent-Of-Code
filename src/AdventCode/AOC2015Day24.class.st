@@ -57,6 +57,33 @@ AOC2015Day24 >> howTo [
 day24 run: (day24 example).
 day24 threeWays: (day24 example).
 
+smalltalk can compare Sets - containing sets and tell me if they are the same
+
+s1 := Set new.
+s1 add: 1 .
+s1 add: 2 .
+s1 add: 3 . 
+s2 := Set new.
+s2 add: 3.
+s2 add: 2.
+s2 add: 1.
+s3 := Set new.
+s3 add: s1.
+s3 add: s2.
+
+
+s4 := Set new.
+s4 add: 1 .
+s4 add: 2 .
+s4 add: 3 . 
+s5 := Set new.
+s5 add: 3.
+s5 add: 2.
+s5 add: 1.
+s6 := Set new.
+s6 add: s1.
+s6 add: s2.
+
 
 set comparison 
 A B C 
@@ -83,7 +110,9 @@ bin1size ifNotNil: [ (smallestBin > bin1size) ifTrue:[ ^ #nope ]].
 
 { #category : 'accessing' }
 AOC2015Day24 >> initialize [ 
- bins := OrderedCollection new.
+ bins := Set new.
+
+
 
 
 
@@ -102,12 +131,16 @@ AOC2015Day24 >> input [
 
 { #category : 'as yet unclassified' }
 AOC2015Day24 >> possibleSolution: anArray [ 
-| b1 b2 b3 w |
+| b1 b2 b3 w set |
 "each bin is a set of numbers"
 b1 := anArray at: 1.
 b2 := anArray at: 2.
 b3 := anArray at: 3.
 w := anArray at: 4 .
+set := Set new.
+set add: b1.
+set add: b2.
+set add: b3.
 
 "lowestWeight ifNil: [ lowestWeight := w ].
 w < lowestWeight ifTrue: [
@@ -119,25 +152,11 @@ w < lowestWeight ifTrue: [
 	].
 w > lowestWeight ifTrue:[ ^ #tooHeavy ].
 "
+(bins includes: set) ifTrue: [ ^ #alreadySeen ].
 
-bins do: [:bin |
-	|c1 c2 c3 |
-	c1 := bin at: 1.
-	c2 := bin at: 2.
-	c3 := bin at: 3.
-	(c1 = b1 and: [c2 = b2 and: [c3 = b3]]) ifTrue: [^ #nope].
-	(c1 = b1 and: [c2 = b3 and: [c3 = b2]]) ifTrue: [^ #nope].
-	
-	(c1 = b2 and: [c2 = b1 and: [c3 = b3]]) ifTrue: [^ #nope].
-	(c1 = b2 and: [c2 = b3 and: [c3 = b1]]) ifTrue: [^ #nope].
-	
-	(c1 = b3 and: [c2 = b1 and: [c3 = b2]]) ifTrue: [^ #nope].
-	(c1 = b3 and: [c2 = b2 and: [c3 = b1]]) ifTrue: [^ #nope].
-	
-	].
+Transcript show: set ; cr.
+bins add: set.
 
-Transcript show: anArray ; cr.
-bins add: anArray.
 
 
 
