@@ -1,6 +1,12 @@
 "
 ideas
 
+aha ! if all three bins of numbers must add up to the same - then each is one third the sum of the set of numbers
+- first find a set of numbers that add up to 1/3 total
+- take one of this set - and match it against another - where all numbers are distinct - if whats left is this 
+automatically a known solution already ?
+
+
 put lowest value into first group and fight over rest.
 put moderately large singular value into first group and see about the rest .
 
@@ -38,16 +44,78 @@ Class {
 	#instVars : [
 		'bins',
 		'bin1size',
-		'lowestWeight'
+		'lowestWeight',
+		'firstSet'
 	],
 	#category : 'AdventCode',
 	#package : 'AdventCode'
 }
 
+{ #category : 'as yet unclassified' }
+AOC2015Day24 >> addsUpTo: aCollection [ 
+| tot target | 
+tot := aCollection inject: 0 into: [:acc :each | acc + each].
+target := tot / 3 . 
+^ self addsUpToRecur: aCollection target: target sum:0 group: (Set new) .
+
+
+
+
+
+
+
+
+
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day24 >> addsUpTo: aCollection target: anInteger [
+^ self addsUpToRecur: aCollection target: anInteger sum:0 group: (Set new) .
+
+
+
+
+
+
+
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2015Day24 >> addsUpToRecur: col target: t sum: s group: set [
+s = t ifTrue:[ firstSet add: set . 
+	             Transcript show: set ; cr. 
+	             ^ #ok ].
+s > t ifTrue:[ ^ #tooBig ].
+"if collection col is empty - it cant iterate over itself"
+col do: [:n | 
+	((n + s) <= t) ifTrue:[
+		|col2|
+		col2 := col copy.		
+	Processor yield.
+	   self addsUpToRecur: (col2 reject:[:e | e =n]) target:t sum: (n+s) group: ([|set2| set2 := set copy. set2 add: n . set2] value).
+	]].
+	
+
+
+
+
+]
+
 { #category : 'accessing' }
 AOC2015Day24 >> example [
 "example puzzle input"
 	^ (1 to: 11) reject: [:e | e = 6].
+
+]
+
+{ #category : 'accessing' }
+AOC2015Day24 >> experiment [
+|tot athird|
+tot := (self example) inject: 0 into: [:acc :each | acc + each].
+athird := tot/3 . 
+^ {tot . athird } .
 
 ]
 
@@ -111,6 +179,8 @@ bin1size ifNotNil: [ (smallestBin > bin1size) ifTrue:[ ^ #nope ]].
 { #category : 'accessing' }
 AOC2015Day24 >> initialize [ 
  bins := Set new.
+ firstSet := Set new.
+ 
 
 
 
