@@ -111,11 +111,11 @@ s = t ifTrue:[ |qtum|
 
 s > t ifTrue:[ ^ #tooBig ].
 "if collection col is empty - it cant iterate over itself"
+Processor yield.
 col do: [:n | 
 	((n + s) <= t) ifTrue:[
 		|col2|
 		col2 := col copy.		
-	Processor yield.
 	   self addsUpToRecur: (col2 reject:[:e | e =n]) target:t sum: (n+s) group: ([|col4| col4 := col3 copy. col4 add: n . col4] value).
 	]].
 	
