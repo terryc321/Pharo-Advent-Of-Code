@@ -125,6 +125,9 @@ AOC2015Day24 >> howTo [
 day24 run: (day24 example).
 day24 threeWays: (day24 example).
 
+process := [ day24 addsUpTo: (day24 example) ] forkAt: Processor userBackgroundPriority.
+process terminate.
+
 smalltalk can compare Sets - containing sets and tell me if they are the same
 
 s1 := Set new.
