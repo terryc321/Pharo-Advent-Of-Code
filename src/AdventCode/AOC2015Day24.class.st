@@ -59,7 +59,7 @@ AOC2015Day24 >> run: aCollection [
 	| task |
 	task := [ self threeWays: aCollection ] future.
 	task onSuccessDo: [ :v | 'Finished' traceCr ].
-	task onFailureDo: [ :error | error traceCr ]
+	task onFailureDo: [ :error | 'Error occurred ' traceCr . error traceCr ]
 ]
 
 { #category : 'as yet unclassified' }
@@ -86,13 +86,13 @@ aCollection do: [:box |
 	| rj bc1 bc2 bc3 |
 	rj := aCollection reject:[:b| b = box].	
 	bc1 := b1 copy.
-	bc1 add box.
+	bc1 add: box.
 	self threeWaysRecur: rj bin1: bc1 bin2: b2 bin3: b3.
 	bc2 := b2 copy.
-	bc2 add box.
+	bc2 add: box.
 	self threeWaysRecur: rj bin1: b1 bin2: bc2 bin3: b3.
 	bc3 := b3 copy.
-	bc3 add box.
+	bc3 add: box.
 	self threeWaysRecur: rj bin1: b1 bin2: b2 bin3: bc3.	
 	].
 
