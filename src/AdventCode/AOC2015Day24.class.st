@@ -211,7 +211,7 @@ bin1size ifNotNil: [ (smallestBin > bin1size) ifTrue:[ ^ #nope ]].
 AOC2015Day24 >> initialize [ 
  bins := Set new.
  firstSet := Set new.
-fewest := nil.
+fewest := 9999999.
 
  
 
