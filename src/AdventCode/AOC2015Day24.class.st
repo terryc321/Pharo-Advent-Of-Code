@@ -91,6 +91,8 @@ b1 := Set new.
 b2 := Set new.
 b3 := Set new.
 self threeWaysRecur: aCollection bin1: b1 bin2: b2 bin3: b3 .
+Transcript show: 'threeWays finished' ; cr. 
+
 ]
 
 { #category : 'as yet unclassified' }
