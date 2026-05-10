@@ -45,7 +45,8 @@ Class {
 		'bins',
 		'bin1size',
 		'lowestWeight',
-		'firstSet'
+		'firstSet',
+		'fewest'
 	],
 	#category : 'AdventCode',
 	#package : 'AdventCode'
@@ -86,9 +87,17 @@ AOC2015Day24 >> addsUpTo: aCollection target: anInteger [
 
 { #category : 'as yet unclassified' }
 AOC2015Day24 >> addsUpToRecur: col target: t sum: s group: set [
+| sz |
+sz := set size.
+(fewest isInteger and: [sz > fewest]) ifTrue: [^ #tooMany]. 
 s = t ifTrue:[ firstSet add: set . 
-	             Transcript show: set ; cr. 
+	             fewest ifNil: [fewest := sz].
+	             (sz < fewest) ifTrue: [ fewest := sz. 
+															 firstSet := Set new].	                           
+					  firstSet add: set.			
+               Transcript show: set ; cr. 									
 	             ^ #ok ].
+
 s > t ifTrue:[ ^ #tooBig ].
 "if collection col is empty - it cant iterate over itself"
 col do: [:n | 
@@ -202,6 +211,8 @@ bin1size ifNotNil: [ (smallestBin > bin1size) ifTrue:[ ^ #nope ]].
 AOC2015Day24 >> initialize [ 
  bins := Set new.
  firstSet := Set new.
+fewest := nil.
+
  
 
 
