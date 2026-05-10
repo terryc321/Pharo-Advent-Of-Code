@@ -116,6 +116,21 @@ Class {
 	#package : 'AdventCode'
 }
 
+{ #category : 'accessing' }
+AOC2015Day23 >> examplePart1 [ 
+| p c r|
+<example>
+<script>
+
+p := AOC2015Day23Parser new.
+c := AOC2015Day23Compiler new.
+r := (c exec: (p parsed)).
+r inspect.
+^ r
+
+
+]
+
 { #category : 'as yet unclassified' }
 AOC2015Day23 >> howto [
 <bad>
