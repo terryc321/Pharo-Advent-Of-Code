@@ -99,12 +99,12 @@ s = t ifTrue:[ |qtum|
 	             (sz < fewest) ifTrue: [ fewest := sz. 
 		                                   quantum := qtum.
 		                                   winningSet := col3.
-															Transcript show: (Time now print24) ;
+															Transcript show: (Time now print24) ; show: ' ' ;
 															           show: 'winning set ' ; show: col3 ; show: ' quantum=> ' ; show: qtum ; show: ' size=> ' ; show: sz ; cr. 									
 															 ].	              
 						(qtum < quantum) ifTrue: [ 
 							 quantum := qtum .
-							Transcript show: (Time now print24) ;
+							Transcript show: (Time now print24) ; show: ' ' ;
 							          show: 'winning set ' ; show: col3 ; show: ' quantum=> ' ; show: qtum ; show: ' size=> ' ; show: sz ; cr. 									
 							].									 
 	             ^ #ok ].
