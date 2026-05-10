@@ -100,7 +100,7 @@ Transcript show: 'threeWays finished' ; cr.
 { #category : 'as yet unclassified' }
 AOC2015Day24 >> threeWaysRecur: aCollection bin1: b1 bin2: b2 bin3: b3 [ 
 |smallestBin|
-smallestBin = { b1 size . b2 size . b3 size } min.
+smallestBin := { b1 size . b2 size . b3 size } min.
 
 "reject if smallest bin size is too large than something already found"
 bin1size ifNotNil: [ (smallestBin > bin1size) ifTrue:[ ^ #nope ]]. 
