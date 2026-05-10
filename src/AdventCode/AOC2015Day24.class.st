@@ -102,7 +102,7 @@ s = t ifTrue:[ |qtum|
 															 ].	              
 						(qtum <= quantum) ifTrue: [ 
 							 quantum := qtum .
-							Transcript show: 'winning set ' ; show:set ; show: ' quantum=> ' ; show: qtum ; cr. 									
+							Transcript show: 'winning set ' ; show:set ; show: ' quantum=> ' ; show: qtum ; show: ' size=> ' ; show: sz ; cr. 									
 							].									 
 	             ^ #ok ].
 
