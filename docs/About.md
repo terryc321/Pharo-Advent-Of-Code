@@ -1,4 +1,4 @@
-
+# method dictionaryday23 class methodDictionary |p|p := #tplA.AOC2015Day23>>p. 
 # About documentation
 
 any changes to documentation are not updated until the help window is closed and a new one opened.
