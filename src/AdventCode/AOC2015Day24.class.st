@@ -61,7 +61,7 @@ tot := aCollection inject: 0 into: [:acc :each | acc + each].
 target := tot / 3 . 
 Transcript show: 'target is ' ; show: target; cr.
 Transcript show: 'collection is ' ; show: aCollection ; cr.
-^ self addsUpToRecur: aCollection target: target sum:0 group: (Set new) .
+^ self addsUpToRecur: aCollection target: target sum:0 group: (OrderedCollection new) .
 
 
 
@@ -76,7 +76,7 @@ Transcript show: 'collection is ' ; show: aCollection ; cr.
 
 { #category : 'as yet unclassified' }
 AOC2015Day24 >> addsUpTo: aCollection target: anInteger [
-^ self addsUpToRecur: aCollection target: anInteger sum:0 group: (Set new) .
+^ self addsUpToRecur: aCollection target: anInteger sum:0 group: (OrderedCollection new) .
 
 
 
@@ -88,22 +88,22 @@ AOC2015Day24 >> addsUpTo: aCollection target: anInteger [
 ]
 
 { #category : 'as yet unclassified' }
-AOC2015Day24 >> addsUpToRecur: col target: t sum: s group: set [
+AOC2015Day24 >> addsUpToRecur: col target: t sum: s group: col3 [
 | sz |
-sz := set size.
+sz := col3 size.
 (fewest isNil) ifTrue:[ quantum := (10**45) ].
 (fewest isInteger and: [sz > fewest]) ifTrue: [^ #tooMany]. 
 s = t ifTrue:[ |qtum| 
-	             qtum := (set asOrderedCollection) inject: 1 into: [:acc :each | acc * each ].
+	             qtum := col3 inject: 1 into: [:acc :each | acc * each ].
 	             fewest ifNil: [fewest := sz].
 	             (sz < fewest) ifTrue: [ fewest := sz. 
 		                                   quantum := qtum.
-		                                   winningSet := set.
-															Transcript show: 'winning set ' ; show:set ; show: ' quantum=> ' ; show: qtum ; show: ' size=> ' ; show: sz ; cr. 									
+		                                   winningSet := col3.
+															Transcript show: 'winning set ' ; show: col3 ; show: ' quantum=> ' ; show: qtum ; show: ' size=> ' ; show: sz ; cr. 									
 															 ].	              
 						(qtum < quantum) ifTrue: [ 
 							 quantum := qtum .
-							Transcript show: 'winning set ' ; show:set ; show: ' quantum=> ' ; show: qtum ; show: ' size=> ' ; show: sz ; cr. 									
+							Transcript show: 'winning set ' ; show: col3 ; show: ' quantum=> ' ; show: qtum ; show: ' size=> ' ; show: sz ; cr. 									
 							].									 
 	             ^ #ok ].
 
@@ -114,7 +114,7 @@ col do: [:n |
 		|col2|
 		col2 := col copy.		
 	Processor yield.
-	   self addsUpToRecur: (col2 reject:[:e | e =n]) target:t sum: (n+s) group: ([|set2| set2 := set copy. set2 add: n . set2] value).
+	   self addsUpToRecur: (col2 reject:[:e | e =n]) target:t sum: (n+s) group: ([|col4| col4 := col3 copy. col4 add: n . col4] value).
 	]].
 	
 
