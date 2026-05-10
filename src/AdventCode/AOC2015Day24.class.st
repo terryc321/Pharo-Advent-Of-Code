@@ -84,7 +84,7 @@ bin1size ifNotNil: [ (smallestBin > bin1size) ifTrue:[ ^ #nope ]].
 { #category : 'accessing' }
 AOC2015Day24 >> initialize [ 
  bins := OrderedCollection new.
-lowestWeight := nil.
+
 
 
 
