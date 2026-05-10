@@ -46,7 +46,9 @@ Class {
 		'bin1size',
 		'lowestWeight',
 		'firstSet',
-		'fewest'
+		'fewest',
+		'quantum',
+		'winningSet'
 	],
 	#category : 'AdventCode',
 	#package : 'AdventCode'
@@ -89,13 +91,19 @@ AOC2015Day24 >> addsUpTo: aCollection target: anInteger [
 AOC2015Day24 >> addsUpToRecur: col target: t sum: s group: set [
 | sz |
 sz := set size.
+(fewest isNil) ifTrue:[ quantum := (10**45) ].
 (fewest isInteger and: [sz > fewest]) ifTrue: [^ #tooMany]. 
-s = t ifTrue:[ firstSet add: set . 
+s = t ifTrue:[ |qtum| 
+	             qtum := (set asOrderedCollection) inject: 1 into: [:acc :each | acc * each ].
 	             fewest ifNil: [fewest := sz].
 	             (sz < fewest) ifTrue: [ fewest := sz. 
-															 firstSet := Set new].	                           
-					  firstSet add: set.			
-               Transcript show: set ; cr. 									
+		                                   quantum := qtum.
+		                                   winningSet := set.
+															 ].	              
+						(qtum <= quantum) ifTrue: [ 
+							 quantum := qtum .
+							Transcript show: 'winning set ' ; show:set ; show: ' quantum=> ' ; show: qtum ; cr. 									
+							].									 
 	             ^ #ok ].
 
 s > t ifTrue:[ ^ #tooBig ].
@@ -133,6 +141,13 @@ athird := tot/3 .
 { #category : 'accessing' }
 AOC2015Day24 >> howTo [ 
 "
+
+s := Set new.
+s add: 1.
+s add: 2.
+s add: 3.
+s asOrderedCollection .
+
 day24 := AOC2015Day24 new.
 day24 experiment.
 day24 addsUpTo: (day24 example).
@@ -230,6 +245,14 @@ AOC2015Day24 >> input [
 "puzzle input"
 	^ #( 1 3 5 11 13 17 19 23 29 31 41 43 47 53 59 61 67 71 73 79 83 89
 	     97 101 103 107 109 113 )
+]
+
+{ #category : 'accessing' }
+AOC2015Day24 >> inputProduct [
+"largest value possible if mulitple each value"
+	^ self input  inject: 1 into: [ :acc :each | acc * each ].
+
+"61023271506597698432712753458578499021765805"
 ]
 
 { #category : 'as yet unclassified' }
