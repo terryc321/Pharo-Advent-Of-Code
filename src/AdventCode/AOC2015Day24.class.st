@@ -4,6 +4,9 @@ ideas
 put lowest value into first group and fight over rest.
 put moderately large singular value into first group and see about the rest .
 
+if bins are orderedcollections then 
+if bins are sets - more useful as numbers are not duplpicated ? maybe\
+
 
 
 
@@ -51,10 +54,12 @@ AOC2015Day24 >> input [
 ]
 
 { #category : 'running' }
-AOC2015Day24 >> run: aCollection [ 
-^ self threeWays: aCollection 
+AOC2015Day24 >> run: aCollection [
 
-
+	| task |
+	task := [ self threeWays: aCollection ] future.
+	task onSuccessDo: [ :v | 'Finished' traceCr ].
+	task onFailureDo: [ :error | error traceCr ]
 ]
 
 { #category : 'as yet unclassified' }
