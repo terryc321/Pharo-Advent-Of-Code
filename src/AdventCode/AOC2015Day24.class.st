@@ -56,6 +56,8 @@ AOC2015Day24 >> addsUpTo: aCollection [
 | tot target | 
 tot := aCollection inject: 0 into: [:acc :each | acc + each].
 target := tot / 3 . 
+Transcript show: 'target is ' ; show: target; cr.
+Transcript show: 'collection is ' ; show: aCollection ; cr.
 ^ self addsUpToRecur: aCollection target: target sum:0 group: (Set new) .
 
 
