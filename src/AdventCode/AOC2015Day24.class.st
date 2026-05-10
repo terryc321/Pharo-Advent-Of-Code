@@ -50,6 +50,14 @@ AOC2015Day24 >> example [
 ]
 
 { #category : 'accessing' }
+AOC2015Day24 >> howTo [ 
+"day24 := AOC2015Day24 new.
+day24 run: (day24 example).
+day24 threeWays: (day24 example).
+"
+]
+
+{ #category : 'accessing' }
 AOC2015Day24 >> initialize [ 
  bins := OrderedCollection new.
 
