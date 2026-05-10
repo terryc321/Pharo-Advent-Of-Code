@@ -35,6 +35,9 @@ b yourself.
 Class {
 	#name : 'AOC2015Day24',
 	#superclass : 'Object',
+	#instVars : [
+		'bins'
+	],
 	#category : 'AdventCode',
 	#package : 'AdventCode'
 }
@@ -43,6 +46,12 @@ Class {
 AOC2015Day24 >> example [
 "example puzzle input"
 	^ (1 to: 11) reject: [:e | e = 6].
+
+]
+
+{ #category : 'accessing' }
+AOC2015Day24 >> initialize [ 
+ bins := OrderedCollection new.
 
 ]
 
@@ -66,9 +75,9 @@ AOC2015Day24 >> run: aCollection [
 AOC2015Day24 >> threeWays: aCollection [ 
 "three ways to organise a collection such that all groups have same weight"
 |b1 b2 b3 |
-b1 := OrderedCollection new.
-b2 := OrderedCollection new.
-b3 := OrderedCollection new.
+b1 := Set new.
+b2 := Set new.
+b3 := Set new.
 self threeWaysRecur: aCollection bin1: b1 bin2: b2 bin3: b3 .
 ]
 
@@ -79,7 +88,8 @@ aCollection isEmpty ifTrue: [
 	weight1 := b1 inject: 0 into: [:acc :each | acc + each].
 	weight2 := b2 inject: 0 into: [:acc :each | acc + each].
 	weight3 := b3 inject: 0 into: [:acc :each | acc + each].
-	(weight1 = weight2 and: [weight2 = weight3]) ifTrue: [ Transcript show: {b1 . b2 . b3 . weight1 } ; cr.  ^#done] 
+	Processor yield.
+	(weight1 = weight2 and: [weight2 = weight3]) ifTrue: [ bins add: {b1 . b2 . b3 . weight1 } . ^ #done] 
 	                                             ifFalse: [^ #nope ]].
 "keep searching"
 aCollection do: [:box |
@@ -87,12 +97,15 @@ aCollection do: [:box |
 	rj := aCollection reject:[:b| b = box].	
 	bc1 := b1 copy.
 	bc1 add: box.
+	Processor yield.
 	self threeWaysRecur: rj bin1: bc1 bin2: b2 bin3: b3.
 	bc2 := b2 copy.
 	bc2 add: box.
+	Processor yield.
 	self threeWaysRecur: rj bin1: b1 bin2: bc2 bin3: b3.
 	bc3 := b3 copy.
 	bc3 add: box.
+	Processor yield.
 	self threeWaysRecur: rj bin1: b1 bin2: b2 bin3: bc3.	
 	].
 
