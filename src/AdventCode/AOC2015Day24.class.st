@@ -123,7 +123,24 @@ athird := tot/3 .
 
 { #category : 'accessing' }
 AOC2015Day24 >> howTo [ 
-"day24 := AOC2015Day24 new.
+"
+day24 := AOC2015Day24 new.
+day24 experiment.
+day24 addsUpTo: (day24 example).
+
+lets try entire input
+day24 addsUpTo: (day24 input).
+
+
+self sorted: [:a :b |  smallest set size of a < smallest set size of b ].
+
+
+if want to fork it ... but didnt update transcript ?huh?
+process := [ day24 addsUpTo: (day24 example) ] forkAt: Processor userBackgroundPriority.
+process terminate.
+
+
+day24 := AOC2015Day24 new.
 day24 run: (day24 example).
 day24 threeWays: (day24 example).
 
