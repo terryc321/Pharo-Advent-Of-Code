@@ -36,7 +36,8 @@ Class {
 	#name : 'AOC2015Day24',
 	#superclass : 'Object',
 	#instVars : [
-		'bins'
+		'bins',
+		'bin1size'
 	],
 	#category : 'AdventCode',
 	#package : 'AdventCode'
@@ -60,6 +61,8 @@ day24 threeWays: (day24 example).
 { #category : 'accessing' }
 AOC2015Day24 >> initialize [ 
  bins := OrderedCollection new.
+ bin1size := 99999.
+
 
 ]
 
@@ -83,6 +86,7 @@ AOC2015Day24 >> run: aCollection [
 AOC2015Day24 >> threeWays: aCollection [ 
 "three ways to organise a collection such that all groups have same weight"
 |b1 b2 b3 |
+bin1size := 99999.
 b1 := Set new.
 b2 := Set new.
 b3 := Set new.
@@ -91,14 +95,23 @@ self threeWaysRecur: aCollection bin1: b1 bin2: b2 bin3: b3 .
 
 { #category : 'as yet unclassified' }
 AOC2015Day24 >> threeWaysRecur: aCollection bin1: b1 bin2: b2 bin3: b3 [ 
+|smallestBin|
+smallestBin = { b1 size . b2 size . b3 size } min.
+
+"reject if smallest bin size is too large than something already found"
+smallestBin > bin1size ifTrue:[ ^ #nope ]. 
+
 aCollection isEmpty ifTrue: [
 	| weight1 weight2 weight3 |
 	weight1 := b1 inject: 0 into: [:acc :each | acc + each].
 	weight2 := b2 inject: 0 into: [:acc :each | acc + each].
 	weight3 := b3 inject: 0 into: [:acc :each | acc + each].
 	Processor yield.
-	(weight1 = weight2 and: [weight2 = weight3]) ifTrue: [ bins add: {b1 . b2 . b3 . weight1 } . ^ #done] 
-	                                             ifFalse: [^ #nope ]].
+	(weight1 = weight2 and: [weight2 = weight3]) 
+	  ifTrue: [ bins add: {b1 . b2 . b3 . weight1 } . 
+		         bin1size := {b1 size. b2 size. b3 size} min . 
+		         ^ #done] 
+	  ifFalse: [^ #nope ]].
 "keep searching"
 aCollection do: [:box |
 	| rj bc1 bc2 bc3 |
