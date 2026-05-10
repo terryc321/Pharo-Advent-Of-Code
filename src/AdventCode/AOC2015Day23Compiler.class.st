@@ -52,6 +52,72 @@ Error signal: 'AOC2015Day23Compiler compile not recognised ' , anArray printStri
 ]
 
 { #category : 'as yet unclassified' }
+AOC2015Day23Compiler >> exec2: aParse [
+"registers initially zero"
+|sz rA rB rI cmd|
+"register A starts at 1 instead"
+rA := 1. 
+rB := 0.
+"start at first instruction"
+rI := 1.
+cmd := { ["jioA" rA = 1 ifTrue:[ rI := rI + 16] ifFalse: [ rI := rI + 1 ]] .
+ [ "incA" rA := rA + 1. rI := rI + 1 ] .
+ [ "incA" rA := rA + 1. rI := rI + 1 ] .
+ [ "tplA" rA := rA * 3. rI := rI + 1 ] .
+ [ "tplA" rA := rA * 3. rI := rI + 1 ] .
+ [ "tplA" rA := rA * 3. rI := rI + 1 ] .
+ [ "incA" rA := rA + 1. rI := rI + 1 ] .
+ [ "incA" rA := rA + 1. rI := rI + 1 ] .
+ [ "tplA" rA := rA * 3. rI := rI + 1 ] .
+ [ "incA" rA := rA + 1. rI := rI + 1 ] .
+ [ "incA" rA := rA + 1. rI := rI + 1 ] .
+ [ "tplA" rA := rA * 3. rI := rI + 1 ] .
+ [ "tplA" rA := rA * 3. rI := rI + 1 ] .
+ [ "tplA" rA := rA * 3. rI := rI + 1 ] .
+ [ "incA" rA := rA + 1. rI := rI + 1 ] .
+ ["jmp"  rI := rI + 23 ] .
+ [ "tplA" rA := rA * 3. rI := rI + 1 ] .
+ [ "incA" rA := rA + 1. rI := rI + 1 ] .
+ [ "incA" rA := rA + 1. rI := rI + 1 ] .
+ [ "tplA" rA := rA * 3. rI := rI + 1 ] .
+ [ "incA" rA := rA + 1. rI := rI + 1 ] .
+ [ "incA" rA := rA + 1. rI := rI + 1 ] .
+ [ "tplA" rA := rA * 3. rI := rI + 1 ] .
+ [ "tplA" rA := rA * 3. rI := rI + 1 ] .
+ [ "incA" rA := rA + 1. rI := rI + 1 ] .
+ [ "incA" rA := rA + 1. rI := rI + 1 ] .
+ [ "tplA" rA := rA * 3. rI := rI + 1 ] .
+ [ "incA" rA := rA + 1. rI := rI + 1 ] .
+ [ "tplA" rA := rA * 3. rI := rI + 1 ] .
+ [ "incA" rA := rA + 1. rI := rI + 1 ] .
+ [ "tplA" rA := rA * 3. rI := rI + 1 ] .
+ [ "incA" rA := rA + 1. rI := rI + 1 ] .
+ [ "incA" rA := rA + 1. rI := rI + 1 ] .
+ [ "tplA" rA := rA * 3. rI := rI + 1 ] .
+ [ "incA" rA := rA + 1. rI := rI + 1 ] .
+ [ "tplA" rA := rA * 3. rI := rI + 1 ] .
+ [ "tplA" rA := rA * 3. rI := rI + 1 ] .
+ [ "incA" rA := rA + 1. rI := rI + 1 ] .
+ ["jioA" rA = 1 ifTrue:[ rI := rI + 8] ifFalse: [ rI := rI + 1 ]] .
+ [ "incB" rB := rB + 1. rI := rI + 1 ] .
+ ["jieA" rA even ifTrue:[ rI := rI + 4] ifFalse: [ rI := rI + 1 ]] .
+ [ "tplA" rA := rA * 3. rI := rI + 1 ] .
+ [ "incA" rA := rA + 1. rI := rI + 1 ] .
+ ["jmp"  rI := rI + 2 ] .
+ [ "hlfA" rA := rA // 2. rI := rI + 1 ] .
+ ["jmp"  rI := rI - 7 ] .
+}.
+sz := cmd size.
+[ rI >= 0 and: [rI <= sz]] whileTrue:[
+	"execute each closure at index rI"
+  (cmd at: rI) value].
+^ {"rA" . rA . "rB=>" . rB } 
+
+
+
+]
+
+{ #category : 'as yet unclassified' }
 AOC2015Day23Compiler >> exec: aParse [
 "registers initially zero"
 |sz rA rB rI cmd|

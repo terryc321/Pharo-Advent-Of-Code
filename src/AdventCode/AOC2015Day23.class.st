@@ -118,6 +118,8 @@ Class {
 
 { #category : 'as yet unclassified' }
 AOC2015Day23 >> howto [
+<bad>
+self shouldNotImplement .
 "
 p := AOC2015Day23Parser new.
 p parsed.
@@ -150,6 +152,16 @@ AOC2015Day23 >> part1 [
 p := AOC2015Day23Parser new.
 c := AOC2015Day23Compiler new.
 ^ c exec: (p parsed).
+
+
+]
+
+{ #category : 'accessing' }
+AOC2015Day23 >> part2 [ 
+| p c|
+p := AOC2015Day23Parser new.
+c := AOC2015Day23Compiler new.
+^ c exec2: (p parsed).
 
 
 ]
@@ -222,7 +234,7 @@ rI := 1.
 AOC2015Day23 >> runWithTaskit [
 | task | 
 <bad>
-
+self shouldNotImplement .
 "use Taskit "
 task := [ self runMayHang ] future.
 task onSuccessDo: [ :v | answer := task . Transcript show: 'answer was ' ; show: answer ; cr].
