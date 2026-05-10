@@ -1,4 +1,18 @@
 "
+Usage: 
+
+```
+d := AOC2015Day23 new.
+d part1.
+```
+
+Questions 
+- can we not just write one parser 
+- how do we extend the parser easily
+- more optimisations available see code compression
+
+
+
 Ideas 
 - 1 code compression
 ```math
@@ -105,6 +119,15 @@ Class {
 { #category : 'as yet unclassified' }
 AOC2015Day23 >> howto [
 "
+p := AOC2015Day23Parser new.
+p parsed.
+c := AOC2015Day23Compiler new.
+c header: (p parsed).
+c exec: (p parsed).
+
+d := AOC2015Day23 new.
+d part1.
+
 |p|
 p := #tplA.
 AOC2015Day23>>p. 
@@ -121,9 +144,22 @@ day23 jio parse: 'jio a, +123'.
 
 ]
 
+{ #category : 'accessing' }
+AOC2015Day23 >> part1 [ 
+| p c|
+p := AOC2015Day23Parser new.
+c := AOC2015Day23Compiler new.
+^ c exec: (p parsed).
+
+
+]
+
 { #category : 'as yet unclassified' }
 AOC2015Day23 >> runInstruction: anArray [
  | in rA rB rI out opcode |
+<bad>
+self shouldNotImplement .
+
 in := anArray at: 1.
 rA := anArray at: 2.
 rB := anArray at: 3.
@@ -148,6 +184,9 @@ Error signal: 'runInstruction bad opcode ' , opcode.
 { #category : 'as yet unclassified' }
 AOC2015Day23 >> runMayHang [ 
 |tape rA rB rI |
+<bad>
+self shouldNotImplement .
+
 tape := self parsed.
 rA := 0.
 rB := 0.
@@ -182,6 +221,8 @@ rI := 1.
 { #category : 'as yet unclassified' }
 AOC2015Day23 >> runWithTaskit [
 | task | 
+<bad>
+
 "use Taskit "
 task := [ self runMayHang ] future.
 task onSuccessDo: [ :v | answer := task . Transcript show: 'answer was ' ; show: answer ; cr].
