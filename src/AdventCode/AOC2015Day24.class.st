@@ -135,6 +135,8 @@ bins do: [:bin |
 	(c1 = b3 and: [c2 = b2 and: [c3 = b1]]) ifTrue: [^ #nope].
 	
 	].
+
+Transcript show: anArray ; cr.
 bins add: anArray.
 
 
