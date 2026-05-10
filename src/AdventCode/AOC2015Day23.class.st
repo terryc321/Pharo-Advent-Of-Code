@@ -166,6 +166,19 @@ c := AOC2015Day23Compiler new.
 
 ]
 
+{ #category : 'accessing' }
+AOC2015Day23 >> profilePart1 [
+<script>
+ AndreasSystemProfiler spyOn: [ self part1 ].
+
+]
+
+{ #category : 'accessing' }
+AOC2015Day23 >> profilePart2 [
+ AndreasSystemProfiler spyOn: [ self part2 ].
+
+]
+
 { #category : 'as yet unclassified' }
 AOC2015Day23 >> runInstruction: anArray [
  | in rA rB rI out opcode |
@@ -198,6 +211,8 @@ AOC2015Day23 >> runMayHang [
 |tape rA rB rI |
 <bad>
 self shouldNotImplement .
+"interpretive overhead passing is exponentially slower than producing program as text and entering that as method to execute"
+
 
 tape := self parsed.
 rA := 0.
