@@ -321,6 +321,25 @@ bins add: set.
 
 ]
 
+{ #category : 'accessing' }
+AOC2015Day24 >> results [ 
+"
+target is 516
+collection is 1351113171923293141434753596167717379838997101103107109113
+20:31:29 winning set 135111317192329314143475367113 quantum=> 476317603920474572685 size=> 16
+20:31:29 winning set 1351113171923293141101109113 quantum=> 730680502089438615 size=> 14
+20:31:42 winning set 1351113171923101103107113 quantum=> 2004372679702965 size=> 12
+20:51:00 winning set 135111353101107109113 quantum=> 15132589773015 size=> 10
+23:16:27 winning set 13583101103107113 quantum=> 156599427885 size=> 8
+05:10:06 winning set 183103107109113 quantum=> 11266889531 size=> 6
+
+so it took a while to get accepted answer,
+if we start search limit by size initially size = 5 MAX do run - if end and no results, increment size until we do get a match .
+size = 6 MAX do run - 
+
+"
+]
+
 { #category : 'running' }
 AOC2015Day24 >> run: aCollection [
 
