@@ -77,6 +77,20 @@ process := [ day24b addsUpToRestricted: (day24b input) ] forkAt: Processor userB
 day24b 
 process suspend.
 process terminate.
+
+
+
+*** Four bins - Part B ***
+target is 387
+collection is #(1 3 5 11 13 17 19 23 29 31 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113)
+start time is 12:17:41
+asserting restriction collection size cannot be more than 1 items long
+asserting restriction collection size cannot be more than 2 items long
+asserting restriction collection size cannot be more than 3 items long
+asserting restriction collection size cannot be more than 4 items long
+asserting restriction collection size cannot be more than 5 items long
+12:17:49 winning set 161103109113 quantum=> 77387711 size=> 5
+
 "
 
 
