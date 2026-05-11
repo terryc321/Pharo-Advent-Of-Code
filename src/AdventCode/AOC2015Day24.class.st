@@ -119,6 +119,7 @@ tot := aCollection inject: 0 into: [:acc :each | acc + each].
 target := tot / 3 . 
 Transcript show: 'target is ' ; show: target; cr.
 Transcript show: 'collection is ' ; show: aCollection printString; cr.
+Transcript show: 'start time is ' ; show: (Time now print24) ; cr. 
 "we restrict size of selected group to add to our target total - if
 we find no solutions we incrementally increase size of restriction
 how do we detect if a solution was found ? throw an exception ?
