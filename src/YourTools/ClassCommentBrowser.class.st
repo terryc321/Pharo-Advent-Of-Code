@@ -112,9 +112,9 @@ renderedText := [ BeautifulComments render: aString ]
     textMorph
         wrapFlag: true;           "This enables word wrapping"
         autoFit: false;           "Important: do NOT auto-fit, let the container control width"
-        hResizing: #spaceFill;
+        hResizing: #rigid ; "#spaceFill;"
         vResizing: #shrinkWrap; "paceFill;"
-        color: Color white;
+        color: Color white;       "  margins: (Margin width: 12 height: 10); "
         yourself.
 
     ^ textMorph .
@@ -156,13 +156,19 @@ ClassCommentBrowser >> selectClass: aClass [
 
 { #category : 'as yet unclassified' }
 ClassCommentBrowser >> updateRenderedComment [
-  | textMorph scrollPane |
+  | textMorph scrollPane visibleWidth |
     selectedClass ifNil: [ ^ self ].
     
     [ 
         textMorph := self renderMicrodown: sourceComment text.
         
         scrollPane := renderedComment morph.
+        "Force the text to wrap to the current visible width of the scroll pane"
+        visibleWidth := scrollPane innerBounds width - 30.  "subtract some margin"
+        visibleWidth > 0 ifTrue: [
+            textMorph width: visibleWidth.
+        ].
+
         scrollPane scrollTarget: textMorph.
         
         "Force layout update"
