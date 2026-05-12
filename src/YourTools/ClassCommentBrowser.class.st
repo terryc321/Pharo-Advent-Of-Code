@@ -52,6 +52,23 @@ ClassCommentBrowser >> errorMorph: anError [
         yourself.
 ]
 
+{ #category : 'as yet unclassified' }
+ClassCommentBrowser >> howTo [ 
+
+"
+ClassCommentBrowser new open.
+
+| morph text html |
+text := 'Hello **World** from MicroDown!'.
+html := Microdown new.
+html render: (Microdown asRichText: text).
+morph := RubPluggableTextMorph new.
+morph contents: html.
+morph openInWorld.
+"
+
+]
+
 { #category : 'initialization' }
 ClassCommentBrowser >> initializePresenters [
 
