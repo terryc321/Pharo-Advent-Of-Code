@@ -35,9 +35,20 @@ ClassCommentBrowser >> defaultLayout [
 ]
 
 { #category : 'as yet unclassified' }
+ClassCommentBrowser >> emptyMorph [
+    ^ Morph new 
+        color: Color veryLightGray;
+        hResizing: #spaceFill;
+        vResizing: #spaceFill;
+        yourself.
+]
+
+{ #category : 'as yet unclassified' }
 ClassCommentBrowser >> errorMorph: anError [
-    ^ (LabelMorph contents: 'Render error: ', anError description)
+    ^ (LabelMorph contents: 'Rendering error: ', anError description)
         color: Color red muchLighter;
+        hResizing: #spaceFill;
+        vResizing: #spaceFill;
         yourself.
 ]
 
@@ -45,6 +56,7 @@ ClassCommentBrowser >> errorMorph: anError [
 ClassCommentBrowser >> initializePresenters [
 
     classList := self newList
+      "filter by package"
         items: (Smalltalk allClasses asSortedCollection: [ :a :b |
 		a className < b className ]) ;  "or use a TreePresenter for hierarchy"
         display: [ :cls | cls name ];
@@ -58,27 +70,64 @@ ClassCommentBrowser >> initializePresenters [
 	            self scheduleRenderUpdate.
 	            ].
 
-    renderedComment := self newMorph
+renderedComment := self newMorph
+        morph: (GeneralScrollPaneMorph new 
+            scrollTarget: (Morph new color: Color white);
+            yourself);
+        yourself.
+
+"
+renderedComment := self newScrollPane
+    presenter: (self newMorph
+        morph: self emptyMorph;
+        yourself);
+    yourself.
+"
+
+
+"    renderedComment := self newMorph
         morph: (Morph new color: Color white; 
             layoutPolicy: TableLayout new;
             hResizing: #spaceFill;
             vResizing: #spaceFill;
-            yourself).  "We'll replace with rendered content"
+            yourself).  
+"
+"We'll replace with rendered content"
 
 ]
 
 { #category : 'rendering' }
-ClassCommentBrowser >> renderMicrodown: aString [
-    | doc |
-    aString ifEmpty: [ 
-        ^ (Morph new color: Color veryLightGray; yourself) ].
+ClassCommentBrowser >> renderMicrodown: aString [ 
+ |renderedText textMorph|
+    aString ifEmpty: [ ^ self emptyMorph ].
+        "^ (Morph new color: Color veryLightGray; yourself) ]."
     
-    doc := Microdown parse: aString.
-    ^ doc asMorph
+renderedText := [ BeautifulComments render: aString ]
+        on: Error
+        do: [ :ex | 'Rendering error: ', ex description asText allBold ].
+
+    textMorph := renderedText asMorph.
+    
+    "=== KEY SETTINGS FOR WORD WRAPPING ==="
+    textMorph
+        wrapFlag: true;           "This enables word wrapping"
+        autoFit: false;           "Important: do NOT auto-fit, let the container control width"
+        hResizing: #spaceFill;
+        vResizing: #shrinkWrap; "paceFill;"
+        color: Color white;
+        yourself.
+
+    ^ textMorph .
+
+"
+    ^ (BeautifulComments renderComment: aString of: selectedClass)
+      asMorph
         color: Color white;
         hResizing: #spaceFill;
         vResizing: #spaceFill;
         yourself.
+"
+
 ]
 
 { #category : 'as yet unclassified' }
@@ -110,9 +159,12 @@ ClassCommentBrowser >> updateRenderedComment [
     | morph |
     selectedClass ifNil: [ ^ self ].
    [ morph := self renderMicrodown: sourceComment text.
-        renderedComment morph: morph
+			renderedComment presenter morph: morph.   
+			  "Note: .presenter because of newScrollable"
+        "renderedComment morph: morph"
     ] on: Error do: [ :ex |
-        renderedComment morph: (self errorMorph: ex)
+       "renderedComment presenter morph: (self errorMorph: ex)."
+        "renderedComment morph: (self errorMorph: ex)"
     ].
 
 
