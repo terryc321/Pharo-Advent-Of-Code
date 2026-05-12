@@ -156,6 +156,19 @@ AOC2016Day1Robot >> position [
 ]
 
 { #category : 'initialization' }
+AOC2016Day1Robot >> refresh [ 
+SpWindowMorph allInstancesDo: [ :win | 
+	 (win title = 'Playground') ifTrue: [ 
+		win allMorphsDo: [ :morph | 			
+			(morph balloonText) ifNotNil: [
+				(morph balloonText includesSubstring: 'Refresh') ifTrue:[
+					Transcript show: 'Refresh=>' ; show: morph balloonText string ; cr.
+					morph sendClickEvent ]]]]].
+
+
+]
+
+{ #category : 'initialization' }
 AOC2016Day1Robot >> turnLeft [
 
 (direction = #north) ifTrue:[ direction := #west . ^ self ].
