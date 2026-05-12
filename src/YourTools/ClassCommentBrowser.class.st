@@ -156,32 +156,22 @@ ClassCommentBrowser >> selectClass: aClass [
 
 { #category : 'as yet unclassified' }
 ClassCommentBrowser >> updateRenderedComment [
-    | morph |
+  | textMorph scrollPane |
     selectedClass ifNil: [ ^ self ].
-   [ morph := self renderMicrodown: sourceComment text.
-			renderedComment presenter morph: morph.   
-			  "Note: .presenter because of newScrollable"
-        "renderedComment morph: morph"
+    
+    [ 
+        textMorph := self renderMicrodown: sourceComment text.
+        
+        scrollPane := renderedComment morph.
+        scrollPane scrollTarget: textMorph.
+        
+        "Force layout update"
+        scrollPane hResizing: #spaceFill;
+                   vResizing: #spaceFill.
     ] on: Error do: [ :ex |
-       "renderedComment presenter morph: (self errorMorph: ex)."
-        "renderedComment morph: (self errorMorph: ex)"
+        scrollPane := renderedComment morph.
+        scrollPane scrollTarget: (self errorMorph: ex).
     ].
-
-
-    "microdownMorph := Microdown asRichTextMorph: selectedClass comment. "
-      " ***or better API"
-    
-    "BeautifulComments may provide nicer rendering"
-    "Alternative:"
-    "microdownMorph := (MicroDownParser parse: selectedClass comment) asPillar asMorph."
-    
-"    renderedComment morph: (microdownMorph
-        color: Color white;
-        yourself).
-"
-	"if it works"
-"	renderedComment morph: (selectedClass asHelpTopic asMorph).  "
-
 ]
 
 { #category : 'as yet unclassified' }
