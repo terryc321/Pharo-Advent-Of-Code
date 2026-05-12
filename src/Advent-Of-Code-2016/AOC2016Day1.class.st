@@ -34,8 +34,8 @@ AOC2016Day1 >> execute: aCollection [
 { #category : 'execution' }
 AOC2016Day1 >> executeBunny: aCollection [
 	"initially face north"
-
 	| direction position |
+	self shouldNotImplement . "this all needs a rewrite - see AOC2016Day1Robot uses mutation though ?"
 	visited := Dictionary new.
 	direction := #north.
 	position := 0 @ 0.
