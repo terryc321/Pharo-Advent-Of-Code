@@ -71,7 +71,7 @@ direction = #west ifTrue:[ position := (position x + 1)@(position y) ].
 AOC2016Day1Robot >> howTo [ 
 
 "t := TestCase new.
-b := AOC2016DayCmCommandition.
+b := AOC2016Day1Robot.
 b direction.
 b forwardOneStep.
 b turnRight.
