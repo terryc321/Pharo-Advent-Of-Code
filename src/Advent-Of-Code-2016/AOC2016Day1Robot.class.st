@@ -68,6 +68,49 @@ direction = #west ifTrue:[ position := (position x + 1)@(position y) ].
 ]
 
 { #category : 'initialization' }
+AOC2016Day1Robot >> howTo [ 
+
+"t := TestCase new.
+b := AOC2016DayCmCommandition.
+b direction.
+b forwardOneStep.
+b turnRight.
+b.
+t assert: true equals: true.
+t assert: true equals: false.
+
+StPlaygroundDoItCommand browse.
+
+StPlayground when: Announcement do: [ :ann |
+    ""Your robot here""
+    robot ifNotNil: [ robot refreshView ]
+].
+1 + 2 .
+
+
+""Hook into Do It so the current Miller inspector refreshes automatically""
+""=== dangerous !!! now knackered the Ctrl-d do it command ! sweet jesus===""
+StPlaygroundDoItCommand 
+    when: CmCommandExecuted 
+    do: [ :ann |
+        StPlayground allInstancesDo: [ :pg |
+            pg inspector ifNotNil: [ :ins |
+                ins refresh.
+                ins millerList ifNotNil: [:m | m refresh]
+            ]
+        ]
+    ].
+"
+
+
+
+
+
+
+
+]
+
+{ #category : 'initialization' }
 AOC2016Day1Robot >> initialize [ 
  position := 0@0 .
  direction := #north.
