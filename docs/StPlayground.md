@@ -38,5 +38,23 @@ FileLocator localDirectory / 'iceberg' / 'terryc321' / 'Pharo-Advent-Of-Code' / 
 ```
 
 
+## Refresh on do it command 
+
+Theres a hook method can use - CmCommandExecuted is not right will cause error - 
+but it definitely runs everytime do a Do it.
+
+```
+"Hook into Do It so the current Miller inspector refreshes automatically"
+StPlaygroundDoItCommand 
+    when: CmCommandExecuted 
+    do: [ :ann |
+        StPlayground allInstancesDo: [ :pg |
+            pg inspector ifNotNil: [ :ins |
+                ins refresh.
+                ins millerList ifNotNil: [:m | m refresh]
+            ]
+        ]
+    ].
+```
 
 
