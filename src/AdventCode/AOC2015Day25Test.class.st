@@ -104,6 +104,19 @@ self assert: (gen next) equals: 31916031
 ]
 
 { #category : 'tests' }
+AOC2015Day25Test >> testPart1 [
+|aoc |
+aoc := AOC2015Day25 new.
+self assert: (aoc computeRow: 3010 column: 3019) equals: 8997277.
+
+
+
+
+
+
+]
+
+{ #category : 'tests' }
 AOC2015Day25Test >> testRowColumnOne [
 "test how many iterations of algorithm required if calculated in order
 1st iteration just returns initial starting value
