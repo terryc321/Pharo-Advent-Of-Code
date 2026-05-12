@@ -1,6 +1,9 @@
 Class {
 	#name : 'AOC2016Day1',
 	#superclass : 'Object',
+	#instVars : [
+		'visited'
+	],
 	#category : 'Advent-Of-Code-2016',
 	#package : 'Advent-Of-Code-2016'
 }
@@ -29,16 +32,85 @@ AOC2016Day1 >> execute: aCollection [
 ]
 
 { #category : 'execution' }
+AOC2016Day1 >> executeBunny: aCollection [
+	"initially face north"
+
+	| direction position |
+	visited := Dictionary new.
+	direction := #north.
+	position := 0 @ 0.
+	aCollection do: [ :turndist |
+			| turn dist |
+			turn := turndist at: 1.
+			dist := turndist at: 2.
+			turn = #left
+				ifTrue: [ direction := self leftTurn: direction ]
+				ifFalse: [ direction := self rightTurn: direction ].
+			position := self
+				            forwardBunny: position
+				            direction: direction
+				            distance: dist ].
+	^ {
+		  position.
+		  (position x abs) + (position y abs) }
+]
+
+{ #category : 'execution' }
 AOC2016Day1 >> forward: position direction: direction distance: distance [
-| x y |
-x := position x.
-y := position y.
- direction = #north ifTrue: [ ^ (x)@(y + distance ) ].
- direction = #south ifTrue: [ ^ (x)@(y - distance ) ].
- direction = #east ifTrue: [ ^ (x + distance)@(y ) ].
- direction = #west ifTrue: [ ^ (x - distance)@(y ) ].
- 
-Error signal: 'bad direction'.
+| here x y|
+here := position.
+"1 to: distance do: ["
+"	| x y |"
+	x := here x.
+	y := here y.
+ direction = #north ifTrue: [ here := ((x)@(y + distance)) ] ifFalse:[
+ direction = #south ifTrue: [ here := ((x)@(y- distance )) ] ifFalse:[
+ direction = #east ifTrue: [ here := ((x+distance)@y)  ] ifFalse:[
+ direction = #west ifTrue: [ here := ((x-distance)@y) ] ifFalse:[
+	Error signal: 'bad direction'.]]]].
+  "self registerVisited: here."
+"]."
+^ here.
+
+
+
+
+
+
+]
+
+{ #category : 'execution' }
+AOC2016Day1 >> forwardBunny: position direction: direction distance: distance [
+
+	| here |
+	here := position.
+	1 to: distance do: [ :d|
+		  | x y |
+			x := here x.
+			y := here y.
+			Transcript
+				show: {
+						'forward bunny x => '.
+						x printString.
+						' y=>'.
+						y printString } ;
+				cr.
+			here := self forwardOneStep: direction position: here.
+			self registerVisited: here ].
+	^ here
+]
+
+{ #category : 'as yet unclassified' }
+AOC2016Day1 >> forwardOneStep: aDirection position: aPosition [
+
+	| x y |
+	x := aPosition x.
+	y := aPosition y.
+	aDirection = #north ifTrue: [ ^ x @ (y + 1) ].
+	aDirection = #south ifTrue: [ ^ x @ (y - 1) ].
+	aDirection = #east ifTrue: [ ^ x + 1 @ y ].
+	aDirection = #west ifTrue: [ ^ x - 1 @ y ].
+	Error signal: 'bad direction'
 ]
 
 { #category : 'accessing' }
@@ -74,8 +146,27 @@ AOC2016Day1 >> parse: aString [
 ]
 
 { #category : 'turning' }
-AOC2016Day1 >> rightTurn: direction [
+AOC2016Day1 >> refreshInPlayground [
+    self changed.          "notify dependents"
+    "self inspectFresh."
+    ^self.
 
+
+
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2016Day1 >> registerVisited: aPosition [ 
+"raise an exception - already visited here"
+visited at: aPosition ifPresent: [ Error signal:{ aPosition . 'already visited'} ] ifAbsentPut: [ true ].
+
+
+]
+
+{ #category : 'turning' }
+AOC2016Day1 >> rightTurn: direction [
+ Transcript show: 'turn right' ; cr .
 	direction = #north ifTrue: [ ^ #east ].
 	direction = #west ifTrue: [ ^ #north ].
 	direction = #south ifTrue: [ ^ #west ].
