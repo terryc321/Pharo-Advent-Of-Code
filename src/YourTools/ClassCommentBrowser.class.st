@@ -57,7 +57,7 @@ ClassCommentBrowser >> initializePresenters [
 
     classList := self newList
       "filter by package"
-        items: (Smalltalk allClasses asSortedCollection: [ :a :b |
+        items: ((Smalltalk allClasses select:[ :cls | cls name includesSubstring: 'NewTools' ]) asSortedCollection: [ :a :b |
 		a className < b className ]) ;  "or use a TreePresenter for hierarchy"
         display: [ :cls | cls name ];
         displayIcon: [ :cls | self iconNamed: #class ];
