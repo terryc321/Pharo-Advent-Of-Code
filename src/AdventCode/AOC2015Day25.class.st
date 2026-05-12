@@ -12,7 +12,7 @@ AOC2015Day25 >> next: anInteger [
 previous := anInteger.
 multiplier := 252533.
 divisor := 33554393.
-result := (previous * multiplier)/divisor.
+result := (previous * multiplier) % divisor.
 ^result 
 
 ]
