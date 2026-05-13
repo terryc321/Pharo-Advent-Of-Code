@@ -128,17 +128,16 @@ AOC2016Day2Hand2 >> down [
 	dest := database downOf: location.
 	dest = #x
 		ifTrue: [ ^ self ]
-		ifFalse: [ ^ AOC2016Day2Hand2 new with: database at: dest ]
+		ifFalse: [ ^ AOC2016Day2Hand2 new withDatabase: database at: dest ]
 ]
 
 { #category : 'initialization' }
 AOC2016Day2Hand2 >> initialize [
-	"if global class database is not yet built - make it now "
+database := nil.
+location := nil.
 
-	database ifNil: [
-			Transcript showCr: 'building the AOC2016Day2Hand2 class side database'.
-			self class setup ].
-	database := self class database
+
+
 ]
 
 { #category : 'initialization' }
@@ -156,7 +155,7 @@ AOC2016Day2Hand2 >> left [
 	dest := database leftOf: location.
 	dest = #x
 		ifTrue: [ ^ self ]
-		ifFalse: [ ^ AOC2016Day2Hand2 new with: database at: dest ]
+		ifFalse: [ ^ AOC2016Day2Hand2 new withDatabase: database at: dest ]
 ]
 
 { #category : 'initialization' }
@@ -166,7 +165,7 @@ AOC2016Day2Hand2 >> right [
 	dest := database rightOf: location.
 	dest = #x
 		ifTrue: [ ^ self ]
-		ifFalse: [ ^ AOC2016Day2Hand2 new with: database at: dest ]
+		ifFalse: [ ^ AOC2016Day2Hand2 new withDatabase: database at: dest ]
 ]
 
 { #category : 'initialization' }
@@ -176,16 +175,20 @@ AOC2016Day2Hand2 >> up [
 	dest := database upOf: location.
 	dest = #x
 		ifTrue: [ ^ self ]
-		ifFalse: [ ^ AOC2016Day2Hand2 new with: database at: dest ]
+		ifFalse: [ ^ AOC2016Day2Hand2 new withDatabase: database at: dest ]
 ]
 
 { #category : 'initialization' }
 AOC2016Day2Hand2 >> withDatabase: aDatabase at: aLocation [
-"check valid location"
-database validLocation aLocation.
 "assign references"
 database := aDatabase .
 location := aLocation.
+"check valid location"
+database validLocation: aLocation.
+^ self
+
+
+
 
 
 

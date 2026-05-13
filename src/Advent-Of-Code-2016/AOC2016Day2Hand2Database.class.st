@@ -56,7 +56,7 @@ AOC2016Day2Hand2Database >> hasUpOf: aLocation [
 AOC2016Day2Hand2Database >> initialize [ 
 Transcript showCr: 'Creating AOC2016Day2Hand2Database '.
 database := Dictionary new.
-"format LEFT RIGHT UP DOWN"
+"format              LEFT RIGHT UP DOWN"
 database at: 1 put: { #x . #x . #x . 3 }.
 database at: 2 put: { #x . 3 . 1 . 6 }.
 database at: 3 put: { 2 . 4 . 1 . 7 }. 
@@ -69,9 +69,10 @@ database at: 9 put: { 8 . #x . #x . #x }.
 database at: #a put: { #x . #b . 6 . #x }.  
 database at: #b put: { #a . #c  . 7 . #d }.  
 database at: #c put: { #b . #x . 8 . #x }.  
-database at: #d put: { #x . #x . #b . #x }.  
+database at: #d put: { #x . #x . #x . #x }.  
 
 validLocation := { 1 . 2 . 3 . 4 . 5 . 6 . 7. 8 . 9 . #a . #b . #c . #d }.
+^ self.
 
 
 ]
