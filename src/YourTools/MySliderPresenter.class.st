@@ -38,21 +38,22 @@ MySliderPresenter >> defaultLayout [
 | plusMinus widgetRow sliderRow |
 
  "height only active in vertical"
-    plusMinus :=  SpBoxLayout newTopToBottom
-        add: minusButton withConstraints: [:c | c  height: 50 ] ;
-        add: plusButton withConstraints: [:c | c  height: 50 ] ;
+    plusMinus :=  SpBoxLayout newLeftToRight
+        add: minusButton withConstraints: [ :c | c height: 60 ]  ;        
+        add: plusButton withConstraints: [ :c | c height: 60 ]  ;        
         yourself.
    
  "width only active in horizontal"
     sliderRow := SpBoxLayout newLeftToRight
-        add: slider withConstraints: [:c | c  width: 100 ] ;
-        add: plusMinus withConstraints: [:c | c  width: 200 ] ;
-        add: numberInput withConstraints: [:c | c  width: 300 ] ;
+        add: slider withConstraints: [ :c | c width: 400 ]  ; 
+        add: plusMinus withConstraints: [ :c | c width: 50 ]  ;        
         yourself.
 
+
     widgetRow :=  SpBoxLayout newTopToBottom
-        add: sliderRow ; 
-	      add: valueLabel ;
+        add: sliderRow withConstraints: [ :c | c height: 120 ]  ; 
+        add: numberInput withConstraints: [ :c | c height: 120 ]  ; 
+	      add: valueLabel withConstraints: [ :c | c height: 120 ]  ; 
         yourself.
 
  "should return some form of SpXXXLayout i guess "
@@ -130,8 +131,7 @@ MySliderPresenter >> initializePresenters [
 		icon: (self iconNamed: #smallRightIcon);
 		action: [ self increaseValue ].
 
-	slider
-		beVertical;
+	slider  "beHorizontal ; 	beVertical;  make no difference"	  
 		min: 1;
 		max: 100;
 		quantum: 1;
@@ -149,6 +149,17 @@ MySliderPresenter >> initializePresenters [
 	valueLabel label: 'Value: 50'.
 
 	slider whenValueChangedDo: [ :val | self updateAll: val ]
+]
+
+{ #category : 'as yet unclassified' }
+MySliderPresenter >> initializeWindow: aWindowPresenter [
+    aWindowPresenter 
+        title: 'Slider Control';
+        initialExtent: 650 @ 200;
+        centered.
+
+
+
 ]
 
 { #category : 'as yet unclassified' }
