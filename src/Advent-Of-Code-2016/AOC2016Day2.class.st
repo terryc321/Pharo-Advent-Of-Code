@@ -44,11 +44,13 @@ AOC2016Day2 >> part1 [
 { #category : 'as yet unclassified' }
 AOC2016Day2 >> part2 [
 
-	| in code hand |
-	in := self input.
+	| input code hand database |
+	input := self input.
 	code := OrderedCollection new.
-	hand := AOC2016Day2Hand2 new centre.
-	in do: [ :line |
+   database := AOC2016Day2Hand2Database new.
+	 hand := AOC2016Day2Hand2 new withDatabase: database at: database centre.
+
+	input do: [ :line |
 			line do: [ :ch |
 					ch = $R ifTrue: [ hand := hand right ] ifFalse:[
 					ch = $L ifTrue: [ hand := hand left ] ifFalse:[
