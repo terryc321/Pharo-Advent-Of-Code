@@ -13,8 +13,7 @@ AOC2016Day2Test >> testPart1 [
 
 { #category : 'tests' }
 AOC2016Day2Test >> testPart2 [
-
-	self assert: AOC2016Day2 new part2 equals: { 6. 5. 3. 2. 1 } asOrderedCollection .
+ self assert: AOC2016Day2 new part2 equals: { 6. 5. 3. 2. 1 } asOrderedCollection .
 	
 
 ]

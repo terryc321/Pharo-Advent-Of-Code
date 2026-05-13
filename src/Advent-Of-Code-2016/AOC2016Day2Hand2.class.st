@@ -126,7 +126,7 @@ AOC2016Day2Hand2 >> down [
 
 	| dest |
 	dest := database downOf: location.
-	dest = #x
+	dest = false
 		ifTrue: [ ^ self ]
 		ifFalse: [ ^ AOC2016Day2Hand2 new withDatabase: database at: dest ]
 ]
@@ -153,7 +153,7 @@ AOC2016Day2Hand2 >> left [
 
 	| dest |
 	dest := database leftOf: location.
-	dest = #x
+	dest = false
 		ifTrue: [ ^ self ]
 		ifFalse: [ ^ AOC2016Day2Hand2 new withDatabase: database at: dest ]
 ]
@@ -163,7 +163,7 @@ AOC2016Day2Hand2 >> right [
 
 	| dest |
 	dest := database rightOf: location.
-	dest = #x
+	dest = false
 		ifTrue: [ ^ self ]
 		ifFalse: [ ^ AOC2016Day2Hand2 new withDatabase: database at: dest ]
 ]
@@ -173,7 +173,7 @@ AOC2016Day2Hand2 >> up [
 
 	| dest |
 	dest := database upOf: location.
-	dest = #x
+	dest = false
 		ifTrue: [ ^ self ]
 		ifFalse: [ ^ AOC2016Day2Hand2 new withDatabase: database at: dest ]
 ]
