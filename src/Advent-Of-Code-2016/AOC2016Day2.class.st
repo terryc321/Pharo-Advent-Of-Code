@@ -47,8 +47,7 @@ AOC2016Day2 >> part2 [
 	| input code hand database |
 	input := self input.
 	code := OrderedCollection new.
-
-	 database := AOC2016Day2Hand2Database new.
+   database := AOC2016Day2Hand2Database new.
 	 hand := AOC2016Day2Hand2 new withDatabase: database at: database centre.
 
 	input do: [ :line |
