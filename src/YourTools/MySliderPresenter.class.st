@@ -37,22 +37,26 @@ MySliderPresenter >> decreaseValue [
 MySliderPresenter >> defaultLayout [
 | plusMinus widgetRow sliderRow |
 
+ "height only active in vertical"
     plusMinus :=  SpBoxLayout newTopToBottom
-        add: minusButton withConstraints: [:c | c width: 50 . c height: 25. ];       
-        add: plusButton withConstraints: [:c | c width: 50 . c height: 25. ];
+        add: minusButton withConstraints: [:c | c  height: 50 ] ;
+        add: plusButton withConstraints: [:c | c  height: 50 ] ;
         yourself.
-
    
+ "width only active in horizontal"
     sliderRow := SpBoxLayout newLeftToRight
-        add: slider expand: true; 
-        add: plusMinus expand: false; 
-        add: numberInput expand: false; 
+        add: slider withConstraints: [:c | c  width: 100 ] ;
+        add: plusMinus withConstraints: [:c | c  width: 200 ] ;
+        add: numberInput withConstraints: [:c | c  width: 300 ] ;
         yourself.
 
     widgetRow :=  SpBoxLayout newTopToBottom
         add: sliderRow ; 
 	      add: valueLabel ;
         yourself.
+
+ "should return some form of SpXXXLayout i guess "
+   ^ widgetRow . 
 
 
 
