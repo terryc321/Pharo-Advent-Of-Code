@@ -101,15 +101,14 @@ let rec code = fun (xs : string list) (y : square) : square ->
                    in code t out
 
 
-let rec codeAcc2 = fun (xs : string list) (y : square) (acc : square list) : (square list )->
+let rec codeAcc2 = fun (xs : string list) (y : square) (acc : square list) : square ->
     match xs with
-    | [] -> acc @ [y]
+    | [] -> y
     | h :: t -> let cs = String.to_seq h |> List.of_seq
                 in let out = foo cs y
                    in codeAcc2 t out (acc @ [y])
 
-let rec codeAcc = fun (xs : string list) (y : square) : (square list ) ->
-                                                    List.tl (codeAcc2 xs y [])
+let rec codeAcc = fun (xs : string list) (y : square) : square -> codeAcc2 xs y []
 
 
 
