@@ -47,7 +47,7 @@ AOC2016Day2 >> part2 [
 	| in code hand |
 	in := self input.
 	code := OrderedCollection new.
-	hand := AOC2016Day2Hand new centre.
+	hand := AOC2016Day2Hand2 new centre.
 	in do: [ :line |
 			line do: [ :ch |
 					ch = $R ifTrue: [ hand := hand right ] ifFalse:[
