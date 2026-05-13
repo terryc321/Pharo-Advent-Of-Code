@@ -58,23 +58,21 @@ self assert: (aoc execute: parse) equals: { 10@2 . 12}.
 
 { #category : 'tests' }
 AOC2016Day1Test >> testExecuteBunny01 [
-|aoc ord parse|
-aoc := AOC2016Day1 new.
-ord := OrderedCollection new.
-ord add: {#right . 8}.
-ord add: {#right . 4}.
-ord add: {#right . 4}.
-ord add: {#right . 8}.
-parse := (aoc parse: 'R8, R4, R4, R8').
-self assert: parse equals: ord .
-self assert: (aoc executeBunny: parse) equals: { 10@2 . 12}.
-
-
-
-
-
-
-
+"
+executeBunny should be deleted - code bad 
+	| aoc ord parse |
+	aoc := AOC2016Day1 new.
+	ord := OrderedCollection new.
+	ord add: { #right. 8 }.
+	ord add: { #right. 4 }.
+	ord add: { #right. 4 }.
+	ord add: { #right. 8 }.
+	parse := aoc parse: 'R8, R4, R4, R8'.
+	self assert: parse equals: ord.
+	self assert: (aoc executeBunny: parse) equals: {
+			(10 @ 2).
+			12 }
+	"
 ]
 
 { #category : 'tests' }
