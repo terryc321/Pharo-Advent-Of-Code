@@ -111,7 +111,10 @@ database at: #d put: { #x . #x . #b . #x }.
 { #category : 'initialization' }
 AOC2016Day2Hand2 >> centre [
 "return a hand at 7 or create a new one"
-location = 7 ifTrue:[ ^ self ] ifFalse:[ ^ AOC2016Day2Hand2 new with: 7 ].
+(location = (database centre)) ifTrue:[ ^ self ] .
+^ AOC2016Day2Hand2 new withDatabase: database atLocation: database centre.
+
+
 
 
 
@@ -120,11 +123,12 @@ location = 7 ifTrue:[ ^ self ] ifFalse:[ ^ AOC2016Day2Hand2 new with: 7 ].
 
 { #category : 'initialization' }
 AOC2016Day2Hand2 >> down [
-|hand data dest |
 
-data := database at: location.
-dest := data at: 4.
-(dest = #x) ifTrue: [ ^ self ] ifFalse: [ ^ AOC2016Day2Hand2 new with: dest ].
+	| dest |
+	dest := database downOf: location.
+	dest = #x
+		ifTrue: [ ^ self ]
+		ifFalse: [ ^ AOC2016Day2Hand2 new with: database at: dest ]
 ]
 
 { #category : 'initialization' }
@@ -146,36 +150,47 @@ AOC2016Day2Hand2 >> keypad [
 ]
 
 { #category : 'initialization' }
-AOC2016Day2Hand2 >> left [ 
-|hand data dest |
+AOC2016Day2Hand2 >> left [
 
-data := database at: location.
-dest := data at: 1.
-(dest = #x) ifTrue: [ ^ self ] ifFalse: [ ^ AOC2016Day2Hand2 new with: dest ].
+	| dest |
+	dest := database leftOf: location.
+	dest = #x
+		ifTrue: [ ^ self ]
+		ifFalse: [ ^ AOC2016Day2Hand2 new with: database at: dest ]
 ]
 
 { #category : 'initialization' }
 AOC2016Day2Hand2 >> right [
-|hand data dest |
 
-data := database at: location.
-dest := data at: 2.
-(dest = #x) ifTrue: [ ^ self ] ifFalse: [ ^ AOC2016Day2Hand2 new with: dest ].
+	| dest |
+	dest := database rightOf: location.
+	dest = #x
+		ifTrue: [ ^ self ]
+		ifFalse: [ ^ AOC2016Day2Hand2 new with: database at: dest ]
 ]
 
 { #category : 'initialization' }
 AOC2016Day2Hand2 >> up [
-|hand data dest |
 
-data := database at: location.
-dest := data at: 3.
-(dest = #x) ifTrue: [ ^ self ] ifFalse: [ ^ AOC2016Day2Hand2 new with: dest ].
-
+	| dest |
+	dest := database upOf: location.
+	dest = #x
+		ifTrue: [ ^ self ]
+		ifFalse: [ ^ AOC2016Day2Hand2 new with: database at: dest ]
 ]
 
 { #category : 'initialization' }
-AOC2016Day2Hand2 >> with: aLocation [ 
-location := aLocation .
+AOC2016Day2Hand2 >> withDatabase: aDatabase at: aLocation [
+"check valid location"
+database validLocation aLocation.
+"assign references"
+database := aDatabase .
+location := aLocation.
+
+
+
+
+
 
 
 

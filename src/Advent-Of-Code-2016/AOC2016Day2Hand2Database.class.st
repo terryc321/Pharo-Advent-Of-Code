@@ -9,6 +9,49 @@ Class {
 	#package : 'Advent-Of-Code-2016'
 }
 
+{ #category : 'as yet unclassified' }
+AOC2016Day2Hand2Database >> centre [ 
+^ 7
+
+
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2016Day2Hand2Database >> downOf: aLocation [ 
+
+|dest |
+
+dest := (database at: aLocation) at: 4.
+(dest = #x) ifTrue: [ ^ false ].
+^ dest
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2016Day2Hand2Database >> hasDownOf: aLocation [ 
+^ self downOf: aLocation = #x . 
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2016Day2Hand2Database >> hasLeftOf: aLocation [ 
+^ self leftOf: aLocation = #x . 
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2016Day2Hand2Database >> hasRightOf: aLocation [ 
+^ self rightOf: aLocation = #x . 
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2016Day2Hand2Database >> hasUpOf: aLocation [ 
+^ self upOf: aLocation = #x . 
+
+]
+
 { #category : 'initialization' }
 AOC2016Day2Hand2Database >> initialize [ 
 Transcript showCr: 'Creating AOC2016Day2Hand2Database '.
@@ -28,7 +71,41 @@ database at: #b put: { #a . #c  . 7 . #d }.
 database at: #c put: { #b . #x . 8 . #x }.  
 database at: #d put: { #x . #x . #b . #x }.  
 
+validLocation := { 1 . 2 . 3 . 4 . 5 . 6 . 7. 8 . 9 . #a . #b . #c . #d }.
 
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2016Day2Hand2Database >> leftOf: aLocation [ 
+
+|dest |
+
+dest := (database at: aLocation) at: 1.
+(dest = #x) ifTrue: [ ^ false ].
+^ dest
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2016Day2Hand2Database >> rightOf: aLocation [ 
+
+|dest |
+
+dest := (database at: aLocation) at: 2.
+(dest = #x) ifTrue: [ ^ false ].
+^ dest
+
+]
+
+{ #category : 'as yet unclassified' }
+AOC2016Day2Hand2Database >> upOf: aLocation [ 
+
+|dest |
+
+dest := (database at: aLocation) at: 3.
+(dest = #x) ifTrue: [ ^ false ].
+^ dest
 
 ]
 
