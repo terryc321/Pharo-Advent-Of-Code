@@ -1,7 +1,8 @@
 
 # Meta programming in pharo
 
-Here we show how to create a class called Bob with instance variable fish and define accessors and setters.  A completely terrible design but allows us to write code that can be pasted into playground as see fit.
+Here we show how to create a class called Bob with instance variable fish and define accessors and setters.  
+A completely terrible design but allows us to write code that can be pasted into playground as see fit.
 
 ```
 Object subclass: #Bob.
