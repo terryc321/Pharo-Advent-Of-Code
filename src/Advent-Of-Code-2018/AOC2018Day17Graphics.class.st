@@ -30,16 +30,18 @@ AOC2018Day17Graphics class >> exampleInput [
 
 { #category : 'api - instantiation' }
 AOC2018Day17Graphics >> create [
+^ self shouldNotImplement .
 
+"
 	aSpace := BlSpace new.
-	aSpace show. "Edit the space's properties, like title and size"
+	aSpace show. ""Edit the space's properties, like title and size""
 	aSpace title: 'Bloc basics'.
-	aSpace extent: 800 @ 600. "Create a red rectangle"
+	aSpace extent: 800 @ 600. ""Create a red rectangle""
 	rectangle := BlElement new
 		             background: Color red;
 		             extent: 150 @ 150;
-		             yourself. "Add it to the space"
-	aSpace root addChild: rectangle. "Update its properties"
+		             yourself. ""Add it to the space""
+	aSpace root addChild: rectangle. ""Update its properties""
 	rectangle
 		background: Color lightBlue;
 		position: 100 @ 100;
@@ -53,6 +55,7 @@ AOC2018Day17Graphics >> create [
 	rectangle clipChildren: false.
 
 	circle transformDo: [ :builder | builder scaleBy: 1.2 ]
+	"
 ]
 
 { #category : 'api - instantiation' }
@@ -60,6 +63,9 @@ AOC2018Day17Graphics >> createExample [
 | dict aoc |
 aoc := AOC2018Day17 new.
 dict := (aoc parseLines: (aoc example)).
+"add sprinkler"	
+	dict at: 500@0 put: #sprinkler.
+
 ^ self render: dict.
 
 ]
@@ -69,6 +75,9 @@ AOC2018Day17Graphics >> createInput [
 | dict aoc |
 aoc := AOC2018Day17 new.
 dict := (aoc parseLines: (aoc input)).
+"add sprinkler"	
+	dict at: 500@0 put: #sprinkler.
+
 ^ self render: dict.
 
 
@@ -107,8 +116,6 @@ maxY := maxY + 5.
 	aSpace title: 'Bloc basics'.
 	aSpace extent: 800 @ 600. 
 	root := aSpace root.
-"add sprinkler"	
-	dict at: 500@0 put: #sprinkler.
 
 "set view "
 		brickWidth := 20.
@@ -142,13 +149,13 @@ windowSize := aSpace extent.
 		| lineElement | 
 		lineElement := (BlLineGeometry from: (x @ 0) to: (x @ (windowSize y))) asElement .
 		lineElement border: (BlBorder paint: Color green width: 2).
-		root add: lineElement.
+		root addChild: lineElement.
 		].
 0 to: (windowSize y)	by: brickHeight do: [ :y | 
 		| lineElement | 
 		lineElement := (BlLineGeometry from: (0 @ y) to: ((windowSize x)@y)) asElement .
 		lineElement border: (BlBorder paint: Color green width: 2).
-		root add: lineElement.
+		root addChild: lineElement.
 		].
 	
 root addChild: (BlElement new
@@ -156,6 +163,10 @@ root addChild: (BlElement new
 		             position: 50@50 ;
 		             extent:  50@50 ; 
 		             yourself). 
+		
+root addEventHandler: (BlEventHandler on: BlSpaceResizedEvent do: [ :anEvent | 
+    Transcript show: 'Resized to: ', anEvent newExtent printString; cr ]).
+		
 ^ aSpace.		
 
 ]
