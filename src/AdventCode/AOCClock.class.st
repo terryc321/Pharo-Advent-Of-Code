@@ -31,7 +31,8 @@ morph openInWorld.
 process := [ [ true ] whileTrue: [ 
     morph contents: Time now print24.
     1 second wait 
-] ] forkAt: Processor systemBackgroundPriority .
+] ] forkAt: Processor systemBackgroundPriority named: 'my morph clock'.
+
 
 
 

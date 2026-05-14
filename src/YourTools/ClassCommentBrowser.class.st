@@ -1,3 +1,6 @@
+"
+a class comment browser
+"
 Class {
 	#name : 'ClassCommentBrowser',
 	#superclass : 'SpPresenter',

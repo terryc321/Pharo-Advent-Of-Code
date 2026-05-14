@@ -2,7 +2,7 @@
 a customer satisfaction survey
 "
 Class {
-	#name : 'CustomerSatisfactionPresenter',
+	#name : 'CustomerSatisfactionPresenter2',
 	#superclass : 'SpPresenter',
 	#instVars : [
 		'buttonHappy',
@@ -15,7 +15,7 @@ Class {
 }
 
 { #category : 'instance creation' }
-CustomerSatisfactionPresenter class >> run [
+CustomerSatisfactionPresenter2 class >> run [
 <script>
 ^ CustomerSatisfactionPresenter new open
 
@@ -25,7 +25,7 @@ CustomerSatisfactionPresenter class >> run [
 ]
 
 { #category : 'initialization' }
-CustomerSatisfactionPresenter >> connectPresenters [
+CustomerSatisfactionPresenter2 >> connectPresenters [
 
 	buttonHappy action: [ result label: buttonHappy label ].
 	buttonNeutral action: [ result label: buttonNeutral label ].
@@ -33,7 +33,7 @@ CustomerSatisfactionPresenter >> connectPresenters [
 ]
 
 { #category : 'layout' }
-CustomerSatisfactionPresenter >> defaultLayout [
+CustomerSatisfactionPresenter2 >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  add: (SpBoxLayout newLeftToRight
@@ -46,7 +46,7 @@ CustomerSatisfactionPresenter >> defaultLayout [
 ]
 
 { #category : 'examples' }
-CustomerSatisfactionPresenter >> example [
+CustomerSatisfactionPresenter2 >> example [
 
 ^ self open 
 
@@ -64,7 +64,7 @@ ui close
 ]
 
 { #category : 'initialization' }
-CustomerSatisfactionPresenter >> initializePresenters [
+CustomerSatisfactionPresenter2 >> initializePresenters [
 
 	result := self newLabel.
 	buttonHappy := self newButton.
@@ -122,7 +122,7 @@ SpPresenter >> newButton
 ]
 
 { #category : 'initialization' }
-CustomerSatisfactionPresenter >> initializeWindow: aWindowPresenter [
+CustomerSatisfactionPresenter2 >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter
