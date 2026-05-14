@@ -9,6 +9,8 @@ Class {
 		'buttonNeutral',
 		'buttonBad',
 		'result',
+		'text',
+		'text2',
 		'number',
 		'numberLabel',
 		'number2',
@@ -64,7 +66,11 @@ CustomerSatisfactionPresenter2 >> defaultLayout [
 				             add: 'Director';  add: number;     nextRow;
 				             add: 'Year';      add: number2 ;   nextRow;  	
 					          add: 'slider' ;   add: slider ;    nextRow;
-					          add: 'slider2' ;  add: slider2 ;   nextRow			             
+					          add: 'slider2' ;  add: slider2 ;   nextRow;
+					          add: 'text' ;   add: text ;    nextRow;
+					          add: 'text2' ;  add: text2 ;   nextRow ; 
+					          add: 'buttons' ;  add: buttons ; nextRow 
+					             
 				             ].
 			
    ^(SpBoxLayout newTopToBottom 
@@ -137,6 +143,8 @@ CustomerSatisfactionPresenter2 >> initializePresenters [
 	numberLabel2 := self newLabel .
 	slider := self newSlider.
 	slider2 := self newSlider.
+	text := self newTextInput .
+	text2 := self newTextInput .
 	
 
 	"
