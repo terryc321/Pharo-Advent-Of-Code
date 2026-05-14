@@ -1,3 +1,13 @@
+"
+remember to load bloc and toplo
+
+```
+a:= AOC2018Day17 new.
+a parseLines: (a example).
+```
+
+
+"
 Class {
 	#name : 'AOC2018Day17',
 	#superclass : 'Object',
