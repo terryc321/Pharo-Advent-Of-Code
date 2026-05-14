@@ -57,9 +57,26 @@ AOC2018Day17Graphics >> create [
 
 { #category : 'api - instantiation' }
 AOC2018Day17Graphics >> createExample [ 
-| dict aoc minX minY maxX maxY bricks |
+| dict aoc |
 aoc := AOC2018Day17 new.
 dict := (aoc parseLines: (aoc example)).
+^ self render: dict.
+
+]
+
+{ #category : 'api - instantiation' }
+AOC2018Day17Graphics >> createInput [
+| dict aoc |
+aoc := AOC2018Day17 new.
+dict := (aoc parseLines: (aoc input)).
+^ self render: dict.
+
+
+]
+
+{ #category : 'rendering' }
+AOC2018Day17Graphics >> render: dict [
+| minX minY maxX maxY bricks root scaleX scaleY offsetX offsetY brickWidth brickHeight windowSize |
 "find min max of x ?? or just "
 
 [ dict keysDo: [ :pt | 
@@ -89,55 +106,56 @@ maxY := maxY + 5.
 	aSpace show. "Edit the space's properties, like title and size"
 	aSpace title: 'Bloc basics'.
 	aSpace extent: 800 @ 600. 
+	root := aSpace root.
+"add sprinkler"	
+	dict at: 500@0 put: #sprinkler.
+
+"set view "
+		brickWidth := 20.
+		brickHeight := 20.
+		scaleX := brickWidth.
+		scaleY := brickHeight.
+		offsetX := (minX * brickWidth) .
+		offsetY := (minY * brickHeight) .
 	
 "make some bricks"
 bricks := OrderedCollection new.
 dict keysDo: [ :pt | 
-		| x y brick scaleX scaleY offsetX offsetY brickWidth brickHeight | 
-		brickWidth := 10.
-		brickHeight := 10.
-		scaleX := 10.
-		scaleY := 10.
-		offsetX := -500 .
-		offsetY := -5 .
-		x := pt x * scaleX + offsetX.
-		y := pt y * scaleY + offsetY.
+		| x y brick  | 
+		x := pt x * scaleX - offsetX.
+		y := pt y * scaleY - offsetY.
 		brick := (BlElement new
-		             background: Color red;
+		             background: (((dict at: pt) = #brick) ifTrue:[ Color red] ifFalse:[ Color blue]);
 		             position: x@y ;
 		             extent: brickWidth @ brickHeight;
 		             yourself). 
       bricks add: brick.
-    	aSpace root addChild: brick 
+    	root addChild: brick 
   ].
 
+"Retrieve the current size"
+windowSize := aSpace extent.
+"windowSize is a BlExtent (e.g., 400@300)"
+
+
+0 to: (windowSize x)	by: brickWidth do: [ :x | 
+		| lineElement | 
+		lineElement := (BlLineGeometry from: (x @ 0) to: (x @ (windowSize y))) asElement .
+		lineElement border: (BlBorder paint: Color green width: 2).
+		root add: lineElement.
+		].
+0 to: (windowSize y)	by: brickHeight do: [ :y | 
+		| lineElement | 
+		lineElement := (BlLineGeometry from: (0 @ y) to: ((windowSize x)@y)) asElement .
+		lineElement border: (BlBorder paint: Color green width: 2).
+		root add: lineElement.
+		].
+	
+root addChild: (BlElement new
+		             background: Color pink;
+		             position: 50@50 ;
+		             extent:  50@50 ; 
+		             yourself). 
 ^ aSpace.		
 
-]
-
-{ #category : 'api - instantiation' }
-AOC2018Day17Graphics >> createInput [
-
-	aSpace := BlSpace new.
-	aSpace show. "Edit the space's properties, like title and size"
-	aSpace title: 'Bloc basics'.
-	aSpace extent: 800 @ 600. "Create a red rectangle"
-	rectangle := BlElement new
-		             background: Color red;
-		             extent: 150 @ 150;
-		             yourself. "Add it to the space"
-	aSpace root addChild: rectangle. "Update its properties"
-	rectangle
-		background: Color lightBlue;
-		position: 100 @ 100;
-		border: (BlBorder paint: Color blue width: 10).
-	circle := BlElement new
-		          background: Color blue;
-		          geometry: BlCircleGeometry new;
-		          extent: 80 @ 80;
-		          yourself.
-	rectangle addChild: circle.
-	rectangle clipChildren: false.
-
-	circle transformDo: [ :builder | builder scaleBy: 1.2 ]
 ]
