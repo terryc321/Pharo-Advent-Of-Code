@@ -8,7 +8,13 @@ Class {
 		'buttonHappy',
 		'buttonNeutral',
 		'buttonBad',
-		'result'
+		'result',
+		'number',
+		'numberLabel',
+		'number2',
+		'numberLabel2',
+		'slider',
+		'slider2'
 	],
 	#category : 'YourTools',
 	#package : 'YourTools'
@@ -17,7 +23,11 @@ Class {
 { #category : 'instance creation' }
 CustomerSatisfactionPresenter2 class >> run [
 <script>
-^ CustomerSatisfactionPresenter new open
+"^ CustomerSatisfactionPresenter2 new open"
+^ self new open
+
+
+
 
 
 
@@ -35,14 +45,64 @@ CustomerSatisfactionPresenter2 >> connectPresenters [
 { #category : 'layout' }
 CustomerSatisfactionPresenter2 >> defaultLayout [
 
-	^ SpBoxLayout newTopToBottom
-		  add: (SpBoxLayout newLeftToRight
-				   add: buttonHappy;
-				   add: buttonNeutral;
-				   add: buttonBad;
-				   yourself);
-		  add: result;
-		  yourself
+	| buttons buttons2 textentry textentry2 |
+	buttons := SpBoxLayout newLeftToRight
+		           add: buttonHappy;
+		           add: buttonNeutral;
+		           add: buttonBad;
+		           yourself.
+		
+	buttons2 := (SpBoxLayout newTopToBottom 
+		           add: buttons;
+		           add: result;
+		           yourself).
+
+	textentry := SpGridLayout build: [ :builder | "do not return yourself with a builder"
+			             builder
+				             beColumnNotHomogeneous ;
+				             column: 2 expand: true;				             
+				             add: 'Director';  add: number;     nextRow;
+				             add: 'Year';      add: number2 ;   nextRow;  	
+					          add: 'slider' ;   add: slider ;    nextRow;
+					          add: 'slider2' ;  add: slider2 ;   nextRow			             
+				             ].
+			
+   ^(SpBoxLayout newTopToBottom 
+		           add: textentry expand: true;
+		           add: buttons2 expand: false;
+		           yourself).
+		
+
+			
+ ^ textentry .
+			
+			
+   textentry2 := (SpGridLayout new
+				   add: 'Name' atPoint: 1 @ 1;
+				   add: number atPoint: 2 @ 1;
+				   add: 'Director' atPoint: 1 @ 2;
+				   add: number2 atPoint: 2 @ 2;
+				   yourself).
+
+ ^ SpBoxLayout newTopToBottom 
+		           add: textentry;
+		           add: buttons;
+		           add: result;
+		           yourself.
+
+^ textentry.
+
+  ^ SpGridLayout build: [ :builder | "do not return yourself with a builder"
+			             builder
+				             "beColumnNotHomogeneous;"
+				             beRowNotHomogeneous ;
+				             row: 2 expand: true;
+				             add: buttons ; nextRow ;
+				             add: textentry2 ; nextRow ; 
+				             add: result ; nextRow ;
+				             add: 'Name';
+				             add: 'something else' ].
+
 ]
 
 { #category : 'examples' }
@@ -71,6 +131,13 @@ CustomerSatisfactionPresenter2 >> initializePresenters [
 	buttonNeutral := self newButton.
 	buttonBad := self newButton.
 	result label: 'Please give us your feedback.'.
+	number := self newNumberInput .
+	number2 := self newNumberInput .
+	numberLabel := self newLabel.
+	numberLabel2 := self newLabel .
+	slider := self newSlider.
+	slider2 := self newSlider.
+	
 
 	"
 self newButton is shorthand call to superclass SpPresenter which will call self instantiate: SpButtonPresenter
@@ -94,10 +161,9 @@ SpPresenter >> newButton
 		icon: (self iconNamed: #user).
 	buttonBad
 		label: 'Bad';
-		icon: (self iconNamed: #thumbsDown)
-		
-	
-
+		icon: (self iconNamed: #thumbsDown).
+	numberLabel label: 'number1 =>' .
+	numberLabel label: 'number2 =>' .
 
 
 
@@ -127,5 +193,7 @@ CustomerSatisfactionPresenter2 >> initializeWindow: aWindowPresenter [
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter
 		title: 'Customer Satisfaction Survey';
-		initialExtent: 400 @ 100
+		initialExtent: 700 @ 300
+		
+	
 ]
