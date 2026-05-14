@@ -14,6 +14,7 @@ Class {
 
 { #category : 'instance creation' }
 ClassCommentBrowser class >> open [
+ <script>
     ^ self new open .
  "how set title?"	
 ]

@@ -25,6 +25,13 @@ Class {
 	#package : 'YourTools'
 }
 
+{ #category : 'instance creation' }
+MySliderPresenter class >> open [
+ <script>
+    ^ self new open .
+ "how set title?"	
+]
+
 { #category : 'as yet unclassified' }
 MySliderPresenter >> decreaseValue [
     | newVal |
