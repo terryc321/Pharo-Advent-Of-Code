@@ -9,3 +9,17 @@ backgroundColor
 ```
 seems closest match to what we are looking for
 
+Rubric Editor 
+ background color 
+ 
+ 
+ Rubric rules
+  |
+  |-Cursor
+   Background -> 
+   
+how can we patch fix this ?
+already done
+
+
+
