@@ -69,13 +69,12 @@ CustomerSatisfactionPresenter2 >> defaultLayout [
 					          add: 'slider2' ;  add: slider2 ;   nextRow;
 					          add: 'text' ;   add: text ;    nextRow;
 					          add: 'text2' ;  add: text2 ;   nextRow ; 
-					          add: 'buttons' ;  add: buttons ; nextRow 
-					             
+					          add: 'buttons' ;  add: buttons ; nextRow ;
+				             add: '' ; 	  add: result;  nextRow     		             
 				             ].
 			
    ^(SpBoxLayout newTopToBottom 
-		           add: textentry expand: true;
-		           add: buttons2 expand: false;
+		           add: textentry expand: true;					   
 		           yourself).
 		
 
@@ -201,7 +200,7 @@ CustomerSatisfactionPresenter2 >> initializeWindow: aWindowPresenter [
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter
 		title: 'Customer Satisfaction Survey';
-		initialExtent: 700 @ 300
+		initialExtent: 700 @ 350
 		
 	
 ]

@@ -1,5 +1,7 @@
 "
-a customer satisfaction survey
+can we get sliders to work vertically now 
+
+
 "
 Class {
 	#name : 'CustomerSatisfactionPresenter3',
@@ -16,7 +18,9 @@ Class {
 		'number2',
 		'numberLabel2',
 		'slider',
-		'slider2'
+		'slider2',
+		'numberLabel3',
+		'slider3'
 	],
 	#category : 'YourTools',
 	#package : 'YourTools'
@@ -25,7 +29,6 @@ Class {
 { #category : 'instance creation' }
 CustomerSatisfactionPresenter3 class >> run [
 <script>
-"^ CustomerSatisfactionPresenter2 new open"
 ^ self new open
 
 
@@ -47,7 +50,8 @@ CustomerSatisfactionPresenter3 >> connectPresenters [
 { #category : 'layout' }
 CustomerSatisfactionPresenter3 >> defaultLayout [
 
-	| buttons buttons2 textentry textentry2 |
+
+	| buttons buttons2 textentry textentry2 numSlider1 numSlider2 numSlider3 |
 	buttons := SpBoxLayout newLeftToRight
 		           add: buttonHappy;
 		           add: buttonNeutral;
@@ -67,11 +71,34 @@ CustomerSatisfactionPresenter3 >> defaultLayout [
 				             add: 'Year';      add: number2 ;   nextRow;  	
 					          add: 'slider' ;   add: slider ;    nextRow;
 					          add: 'slider2' ;  add: slider2 ;   nextRow;
+								 add: 'slider3' ;  add: slider3 ;   nextRow;
 					          add: 'text' ;   add: text ;    nextRow;
 					          add: 'text2' ;  add: text2 ;   nextRow ; 
-					          add: 'buttons' ;  add: buttons ; nextRow 
-					             
+					          add: 'buttons' ;  add: buttons ; nextRow ;
+					          add: '    ' ; add: result ; nextRow    
 				             ].
+   numSlider1 := (SpBoxLayout newTopToBottom 
+		           add: numberLabel expand: false;
+		           add: slider;
+		           yourself).
+	 numSlider2 := (SpBoxLayout newTopToBottom 
+		           add: numberLabel2 expand: false;
+		           add: slider2;
+		           yourself).
+	numSlider3 := (SpBoxLayout newTopToBottom 
+		           add: numberLabel3 expand: false;
+		           add: slider3;
+		           yourself).
+								
+			
+			
+   ^(SpBoxLayout newLeftToRight                
+		           add: numSlider1  withConstraints: [: c | c width: 20 ];
+		           add: numSlider2  withConstraints: [: c | c width: 20 ];
+		           add: numSlider3  withConstraints: [: c | c width: 20 ];
+					  add: textentry;
+		           yourself).
+					
 			
    ^(SpBoxLayout newTopToBottom 
 		           add: textentry expand: true;
@@ -141,8 +168,12 @@ CustomerSatisfactionPresenter3 >> initializePresenters [
 	number2 := self newNumberInput .
 	numberLabel := self newLabel.
 	numberLabel2 := self newLabel .
+	numberLabel3 := self newLabel .
+	
 	slider := self newSlider.
 	slider2 := self newSlider.
+	slider3 := self newSlider .
+	
 	text := self newTextInput .
 	text2 := self newTextInput .
 	
@@ -170,8 +201,9 @@ SpPresenter >> newButton
 	buttonBad
 		label: 'Bad';
 		icon: (self iconNamed: #thumbsDown).
-	numberLabel label: 'number1 =>' .
-	numberLabel label: 'number2 =>' .
+	numberLabel label: 'num1' .
+	numberLabel2 label: 'num2' .
+	numberLabel3 label: 'num3' .
 
 
 

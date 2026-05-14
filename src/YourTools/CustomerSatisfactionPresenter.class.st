@@ -1,5 +1,7 @@
 "
-a customer satisfaction survey
+example from spec 2.0 satisfaction survey
+
+
 "
 Class {
 	#name : 'CustomerSatisfactionPresenter',
