@@ -34,7 +34,7 @@ y=13, x=498..504'
 
 { #category : 'accessing' }
 AOC2018Day17 >> input [ 
- ^ self exampleRaw splitOn: Character cr.
+ ^ self inputRaw splitOn: Character cr.
 
 ]
 
