@@ -15,12 +15,12 @@ Class {
 	#package : 'Advent-Of-Code-2018'
 }
 
-{ #category : 'accessing' }
+{ #category : 'input' }
 AOC2018Day17 >> example [
  ^ self exampleRaw splitOn: Character cr.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'input' }
 AOC2018Day17 >> exampleRaw [ 
 ^ 'x=495, y=2..7
 y=7, x=495..501
@@ -32,13 +32,13 @@ x=504, y=10..13
 y=13, x=498..504'
 ]
 
-{ #category : 'accessing' }
+{ #category : 'input' }
 AOC2018Day17 >> input [ 
  ^ self inputRaw splitOn: Character cr.
 
 ]
 
-{ #category : 'accessing' }
+{ #category : 'input' }
 AOC2018Day17 >> inputRaw [ 
 ^'x=581, y=396..399
 y=1491, x=566..573
@@ -1512,7 +1512,7 @@ x=436, y=1274..1301
 x=513, y=1076..1081'
 ]
 
-{ #category : 'parsing' }
+{ #category : 'input' }
 AOC2018Day17 >> parseLines: lines [ 
 |res x y dict|
 "x=581, y=396..399"
@@ -1537,7 +1537,7 @@ lines do:[:line |
 ^ dict .
 ]
 
-{ #category : 'parsing' }
+{ #category : 'input' }
 AOC2018Day17 >> parseX: aline [ 
 | sp vs | 
 sp := aline splitOn: ', y='.
@@ -1550,7 +1550,7 @@ vs := (sp at: 2) splitOn: '..'.
 
 ]
 
-{ #category : 'parsing' }
+{ #category : 'input' }
 AOC2018Day17 >> parseY: aline [ 
 | sp vs | 
 sp := aline splitOn: ', x='.
@@ -1559,6 +1559,35 @@ vs := (sp at: 2) splitOn: '..'.
 ^ {  (sp at: 1) asInteger . 
            (vs at: 1) asInteger .  
            (vs at: 2) asInteger }
+
+
+]
+
+{ #category : 'solving' }
+AOC2018Day17 >> solve: aDict [
+| dict |
+dict := aDict copy.
+"sprinkler located at 500 ,0 it sprays water down - do we keep going until we hit a brick ? "
+self sprayWaterDown: dict at: 500@1 . 
+"start at sprinkler -- increasing Y axis is falling down ??"
+
+^ dict.
+
+
+]
+
+{ #category : 'solving' }
+AOC2018Day17 >> sprayWaterDown: dict at: pos [ 
+| val | 
+"what position are we at ? x y "
+
+"is there a brick at pos in dict ? "
+val := dict at: pos ifAbsent: [ #none ].
+(val = #brick) ifTrue:[ ^ #cantgo ].
+(val = #none) ifTrue: [ dict at: pos put: #water . self sprayWaterDown: dict at: (pos x)@(pos y + 1) . ^ #ok ].
+
+
+
 
 
 ]

@@ -59,28 +59,25 @@ AOC2018Day17Graphics >> create [
 ]
 
 { #category : 'api - instantiation' }
-AOC2018Day17Graphics >> createExample [ 
-| dict aoc |
-aoc := AOC2018Day17 new.
-dict := (aoc parseLines: (aoc example)).
-"add sprinkler"	
-	dict at: 500@0 put: #sprinkler.
+AOC2018Day17Graphics >> createExample [
 
-^ self render: dict.
+	| dict aoc |
+	aoc := AOC2018Day17 new.
+	dict := aoc parseLines: aoc example. "add sprinkler"
+	dict at: 500 @ 0 put: #sprinkler.
+	^ self render: (aoc solve: dict)
+	
 
 ]
 
 { #category : 'api - instantiation' }
 AOC2018Day17Graphics >> createInput [
-| dict aoc |
-aoc := AOC2018Day17 new.
-dict := (aoc parseLines: (aoc input)).
-"add sprinkler"	
-	dict at: 500@0 put: #sprinkler.
 
-^ self render: dict.
-
-
+	| dict aoc |
+	aoc := AOC2018Day17 new.
+	dict := aoc parseLines: aoc input. "add sprinkler"
+	dict at: 500 @ 0 put: #sprinkler.
+	^ self render: (aoc solve: dict)
 ]
 
 { #category : 'rendering' }
@@ -158,11 +155,14 @@ windowSize := aSpace extent.
 		root addChild: lineElement.
 		].
 	
+"	
 root addChild: (BlElement new
 		             background: Color pink;
 		             position: 50@50 ;
 		             extent:  50@50 ; 
 		             yourself). 
+"
+
 		
 root addEventHandler: (BlEventHandler on: BlSpaceResizedEvent do: [ :anEvent | 
     Transcript show: 'Resized to: ', anEvent newExtent printString; cr ]).
