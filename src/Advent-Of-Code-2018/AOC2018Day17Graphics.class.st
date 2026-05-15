@@ -81,11 +81,11 @@ AOC2018Day17Graphics >> createInput [
 ]
 
 { #category : 'rendering' }
-AOC2018Day17Graphics >> render: dict [
+AOC2018Day17Graphics >> render: day17 [
 | minX minY maxX maxY bricks root scaleX scaleY offsetX offsetY brickWidth brickHeight windowSize |
 "find min max of x ?? or just "
 
-[ dict keysDo: [ :pt | 
+[ day17 dictionary keysDo: [ :pt | 
 		| x y | 
 		x := pt x.
 		y := pt y.
@@ -124,12 +124,12 @@ maxY := maxY + 5.
 	
 "make some bricks"
 bricks := OrderedCollection new.
-dict keysDo: [ :pt | 
+day17 dictionary keysDo: [ :pt | 
 		| x y brick  | 
 		x := pt x * scaleX - offsetX.
 		y := pt y * scaleY - offsetY.
 		brick := (BlElement new
-		             background: (((dict at: pt) = #brick) ifTrue:[ Color red] ifFalse:[ Color blue]);
+		             background: (((day17 dictionary at: pt) = #brick) ifTrue:[ Color red] ifFalse:[ Color blue]);
 		             position: x@y ;
 		             extent: brickWidth @ brickHeight;
 		             yourself). 

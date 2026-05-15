@@ -23,6 +23,12 @@ Class {
 }
 
 { #category : 'input' }
+AOC2018Day17 >> dictionary [ 
+^ dictionary 
+
+]
+
+{ #category : 'input' }
 AOC2018Day17 >> example [
  ^ self exampleRaw splitOn: Character cr.
 ]
@@ -1521,27 +1527,27 @@ x=513, y=1076..1081'
 
 { #category : 'input' }
 AOC2018Day17 >> parseLines: lines [ 
-|res x y dict|
+|res x y |
 "x=581, y=396..399"
 "y=7, x=495..501"
 res := OrderedCollection new.
-dict := Dictionary new.
+dictionary := Dictionary new.
 lines do:[:line | 
 	((line at: 1) = $x) ifTrue:[ 
 		| xs x y1 y2| 
 		xs := (self parseX: line). 
 		x := xs at: 1 . y1 := xs at: 2 . y2 := xs at: 3.
-		y1 to: y2 do: [:y | dict at: x@y put: #brick ].
+		y1 to: y2 do: [:y | dictionary at: x@y put: #brick ].
 		] ifFalse:[ 
 		((line at: 1) = $y) ifTrue: [ 
 		| ys y x1 x2| 
 		ys := (self parseY: line) .
 		y := ys at: 1 . x1 := ys at: 2 . x2 := ys at: 3.
-		x1 to: x2 do: [:x | dict at: x@y put: #brick ].			
+		x1 to: x2 do: [:x | dictionary at: x@y put: #brick ].			
 			] ifFalse:[ Error signal: 'expected $x or $y as first character' ]].
 	].
 
-^ dict .
+^ self.
 ]
 
 { #category : 'input' }
@@ -1619,7 +1625,7 @@ val := dictionary at: pos ifAbsent: [ #none ].
 	below := (pos x)@(pos y + 1).
 	val := dictionary at: below ifAbsent: [ #none ].
   (val = #none) ifTrue: [  	    
-	    self sprayWaterDown: dictionary at: below . ^ #ok ].
+	    self sprayWaterDownAt: below . ^ #ok ].
   (val = #brick) ifTrue:[ 
 	   | left right pxAdd py pxSub |
 	   pxAdd := pos x + 1 .
