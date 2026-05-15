@@ -61,23 +61,21 @@ AOC2018Day17Graphics >> create [
 { #category : 'api - instantiation' }
 AOC2018Day17Graphics >> createExample [
 
-	| dict aoc |
-	aoc := AOC2018Day17 new.
-	dict := aoc parseLines: aoc example. "add sprinkler"
-	dict at: 500 @ 0 put: #sprinkler.
-	^ self render: (aoc solve: dict)
-	
-
+	| day17 lines |
+	day17 := AOC2018Day17 new.
+	lines := day17 example.
+	day17 parseLines: lines. "graphics := AOC2018Day17Graphics new."
+	self render: day17
 ]
 
 { #category : 'api - instantiation' }
 AOC2018Day17Graphics >> createInput [
 
-	| dict aoc |
-	aoc := AOC2018Day17 new.
-	dict := aoc parseLines: aoc input. "add sprinkler"
-	dict at: 500 @ 0 put: #sprinkler.
-	^ self render: (aoc solve: dict)
+	| day17 lines |
+	day17 := AOC2018Day17 new. "lines := (day17 example)."
+	lines := day17 input.
+	day17 parseLines: lines.
+	self render: day17 "AOC2018Day17Graphics exampleInput " "AOC2018Day17Graphics exampleExample "
 ]
 
 { #category : 'rendering' }
