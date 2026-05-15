@@ -11,6 +11,13 @@ a parseLines: (a example).
 Class {
 	#name : 'AOC2018Day17',
 	#superclass : 'Object',
+	#instVars : [
+		'dictionary',
+		'minimumY',
+		'maximumY',
+		'minimumX',
+		'maximumX'
+	],
 	#category : 'Advent-Of-Code-2018',
 	#package : 'Advent-Of-Code-2018'
 }
@@ -1565,29 +1572,81 @@ vs := (sp at: 2) splitOn: '..'.
 
 { #category : 'solving' }
 AOC2018Day17 >> solve: aDict [
-| dict |
-dict := aDict copy.
+
+dictionary := aDict copy.
+dictionary keysDo: [ :pos |
+	| x y obj |
+	x := pos x. 
+	y := pos y.
+	minimumX ifNil: [ minimumX := x ].
+	maximumY ifNil: [ maximumY := y ].
+	maximumX ifNil: [ maximumX := x ].
+	minimumY ifNil: [ minimumY := 0 ].
+	
+	obj := dictionary at: pos.
+	(obj = #brick) ifTrue:[ 
+	x > maximumX ifTrue: [ maximumX := x ].
+	y > maximumY ifTrue: [ maximumY := y ].
+	x < minimumX ifTrue: [ minimumX := x ].
+	 ]].
+
+
 "sprinkler located at 500 ,0 it sprays water down - do we keep going until we hit a brick ? "
-self sprayWaterDown: dict at: 500@1 . 
+self sprayWaterDownAt: 500@1 . 
 "start at sprinkler -- increasing Y axis is falling down ??"
 
-^ dict.
+
 
 
 ]
 
 { #category : 'solving' }
-AOC2018Day17 >> sprayWaterDown: dict at: pos [ 
+AOC2018Day17 >> sprayWaterDownAt: pos [ 
 | val | 
+
 "what position are we at ? x y "
+(pos y) > maximumY ifTrue: [ ^ #toofar ].
+(pos y) < 0 ifTrue: [ Error signal: 'oops' ]. "water uphill?"
+"potentially infinite in X direction if algorithm goes awry "
+(pos x) < (minimumX - 3) ifTrue:[ Error signal: 'oops' ]. "water floating off sideways?"
+(pos x) > (maximumX + 3) ifTrue:[ Error signal: 'oops' ]."water floating off sideways?"
 
 "is there a brick at pos in dict ? "
-val := dict at: pos ifAbsent: [ #none ].
+val := dictionary at: pos ifAbsent: [ #none ].
 (val = #brick) ifTrue:[ ^ #cantgo ].
-(val = #none) ifTrue: [ dict at: pos put: #water . self sprayWaterDown: dict at: (pos x)@(pos y + 1) . ^ #ok ].
+(val = #none) ifTrue: [  | below | 
+	dictionary at: pos put: #water. 
+	below := (pos x)@(pos y + 1).
+	val := dictionary at: below ifAbsent: [ #none ].
+  (val = #none) ifTrue: [  	    
+	    self sprayWaterDown: dictionary at: below . ^ #ok ].
+  (val = #brick) ifTrue:[ 
+	   | left right pxAdd py pxSub |
+	   pxAdd := pos x + 1 .
+	   pxSub := pos x - 1.
+	   py := pos y .
+	   left := self sprayWaterLeftAt: (pxSub)@py .
+	   right := self  sprayWaterRightAt: (pxAdd)@py .
+	   "... go left right ? ..." 
+	]].
 
 
 
+
+
+
+]
+
+{ #category : 'accessing' }
+AOC2018Day17 >> sprayWaterLeftAt: aPos [  
+
+
+]
+
+{ #category : 'accessing' }
+AOC2018Day17 >> sprayWaterRightAt: aPos [
+
+  
 
 
 ]
