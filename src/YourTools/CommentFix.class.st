@@ -55,3 +55,11 @@ CommentFix class >> exampleBorg [
 			                         { c.  result8 } ].
 	^ resultClassAndComment
 ]
+
+{ #category : 'as yet unclassified' }
+CommentFix >> howto [ 
+ CommentFix exampleBorg. 
+
+
+
+]

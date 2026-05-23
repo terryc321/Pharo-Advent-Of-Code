@@ -24,7 +24,7 @@ ClassCommentBrowser class >> open [
 
 { #category : 'as yet unclassified' }
 ClassCommentBrowser >> clearRendered [
-    renderedComment morph: (Morph new color: Color veryLightGray).
+    renderedComment morph: (Morph new color: Color black).
 ]
 
 { #category : 'initialization' }
@@ -41,7 +41,7 @@ ClassCommentBrowser >> defaultLayout [
 { #category : 'as yet unclassified' }
 ClassCommentBrowser >> emptyMorph [
     ^ Morph new 
-        color: Color veryLightGray;
+        color: Color black;
         hResizing: #spaceFill;
         vResizing: #spaceFill;
         yourself.
@@ -94,7 +94,7 @@ ClassCommentBrowser >> initializePresenters [
 
 renderedComment := self newMorph
         morph: (GeneralScrollPaneMorph new 
-            scrollTarget: (Morph new color: Color white);
+            scrollTarget: (Morph new color: Color black);
             yourself);
         yourself.
 
