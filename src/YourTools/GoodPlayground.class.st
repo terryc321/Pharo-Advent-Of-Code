@@ -13,8 +13,8 @@ Class {
 GoodPlayground >> initialize [
 
  "lets create a simple playground with some initial content"
-	play := StPlayground openContents: self playgroundContents ; yourself. 
-	
+	play := StPlayground openContents: self playgroundContents. 
+
 	"lets create a simple button to do something useful "
 	button := SimpleButtonMorph new
 		          label: 'Run Code';
@@ -34,8 +34,10 @@ GoodPlayground >> playgroundContents [
 ]
 
 { #category : 'as yet unclassified' }
-GoodPlayground >> processInput: aSpWindowMorph [
-aSpWindowMorph window sendToBack.
+GoodPlayground >> processInput: aSpWindowPresenter [
+aSpWindowPresenter window sendToBack.
+
+
 
 
 
